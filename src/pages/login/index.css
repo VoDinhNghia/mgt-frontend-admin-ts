@@ -1,0 +1,9 @@
+.LoginPage {
+    margin: 30px;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+}
+
+.ImgLoginPage {
+    width: 100%;
+}
