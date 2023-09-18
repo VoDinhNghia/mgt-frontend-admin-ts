@@ -1,19 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Nav, Sidebar, Sidenav } from "rsuite";
 import NavToggleMenuPage from "./nav-toggle";
 import LogOutIcon from "@rsuite/icons/legacy/SignOut";
 import { logOut } from "../../../services/auth.service";
 import { routes } from "../../../constants/constant";
 import "./index.css";
+import {
+  IstateRedux,
+  IuserReducer,
+} from "../../../interfaces/common.interface";
+import { connect } from "react-redux";
+import { userActions } from "../../../store/actions";
 
-const MenuPage = () => {
+const MenuPage = (props: IuserReducer) => {
+  const { userInfo = {} } = props;
   const [expand, setExpand] = useState(true);
+
+  const userName = `${userInfo?.profile?.lastName} ${userInfo?.profile?.middleName} ${userInfo?.profile?.firstName}`;
+
+  const fetchUserInfo = () => {
+    const { dispatch } = props;
+    dispatch({
+      type: userActions.GET_ME,
+    });
+  };
+
   const logOutHandle = () => {
     logOut();
     setTimeout(() => {
       window.location.href = routes.login;
     }, 100);
   };
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, []);
 
   return (
     <Sidebar
@@ -22,7 +43,7 @@ const MenuPage = () => {
         flexDirection: "column",
         backgroundColor: "black",
       }}
-      width={expand ? 280 : 70}
+      width={expand ? 320 : 70}
       collapsible
     >
       <Sidenav.Header>
@@ -39,7 +60,9 @@ const MenuPage = () => {
         >
           <a href={routes.dashboard} className="text-white">
             <img src="/images/userIcon.png" alt="" className="UserAvatar" />
-            <span>{expand ? `test` : null}</span>
+            <span>
+              {expand ? `${userName} - ${userInfo?.profile?.code}` : null}
+            </span>
           </a>
         </div>
       </Sidenav.Header>
@@ -62,4 +85,10 @@ const MenuPage = () => {
   );
 };
 
-export default MenuPage;
+const mapStateToProps = (state: IstateRedux) => {
+  return {
+    userInfo: state.UserReducer.userInfo,
+  };
+};
+
+export default connect(mapStateToProps)(MenuPage);
