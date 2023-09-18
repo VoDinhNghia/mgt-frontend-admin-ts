@@ -28,3 +28,13 @@ export interface IresponseAxios {
     message: string;
   };
 }
+
+export interface IuserReducer {
+  listUsers?: object[] | string | number | boolean | any;
+  totalUser?: number;
+  userInfo?: any;
+  dispatch?: any;
+}
+export interface IstateRedux {
+  UserReducer: IuserReducer;
+}
