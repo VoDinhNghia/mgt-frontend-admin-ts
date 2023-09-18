@@ -3,7 +3,7 @@ import { Nav, Sidebar, Sidenav } from "rsuite";
 import NavToggleMenuPage from "./nav-toggle";
 import LogOutIcon from "@rsuite/icons/legacy/SignOut";
 import { logOut } from "../../../services/auth.service";
-import { routes } from "../../../constants/constant";
+import { moduleNames, routes } from "../../../constants/constant";
 import "./index.css";
 import {
   IstateRedux,
@@ -11,12 +11,15 @@ import {
 } from "../../../interfaces/common.interface";
 import { connect } from "react-redux";
 import { userActions } from "../../../store/actions";
+import UserMgtIcon from "@rsuite/icons/legacy/Group";
+import { validateAccessModule } from "../../../utils/permission-handle.util";
 
 const MenuPage = (props: IuserReducer) => {
   const { userInfo = {} } = props;
   const [expand, setExpand] = useState(true);
 
   const userName = `${userInfo?.profile?.lastName} ${userInfo?.profile?.middleName} ${userInfo?.profile?.firstName}`;
+  const isAccessModuleUser = validateAccessModule(moduleNames.USER_MANAGEMENT);
 
   const fetchUserInfo = () => {
     const { dispatch } = props;
@@ -69,8 +72,17 @@ const MenuPage = (props: IuserReducer) => {
       <Sidenav expanded={expand} appearance="subtle">
         <Sidenav.Body>
           <Nav>
+            {isAccessModuleUser ? (
+              <Nav.Item
+                eventKey="1"
+                icon={<UserMgtIcon />}
+                className="ItemMenuPage"
+              >
+                {moduleNames.USER_MANAGEMENT}
+              </Nav.Item>
+            ) : null}
             <Nav.Item
-              eventKey="5"
+              eventKey="2"
               icon={<LogOutIcon />}
               className="ItemMenuPage"
               onClick={() => logOutHandle()}
