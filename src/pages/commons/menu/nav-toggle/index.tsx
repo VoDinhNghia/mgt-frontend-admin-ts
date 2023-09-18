@@ -2,7 +2,7 @@ import React from "react";
 import { Navbar, Nav } from "rsuite";
 import AngleLeftIcon from "@rsuite/icons/legacy/AngleLeft";
 import AngleRightIcon from "@rsuite/icons/legacy/AngleRight";
-import { IpropsNavToggle } from "../../../../interfaces/menu.interface";
+import { IpropsNavToggle } from "../../../../interfaces/common.interface";
 
 const NavToggleMenuPage = (props: IpropsNavToggle) => {
   const { expand, setExpand } = props;
