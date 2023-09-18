@@ -11,7 +11,7 @@ import {
 
 function* fetchMe(): Generator<any> {
   try {
-    const res: any = yield call(getMeInfo);
+    const res: IresponseAxios | any = yield call(getMeInfo);
     yield put({
       type: userActions.GET_ME_SUCCESS,
       payload: res?.data?.data,
