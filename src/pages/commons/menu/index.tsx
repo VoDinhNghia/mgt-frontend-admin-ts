@@ -77,6 +77,7 @@ const MenuPage = (props: IuserReducer) => {
                 eventKey="1"
                 icon={<UserMgtIcon />}
                 className="ItemMenuPage"
+                href={routes.userMgt}
               >
                 {moduleNames.USER_MANAGEMENT}
               </Nav.Item>
