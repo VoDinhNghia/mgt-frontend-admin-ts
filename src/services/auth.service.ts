@@ -49,7 +49,7 @@ export const setMultipartHeader = () => {
 
 export const login = async (payload: IpayLoadLogin | any) => {
   try {
-    const res = await axios(`${STUDENT_SERVER_URL}/api/auth/login`, payload);
+    const res = await axios.post(`${STUDENT_SERVER_URL}/api/auth/login`, payload);
     setUserInfoToSessionStorage(res?.data?.data);
     return res?.data;
   } catch (error: any) {
@@ -63,7 +63,7 @@ export const fetchPermissions = async (payload: {
   user: string;
 }): Promise<void> => {
   try {
-    const res = await axios(`${STUDENT_SERVER_URL}/api/permissions`, {
+    const res = await axios.get(`${STUDENT_SERVER_URL}/api/permissions`, {
       params: payload,
       headers: setHeaderAxios(),
     });

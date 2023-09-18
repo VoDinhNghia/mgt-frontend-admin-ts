@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -7,6 +8,8 @@ import store from "./store";
 import { Provider } from "react-redux";
 import DashboardPage from "./pages/dashboard";
 import ProtectedRoutes from "./utils/protected-route.util";
+// @ts-ignore
+import { NotificationContainer } from "react-notifications";
 
 const App = () => {
   return (
@@ -24,6 +27,7 @@ const App = () => {
             }
           />
         </Routes>
+        <NotificationContainer />
       </BrowserRouter>
     </Provider>
   );

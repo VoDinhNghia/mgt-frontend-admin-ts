@@ -4,14 +4,14 @@ import { setHeaderAxios } from "./auth.service";
 import { IparamsFetchList } from "../interfaces/common.interface";
 
 export const getMeInfo = async () => {
-  const res = await axios(`${STUDENT_SERVER_URL}/api/auth/me`, {
+  const res = await axios.get(`${STUDENT_SERVER_URL}/api/auth/me`, {
     headers: setHeaderAxios(),
   });
   return res;
 };
 
 export const getUserList = async (payload: IparamsFetchList) => {
-  const res = await axios(`${STUDENT_SERVER_URL}/api/users`, {
+  const res = await axios.get(`${STUDENT_SERVER_URL}/api/users`, {
     params: payload,
     headers: setHeaderAxios(),
   });
