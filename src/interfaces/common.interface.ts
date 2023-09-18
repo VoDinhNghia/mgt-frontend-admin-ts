@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IeventOnchangeInput {
   target: {
@@ -37,4 +38,10 @@ export interface IuserReducer {
 }
 export interface IstateRedux {
   UserReducer: IuserReducer;
+}
+
+
+export interface IpropsNavToggle {
+  expand: boolean;
+  setExpand: Function;
 }
