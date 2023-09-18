@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore
+import { NotificationManager } from "react-notifications";
 import React, { useState } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import "./index.css";
 import { IeventOnchangeInput } from "../../interfaces/common.interface";
 import { fetchPermissions, login } from "../../services/auth.service";
-// @ts-ignore
-import { NotificationManager } from "react-notifications";
 import { routes } from "../../constants/constant";
 
 const LoginPage = () => {
