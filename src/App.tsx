@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore
+import { NotificationContainer } from "react-notifications";
 import React from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -8,8 +10,7 @@ import store from "./store";
 import { Provider } from "react-redux";
 import DashboardPage from "./pages/dashboard";
 import ProtectedRoutes from "./utils/protected-route.util";
-// @ts-ignore
-import { NotificationContainer } from "react-notifications";
+import NotfoundPage from "./pages/notfound";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
               </ProtectedRoutes>
             }
           />
+          <Route path="*" element={<NotfoundPage />} />
         </Routes>
         <NotificationContainer />
       </BrowserRouter>

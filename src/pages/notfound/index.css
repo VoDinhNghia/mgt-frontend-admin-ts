@@ -1,0 +1,7 @@
+.NotFoundPage {
+  border: 1px solid lightgray;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+}
