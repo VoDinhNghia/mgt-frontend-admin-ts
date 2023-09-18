@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 import DashboardPage from "./pages/dashboard";
 import ProtectedRoutes from "./utils/protected-route.util";
 import NotfoundPage from "./pages/notfound";
+import UserManagementPage from "./pages/management-users";
 
 const App = () => {
   return (
@@ -24,6 +25,14 @@ const App = () => {
             element={
               <ProtectedRoutes>
                 <DashboardPage />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path={routes.userMgt}
+            element={
+              <ProtectedRoutes>
+                <UserManagementPage />
               </ProtectedRoutes>
             }
           />
