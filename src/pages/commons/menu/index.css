@@ -1,0 +1,14 @@
+.ItemMenuPage {
+  color: white !important;
+}
+
+.ItemMenuPage:hover {
+  color: black !important;
+}
+
+.UserAvatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
