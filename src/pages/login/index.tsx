@@ -1,14 +1,34 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useState } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import "./index.css";
 import { IeventOnchangeInput } from "../../interfaces/common.interface";
+import { fetchPermissions, login } from "../../services/auth.service";
+// @ts-ignore
+import { NotificationManager } from "react-notifications";
+import { routes } from "../../constants/constant";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [passWord, setPassword] = useState("");
 
-  const loginAction = () => {
-    alert(`email: ${email}, password: ${passWord}`);
+  const loginAction = async (): Promise<void> => {
+    const payload = {
+      email,
+      passWord,
+    };
+    const res = await login(payload);
+    if (res?.statusCode === 200) {
+      const user = res?.data;
+      const profile = user?.profile;
+      await fetchPermissions({ user: profile?._id });
+      NotificationManager.success(res?.message, "Login", 4000);
+      setTimeout(() => {
+        window.location.href = routes.dashboard;
+      }, 500);
+    } else {
+      NotificationManager.error(res?.message, "Login", 4000);
+    }
   };
 
   return (
