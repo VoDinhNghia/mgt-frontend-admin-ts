@@ -46,7 +46,7 @@ const MenuPage = (props: IuserReducer) => {
         flexDirection: "column",
         backgroundColor: "black",
       }}
-      width={expand ? 320 : 70}
+      width={expand ? 300 : 70}
       collapsible
     >
       <Sidenav.Header>
@@ -62,9 +62,9 @@ const MenuPage = (props: IuserReducer) => {
           }}
         >
           <a href={routes.dashboard} className="text-white">
-            <img src="/images/userIcon.png" alt="" className="UserAvatar" />
+            <img src="/images/userIcon.jpg" alt="" className="UserAvatar" />
             <span>
-              {expand ? `${userName} - ${userInfo?.profile?.code}` : null}
+              {expand ? userName : null}
             </span>
           </a>
         </div>
