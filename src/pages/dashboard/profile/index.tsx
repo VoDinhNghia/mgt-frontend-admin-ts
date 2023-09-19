@@ -13,16 +13,28 @@ import { connect } from "react-redux";
 import { IstateRedux } from "../../../interfaces/common.interface";
 import { IpropProfile } from "../../../interfaces/dashboard.interface";
 import { BsPencilSquare } from "react-icons/bs";
+import DashboardModalPage from "../modals";
+import { modalTypes } from "../../../constants/constant";
 
 const ProfileDashboardPage = (props: IpropProfile) => {
   const generalTab = "generalInfo";
   const profileTab = "profile";
   const [tabIndex, setTabIndex] = useState(generalTab);
+  const [isShowModalUpdate, setShowModalUpdate] = useState(false);
+  const [isShowModalUpdatePassword, setShowModalUpdatePassword] =
+    useState(false);
+  const [isShowModalUpdateProfile, setShowModalUpdateProfile] = useState(false);
   const { userInfo = {} } = props;
   const { profile = {} } = userInfo;
 
   const onChangeTab = (e: SyntheticEvent, newValue: string) => {
     setTabIndex(newValue);
+  };
+
+  const onCloseModal = () => {
+    setShowModalUpdate(false);
+    setShowModalUpdatePassword(false);
+    setShowModalUpdateProfile(false);
   };
 
   return (
@@ -51,6 +63,7 @@ const ProfileDashboardPage = (props: IpropProfile) => {
                   variant="outlined"
                   startIcon={<BsPencilSquare />}
                   size="small"
+                  onClick={() => setShowModalUpdate(true)}
                 >
                   Update Info
                 </Button>
@@ -58,6 +71,7 @@ const ProfileDashboardPage = (props: IpropProfile) => {
                   variant="outlined"
                   startIcon={<BsPencilSquare />}
                   size="small"
+                  onClick={() => setShowModalUpdatePassword(true)}
                 >
                   Update password
                 </Button>
@@ -79,6 +93,7 @@ const ProfileDashboardPage = (props: IpropProfile) => {
                   variant="outlined"
                   startIcon={<BsPencilSquare />}
                   size="small"
+                  onClick={() => setShowModalUpdateProfile(true)}
                 >
                   Update profile
                 </Button>
@@ -87,6 +102,24 @@ const ProfileDashboardPage = (props: IpropProfile) => {
           </TabPanel>
         </TabContext>
       </Box>
+      <DashboardModalPage
+        type={modalTypes.UPDATE}
+        isShowModal={isShowModalUpdate}
+        onCloseModal={onCloseModal}
+        userInfo={userInfo}
+      />
+      <DashboardModalPage
+        type={modalTypes.UPDATE_PASSWORD}
+        isShowModal={isShowModalUpdatePassword}
+        onCloseModal={onCloseModal}
+        userInfo={userInfo}
+      />
+      <DashboardModalPage
+        type={modalTypes.UPDATE_PROFILE}
+        isShowModal={isShowModalUpdateProfile}
+        onCloseModal={onCloseModal}
+        userInfo={userInfo}
+      />
     </Container>
   );
 };
