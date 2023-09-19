@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// @ts-ignore
+import { NotificationManager } from "react-notifications";
 import { call, put, takeLatest } from "redux-saga/effects";
 import { getMeInfo, getUserList } from "../../services/user.service";
 import { userActions } from "../actions";
@@ -16,8 +18,8 @@ function* fetchMe(): Generator<any> {
       type: userActions.GET_ME_SUCCESS,
       payload: res?.data?.data,
     });
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    NotificationManager.error(error?.response?.data?.message, "Get me", 4000);
   }
 }
 
@@ -29,8 +31,12 @@ function* fetchListUsers(params: IparamSaga): Generator<any> {
       type: userActions.GET_LIST_USER_SUCCESS,
       payload: res?.data?.data,
     });
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    NotificationManager.error(
+      error?.response?.data?.message,
+      "Get list users",
+      4000
+    );
   }
 }
 
