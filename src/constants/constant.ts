@@ -51,3 +51,12 @@ export const moduleOptions = [
     label: "Branch Management",
   },
 ];
+
+export const modalTypes = {
+  ADD: "ADD",
+  UPDATE: "UPDATE",
+  UPDATE_PASSWORD: "UPDATE_PASSWORD",
+  UPDATE_PROFILE: "UPDATE_PROFILE",
+  DELETE: "DELETE",
+  VIEW: "VIEW",
+};
