@@ -61,16 +61,16 @@ const ProfileDashboardPage = (props: IpropProfile) => {
               <CardActions>
                 <Button
                   variant="outlined"
+                  color="secondary"
                   startIcon={<BsPencilSquare />}
-                  size="small"
                   onClick={() => setShowModalUpdate(true)}
                 >
                   Update Info
                 </Button>
                 <Button
                   variant="outlined"
+                  color="secondary"
                   startIcon={<BsPencilSquare />}
-                  size="small"
                   onClick={() => setShowModalUpdatePassword(true)}
                 >
                   Update password
@@ -91,8 +91,8 @@ const ProfileDashboardPage = (props: IpropProfile) => {
               <CardActions>
                 <Button
                   variant="outlined"
+                  color="secondary"
                   startIcon={<BsPencilSquare />}
-                  size="small"
                   onClick={() => setShowModalUpdateProfile(true)}
                 >
                   Update profile

@@ -20,7 +20,7 @@ const DashboardModalPage = (props: IpropModal) => {
       open={isShowModal}
       onClose={() => onCloseModal()}
       fullWidth={true}
-      maxWidth={"sm"}
+      maxWidth={"xs"}
     >
       <DialogTitle>
         {type === modalTypes.UPDATE ? "Update general user info" : null}
@@ -109,23 +109,22 @@ const DashboardModalPage = (props: IpropModal) => {
       </DialogContent>
       <DialogActions>
         {type === modalTypes.UPDATE ? (
-          <Button variant="outlined" size="small">
+          <Button variant="outlined">
             Save Info
           </Button>
         ) : null}
         {type === modalTypes.UPDATE_PASSWORD ? (
-          <Button variant="outlined" size="small">
+          <Button variant="outlined">
             Change Password
           </Button>
         ) : null}
         {type === modalTypes.UPDATE_PROFILE ? (
-          <Button variant="outlined" size="small">
+          <Button variant="outlined">
             Save Profile
           </Button>
         ) : null}
         <Button
           variant="outlined"
-          size="small"
           color="error"
           onClick={() => onCloseModal()}
         >
