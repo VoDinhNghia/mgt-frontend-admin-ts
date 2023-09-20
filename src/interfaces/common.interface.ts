@@ -18,7 +18,7 @@ export interface IactionRedux {
 }
 
 export interface IparamSaga {
-  payload: IactionRedux;
+  payload: any;
   id: string;
 }
 
