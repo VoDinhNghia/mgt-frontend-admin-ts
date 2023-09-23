@@ -46,7 +46,7 @@ function* updateUserInfo(params: IparamSaga): Generator<any> {
     const { payload, id } = params;
     const res: IresponseAxios | any = yield call(updateUser, id, payload);
     NotificationManager.success(
-      res?.response?.data?.message,
+      res?.data?.message,
       "Update user",
       4000
     );
@@ -64,7 +64,7 @@ function* updateUserProfile(params: IparamSaga): Generator<any> {
     const { payload, id } = params;
     const res: IresponseAxios | any = yield call(updateProfile, id, payload);
     NotificationManager.success(
-      res?.response?.data?.message,
+      res?.data?.message,
       "Update user profile",
       4000
     );
