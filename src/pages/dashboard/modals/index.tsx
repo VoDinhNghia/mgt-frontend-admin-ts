@@ -24,6 +24,11 @@ const DashboardModalPage = (props: IpropModal) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [enterPassword, setEnterPassword] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [middleName, setMiddleName] = useState("");
+  const [gender, setGender] = useState("");
+  const [mobile, setMobile] = useState("");
 
   const updateInfo = () => {
     dispatch({
@@ -60,6 +65,22 @@ const DashboardModalPage = (props: IpropModal) => {
       });
       fetchInfoAndCloseModal();
     }
+  };
+
+  const updateProfile = () => {
+    const { profile = {} } = userInfo;
+    dispatch({
+      type: userActions.UPDATE_USER_PROFILE,
+      id: profile?._id,
+      payload: {
+        firstName: firstName || profile?.firstName,
+        lastName: lastName || profile?.lastName,
+        middleName,
+        mobile: mobile || profile?.mobile,
+        gender: gender || profile?.gender,
+      },
+    });
+    fetchInfoAndCloseModal();
   };
 
   const fetchInfoAndCloseModal = () => {
@@ -138,6 +159,7 @@ const DashboardModalPage = (props: IpropModal) => {
               variant="outlined"
               defaultValue={userInfo?.profile?.lastName}
               fullWidth={true}
+              onChange={(e: IeventOnchangeInput) => setLastName(e.target.value)}
             />
             <p className="mt-2 mb-1">MiddleName: </p>
             <TextField
@@ -145,6 +167,9 @@ const DashboardModalPage = (props: IpropModal) => {
               variant="outlined"
               defaultValue={userInfo?.profile?.middleName}
               fullWidth={true}
+              onChange={(e: IeventOnchangeInput) =>
+                setMiddleName(e.target.value)
+              }
             />
             <p className="mt-2 mb-1">FirstName: </p>
             <TextField
@@ -152,6 +177,9 @@ const DashboardModalPage = (props: IpropModal) => {
               variant="outlined"
               defaultValue={userInfo?.profile?.firstName}
               fullWidth={true}
+              onChange={(e: IeventOnchangeInput) =>
+                setFirstName(e.target.value)
+              }
             />
             <p className="mt-2 mb-1">Gender: </p>
             <Select
@@ -159,6 +187,7 @@ const DashboardModalPage = (props: IpropModal) => {
               variant="outlined"
               defaultValue={userInfo?.profile?.gender}
               fullWidth={true}
+              onChange={(e: IeventOnchangeInput) => setGender(e.target.value)}
             >
               <MenuItem value="Male">Male</MenuItem>
               <MenuItem value="Female">Female</MenuItem>
@@ -169,6 +198,7 @@ const DashboardModalPage = (props: IpropModal) => {
               variant="outlined"
               defaultValue={userInfo?.profile?.mobile}
               fullWidth={true}
+              onChange={(e: IeventOnchangeInput) => setMobile(e.target.value)}
             />
           </>
         ) : null}
@@ -185,7 +215,9 @@ const DashboardModalPage = (props: IpropModal) => {
           </Button>
         ) : null}
         {type === modalTypes.UPDATE_PROFILE ? (
-          <Button variant="outlined">Save Profile</Button>
+          <Button variant="outlined" onClick={() => updateProfile()}>
+            Save Profile
+          </Button>
         ) : null}
         <Button variant="outlined" color="error" onClick={() => onCloseModal()}>
           Cancle
