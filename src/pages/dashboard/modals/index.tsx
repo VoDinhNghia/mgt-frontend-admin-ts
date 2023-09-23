@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore
+import { NotificationManager } from "react-notifications";
 import React, { useState } from "react";
 import { IpropModal } from "../../../interfaces/dashboard.interface";
 import {
@@ -18,6 +21,9 @@ import { IeventOnchangeInput } from "../../../interfaces/common.interface";
 const DashboardModalPage = (props: IpropModal) => {
   const { type, isShowModal, onCloseModal, userInfo = {}, dispatch } = props;
   const [email, setEmail] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [enterPassword, setEnterPassword] = useState("");
 
   const updateInfo = () => {
     dispatch({
@@ -25,10 +31,36 @@ const DashboardModalPage = (props: IpropModal) => {
       id: userInfo?._id,
       payload: {
         email: email || userInfo?.email,
-      }
+      },
     });
     fetchInfoAndCloseModal();
-  }
+  };
+
+  const updatePassword = () => {
+    if (!currentPassword || !newPassword || !enterPassword) {
+      NotificationManager.error(
+        "current password, new password and enter password must is provided!",
+        "Update password",
+        4000
+      );
+    } else if (newPassword !== enterPassword) {
+      NotificationManager.error(
+        "new password doesn't match with enter password",
+        "Update password",
+        4000
+      );
+    } else {
+      dispatch({
+        type: userActions.UPDATE_USER_INFO,
+        id: userInfo?._id,
+        payload: {
+          password: currentPassword,
+          newPassword,
+        },
+      });
+      fetchInfoAndCloseModal();
+    }
+  };
 
   const fetchInfoAndCloseModal = () => {
     setTimeout(() => {
@@ -37,7 +69,7 @@ const DashboardModalPage = (props: IpropModal) => {
       });
       onCloseModal();
     }, 70);
-  }
+  };
 
   return (
     <Dialog
@@ -72,6 +104,9 @@ const DashboardModalPage = (props: IpropModal) => {
               type="password"
               fullWidth={true}
               variant="outlined"
+              onChange={(e: IeventOnchangeInput) =>
+                setCurrentPassword(e.target.value)
+              }
             />
             <p className="mt-2 mb-1">New password: </p>
             <TextField
@@ -79,6 +114,9 @@ const DashboardModalPage = (props: IpropModal) => {
               type="password"
               fullWidth={true}
               variant="outlined"
+              onChange={(e: IeventOnchangeInput) =>
+                setNewPassword(e.target.value)
+              }
             />
             <p className="mt-2 mb-1">Enter new password: </p>
             <TextField
@@ -86,6 +124,9 @@ const DashboardModalPage = (props: IpropModal) => {
               type="password"
               fullWidth={true}
               variant="outlined"
+              onChange={(e: IeventOnchangeInput) =>
+                setEnterPassword(e.target.value)
+              }
             />
           </>
         ) : null}
@@ -139,20 +180,14 @@ const DashboardModalPage = (props: IpropModal) => {
           </Button>
         ) : null}
         {type === modalTypes.UPDATE_PASSWORD ? (
-          <Button variant="outlined">
+          <Button variant="outlined" onClick={() => updatePassword()}>
             Change Password
           </Button>
         ) : null}
         {type === modalTypes.UPDATE_PROFILE ? (
-          <Button variant="outlined">
-            Save Profile
-          </Button>
+          <Button variant="outlined">Save Profile</Button>
         ) : null}
-        <Button
-          variant="outlined"
-          color="error"
-          onClick={() => onCloseModal()}
-        >
+        <Button variant="outlined" color="error" onClick={() => onCloseModal()}>
           Cancle
         </Button>
       </DialogActions>
