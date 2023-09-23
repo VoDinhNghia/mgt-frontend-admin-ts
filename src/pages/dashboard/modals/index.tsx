@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IpropModal } from "../../../interfaces/dashboard.interface";
 import {
   Button,
@@ -11,9 +11,33 @@ import {
   MenuItem,
 } from "@mui/material";
 import { modalTypes } from "../../../constants/constant";
+import { connect } from "react-redux";
+import { userActions } from "../../../store/actions";
+import { IeventOnchangeInput } from "../../../interfaces/common.interface";
 
 const DashboardModalPage = (props: IpropModal) => {
-  const { type, isShowModal, onCloseModal, userInfo = {} } = props;
+  const { type, isShowModal, onCloseModal, userInfo = {}, dispatch } = props;
+  const [email, setEmail] = useState("");
+
+  const updateInfo = () => {
+    dispatch({
+      type: userActions.UPDATE_USER_INFO,
+      id: userInfo?._id,
+      payload: {
+        email: email || userInfo?.email,
+      }
+    });
+    fetchInfoAndCloseModal();
+  }
+
+  const fetchInfoAndCloseModal = () => {
+    setTimeout(() => {
+      dispatch({
+        type: userActions.GET_ME,
+      });
+      onCloseModal();
+    }, 70);
+  }
 
   return (
     <Dialog
@@ -36,6 +60,7 @@ const DashboardModalPage = (props: IpropModal) => {
               variant="outlined"
               defaultValue={userInfo?.email}
               fullWidth={true}
+              onChange={(e: IeventOnchangeInput) => setEmail(e.target.value)}
             />
           </>
         ) : null}
@@ -109,7 +134,7 @@ const DashboardModalPage = (props: IpropModal) => {
       </DialogContent>
       <DialogActions>
         {type === modalTypes.UPDATE ? (
-          <Button variant="outlined">
+          <Button variant="outlined" onClick={() => updateInfo()}>
             Save Info
           </Button>
         ) : null}
@@ -135,4 +160,4 @@ const DashboardModalPage = (props: IpropModal) => {
   );
 };
 
-export default DashboardModalPage;
+export default connect()(DashboardModalPage);
