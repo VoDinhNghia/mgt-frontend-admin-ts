@@ -8,6 +8,7 @@ import {
   getUserList,
   updateProfile,
   updateUser,
+  addUser,
 } from "../../services/user.service";
 import { userActions } from "../actions";
 import { IparamSaga, IresponseAxios } from "../../interfaces/common.interface";
@@ -77,6 +78,16 @@ function* updateUserProfile(params: IparamSaga): Generator<any> {
   }
 }
 
+function* addNewUser(params: IparamSaga): Generator<any> {
+  try {
+    const { payload } = params;
+    const res: IresponseAxios | any = yield call(addUser, payload);
+    NotificationManager.success(res?.data?.message, "Add user", 4000);
+  } catch (error: any) {
+    NotificationManager.error(error?.response?.data?.message, "Add user", 4000);
+  }
+}
+
 function* UserSaga() {
   // @ts-ignore
   yield takeLatest(userActions.GET_LIST_USER, fetchListUsers);
@@ -85,6 +96,8 @@ function* UserSaga() {
   yield takeLatest(userActions.UPDATE_USER_INFO, updateUserInfo);
   // @ts-ignore
   yield takeLatest(userActions.UPDATE_USER_PROFILE, updateUserProfile);
+  // @ts-ignore
+  yield takeLatest(userActions.ADD_USER, addNewUser);
 }
 
 export default UserSaga;

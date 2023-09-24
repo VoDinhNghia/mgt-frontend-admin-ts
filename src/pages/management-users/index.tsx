@@ -148,6 +148,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
             type={modalTypes.ADD}
             isShowModal={isShowModalAdd}
             onCloseModal={() => setShowModalAdd(false)}
+            fetchUsers={() => fetchUsers(page + 1, limit)}
           />
         </div>
       ) : (
