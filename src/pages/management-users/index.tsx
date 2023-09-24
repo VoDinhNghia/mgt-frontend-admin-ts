@@ -46,6 +46,9 @@ const UserManagementPage = (props: IpropUserMgt) => {
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
   const [isShowModalAdd, setShowModalAdd] = useState(false);
+  const [isShowModalUpdate, setShowModalUpdate] = useState(false);
+  const [isShowModalDelete, setShowModalDelete] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
   const [isShowModalImport, setShowModalImport] = useState(false);
   const [isShowModalFilter, setShowModalFilter] = useState(false);
   const isAccess = validateAccessModule(moduleNames.USER_MANAGEMENT);
@@ -79,6 +82,16 @@ const UserManagementPage = (props: IpropUserMgt) => {
     setLimit(newLimit);
     fetchUsers(1, newLimit);
   };
+
+  const onShowUpdate = (user: IrowUserTable) => {
+    setShowModalUpdate(true);
+    setUserInfo(user);
+  }
+
+  const onShowDelete = (user: IrowUserTable) => {
+    setShowModalDelete(true);
+    setUserInfo(user);
+  }
 
   const onSearch = (searchKey: string) => {
     dispatch({
@@ -157,10 +170,10 @@ const UserManagementPage = (props: IpropUserMgt) => {
                           <TableCell>{row.role}</TableCell>
                           <TableCell>{row.award}</TableCell>
                           <TableCell>
-                            <Button variant="outline-primary" size="sm">
+                            <Button variant="outline-primary" size="sm" onClick={() => onShowUpdate(row)}>
                               <BsPencilSquare />
                             </Button>{" "}
-                            <Button variant="outline-danger" size="sm">
+                            <Button variant="outline-danger" size="sm" onClick={() => onShowDelete(row)}>
                               <BsTrash />
                             </Button>
                           </TableCell>
@@ -187,6 +200,20 @@ const UserManagementPage = (props: IpropUserMgt) => {
             isShowModal={isShowModalAdd}
             onCloseModal={() => setShowModalAdd(false)}
             fetchUsers={() => fetchUsers(page + 1, limit)}
+          />
+          <ModalUserMgtPage
+            type={modalTypes.UPDATE}
+            isShowModal={isShowModalUpdate}
+            onCloseModal={() => setShowModalUpdate(false)}
+            fetchUsers={() => fetchUsers(page + 1, limit)}
+            userInfo={userInfo}
+          />
+          <ModalUserMgtPage
+            type={modalTypes.DELETE}
+            isShowModal={isShowModalDelete}
+            onCloseModal={() => setShowModalDelete(false)}
+            fetchUsers={() => fetchUsers(page + 1, limit)}
+            userInfo={userInfo}
           />
           <FilterAndImportModal
             type={modalTypes.IMPORT}

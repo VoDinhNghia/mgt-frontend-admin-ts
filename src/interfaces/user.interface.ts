@@ -42,6 +42,7 @@ export interface IcolumnUserTable {
 }
 
 export interface IrowUserTable {
+  _id?: string;
   index?: number;
   name?: string;
   email?: string;

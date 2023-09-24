@@ -51,6 +51,7 @@ export const handleDataUserTable = (listUsers = []) => {
   const data = listUsers?.map((user: IuserInfo, index: number) => {
     const profile: Iprofile = user?.profile;
     return {
+      _id: user?._id,
       index: index + 1,
       name: `${profile?.lastName} ${profile?.middleName} ${profile?.firstName}`,
       email: user?.email,
