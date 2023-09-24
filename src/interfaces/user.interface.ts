@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { IpropModalCommon } from "./common.interface";
+
 export interface IpayloadUpdateUser {
   email?: string;
   role?: string;
@@ -49,12 +51,8 @@ export interface IrowUserTable {
   award?: any;
 }
 
-export interface IpropUserMgtModal {
-  dispatch?: any;
-  isShowModal?: boolean | any;
-  onCloseModal?: Function | any;
+export interface IpropUserMgtModal extends IpropModalCommon {
   userInfo?: any;
-  type?: string;
   fetchUsers?: Function | any;
 }
 
@@ -68,3 +66,5 @@ export interface IpayloadAddUser {
   role?: string;
   email?: string;
 }
+
+export type IpropImportFilterUser = IpropModalCommon;

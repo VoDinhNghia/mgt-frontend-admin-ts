@@ -8,7 +8,7 @@ import {
 import { BsPlusCircle } from "react-icons/bs";
 
 const AddAndSearchTable = (props: IpropAddAndSearchTable) => {
-  const { title, onSearch, onShowAdd } = props;
+  const { title, onSearch, onShowAdd, isDisableBtnAdd } = props;
 
   return (
     <div className="mb-3 fs-6">
@@ -21,6 +21,7 @@ const AddAndSearchTable = (props: IpropAddAndSearchTable) => {
                 startIcon={<BsPlusCircle />}
                 color="primary"
                 className="w-100"
+                disabled={isDisableBtnAdd}
                 onClick={() => onShowAdd()}
               >
                 {title}
