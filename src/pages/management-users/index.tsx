@@ -28,6 +28,7 @@ import {
 } from "@mui/material";
 import { Button } from "react-bootstrap";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
+import AddAndSearchTable from "../commons/add-search-table";
 
 const UserManagementPage = (props: IpropUserMgt) => {
   const [limit, setLimit] = useState(5);
@@ -83,6 +84,9 @@ const UserManagementPage = (props: IpropUserMgt) => {
           <Container>
             <MenuPage />
             <Container className="p-3">
+              <AddAndSearchTable
+                title="Add new user"
+              />
               <TableContainer>
                 <Table stickyHeader aria-label="user table">
                   <TableHead>
@@ -90,7 +94,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
                       {columns?.map((column: IcolumnUserTable) => (
                         <TableCell
                           key={column.id}
-                          className="bg-primary text-white"
+                          className="bg-success text-white"
                         >
                           {column.label}
                         </TableCell>
@@ -107,7 +111,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
                           key={row?.code}
                         >
                           <TableCell>{row.index}</TableCell>
-                          <TableCell>{row.name}</TableCell>
+                          <TableCell className="text-primary">{row.name}</TableCell>
                           <TableCell>{row.email}</TableCell>
                           <TableCell>{row.code}</TableCell>
                           <TableCell>{row.status}</TableCell>

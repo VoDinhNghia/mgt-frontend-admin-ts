@@ -45,3 +45,8 @@ export interface IpropsNavToggle {
   expand: boolean;
   setExpand: Function;
 }
+
+export interface IpropAddAndSearchTable {
+  dispatch?: any;
+  title?: string;
+}
