@@ -192,11 +192,13 @@ const UserManagementPage = (props: IpropUserMgt) => {
             type={modalTypes.IMPORT}
             isShowModal={isShowModalImport}
             onCloseModal={() => setShowModalImport(false)}
+            fetchUsers={() => fetchUsers(page + 1, limit)}
           />
           <FilterAndImportModal
             type={modalTypes.FILTER}
             isShowModal={isShowModalFilter}
             onCloseModal={() => setShowModalFilter(false)}
+            fetchUsers={() => fetchUsers(page + 1, limit)}
           />
         </div>
       ) : (

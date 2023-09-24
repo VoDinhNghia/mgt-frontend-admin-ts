@@ -9,6 +9,8 @@ import {
   updateProfile,
   updateUser,
   addUser,
+  deleteUser,
+  importUser,
 } from "../../services/user.service";
 import { userActions } from "../actions";
 import { IparamSaga, IresponseAxios } from "../../interfaces/common.interface";
@@ -88,6 +90,26 @@ function* addNewUser(params: IparamSaga): Generator<any> {
   }
 }
 
+function* importMultiUsers(params: IparamSaga): Generator<any> {
+  try {
+    const { payload } = params;
+    const res: IresponseAxios | any = yield call(importUser, payload);
+    NotificationManager.success(res?.data?.message, "Import User", 4000);
+  } catch (error: any) {
+    NotificationManager.error(error?.response?.data?.message, "Import user", 4000);
+  }
+}
+
+function* removeUser(params: IparamSaga): Generator<any> {
+  try {
+    const { id } = params;
+    const res: IresponseAxios | any = yield call(deleteUser, id);
+    NotificationManager.success(res?.data?.message, "Delete user", 4000);
+  } catch (error: any) {
+    NotificationManager.error(error?.response?.data?.message, "Delete user", 4000);
+  }
+}
+
 function* UserSaga() {
   // @ts-ignore
   yield takeLatest(userActions.GET_LIST_USER, fetchListUsers);
@@ -98,6 +120,10 @@ function* UserSaga() {
   yield takeLatest(userActions.UPDATE_USER_PROFILE, updateUserProfile);
   // @ts-ignore
   yield takeLatest(userActions.ADD_USER, addNewUser);
+  // @ts-ignore
+  yield takeLatest(userActions.IMPORT_USER, importMultiUsers);
+  // @ts-ignore
+  yield takeLatest(userActions.DELETE_USER, removeUser);
 }
 
 export default UserSaga;

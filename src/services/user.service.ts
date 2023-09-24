@@ -1,9 +1,10 @@
 import axios from "axios";
 import { STUDENT_SERVER_URL } from "../constants/constant";
-import { setHeaderAxios } from "./auth.service";
+import { setHeaderAxios, setMultipartHeader } from "./auth.service";
 import { IparamsFetchList } from "../interfaces/common.interface";
 import {
   IpayloadAddUser,
+  IpayloadImportUser,
   IpayloadUpdateProfile,
   IpayloadUpdateUser,
 } from "../interfaces/user.interface";
@@ -52,5 +53,23 @@ export const addUser = async (payload: IpayloadAddUser) => {
   const res = await axios.post(`${STUDENT_SERVER_URL}/api/users`, payload, {
     headers: setHeaderAxios(),
   });
+  return res;
+};
+
+export const deleteUser = async (id: string) => {
+  const res = await axios.delete(`${STUDENT_SERVER_URL}/api/users/${id}`, {
+    headers: setHeaderAxios(),
+  });
+  return res;
+};
+
+export const importUser = async (payload: IpayloadImportUser) => {
+  const res = await axios.post(
+    `${STUDENT_SERVER_URL}/api/users/import-user`,
+    payload,
+    {
+      headers: setMultipartHeader(),
+    }
+  );
   return res;
 };
