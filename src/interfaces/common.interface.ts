@@ -40,7 +40,6 @@ export interface IstateRedux {
   UserReducer: IuserReducer;
 }
 
-
 export interface IpropsNavToggle {
   expand: boolean;
   setExpand: Function;
@@ -60,3 +59,5 @@ export interface IpropModalCommon {
   onCloseModal?: Function | any;
   type?: string;
 }
+
+export type IeventOnchangeFile = any;
