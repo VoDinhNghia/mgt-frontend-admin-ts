@@ -59,6 +59,8 @@ export const modalTypes = {
   UPDATE_PROFILE: "UPDATE_PROFILE",
   DELETE: "DELETE",
   VIEW: "VIEW",
+  IMPORT: "IMPORT",
+  FILTER: "FILTER",
 };
 
 export const userGenderOptions = [
@@ -109,3 +111,10 @@ export const userStatusOptions = [
     label: "INACTIVE",
   },
 ];
+
+export const permissonTypes = {
+  ONLY_VIEW: "ONLY_VIEW",
+  EDIT: "EDIT",
+  DELETE: "DELETE",
+  ADD: "ADD",
+};

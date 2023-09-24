@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
+import "./index.css";
 import ForbidenPage from "../commons/forbiden";
-import { validateAccessModule } from "../../utils/permission-handle.util";
-import { modalTypes, moduleNames } from "../../constants/constant";
+import {
+  validateAccessModule,
+  validateAction,
+} from "../../utils/permission-handle.util";
+import {
+  modalTypes,
+  moduleNames,
+  permissonTypes,
+} from "../../constants/constant";
 import MenuPage from "../commons/menu";
 import FooterPage from "../commons/footer";
 import { Container } from "rsuite";
@@ -26,16 +34,25 @@ import {
   TableRow,
   TablePagination,
 } from "@mui/material";
-import { Button } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import AddAndSearchTable from "../commons/add-search-table";
 import ModalUserMgtPage from "./modals";
+import { TbDatabaseImport } from "react-icons/tb";
+import { AiOutlineFilter } from "react-icons/ai";
+import FilterAndImportModal from "./filter-import";
 
 const UserManagementPage = (props: IpropUserMgt) => {
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
   const [isShowModalAdd, setShowModalAdd] = useState(false);
+  const [isShowModalImport, setShowModalImport] = useState(false);
+  const [isShowModalFilter, setShowModalFilter] = useState(false);
   const isAccess = validateAccessModule(moduleNames.USER_MANAGEMENT);
+  const isPermissionAdd = validateAction(
+    permissonTypes.ADD,
+    moduleNames.USER_MANAGEMENT
+  );
   const { dispatch, listUsers = [], totalUser = 0 } = props;
   const columns = headersUserTable();
   const rows = handleDataUserTable(listUsers);
@@ -68,9 +85,9 @@ const UserManagementPage = (props: IpropUserMgt) => {
       type: userActions.GET_LIST_USER,
       payload: {
         searchKey,
-      }
+      },
     });
-  }
+  };
 
   useEffect(() => {
     fetchUsers(page + 1, limit);
@@ -83,10 +100,29 @@ const UserManagementPage = (props: IpropUserMgt) => {
           <Container>
             <MenuPage />
             <Container className="p-3">
+              <Card className="mb-2 border-0">
+                <Card.Body>
+                  <span className="MenuMgtUser">
+                    <Button
+                      variant="outline-primary"
+                      onClick={() => setShowModalImport(true)}
+                    >
+                      <TbDatabaseImport /> Import users
+                    </Button>{" "}
+                    <Button
+                      variant="outline-primary"
+                      onClick={() => setShowModalFilter(true)}
+                    >
+                      <AiOutlineFilter /> Filter
+                    </Button>
+                  </span>
+                </Card.Body>
+              </Card>
               <AddAndSearchTable
                 title="Add new user"
                 onSearch={(searchKey: string) => onSearch(searchKey)}
                 onShowAdd={() => setShowModalAdd(true)}
+                isDisableBtnAdd={!isPermissionAdd}
               />
               <TableContainer>
                 <Table stickyHeader aria-label="user table">
@@ -112,7 +148,9 @@ const UserManagementPage = (props: IpropUserMgt) => {
                           key={row?.code}
                         >
                           <TableCell>{row.index}</TableCell>
-                          <TableCell className="text-primary">{row.name}</TableCell>
+                          <TableCell className="text-primary">
+                            {row.name}
+                          </TableCell>
                           <TableCell>{row.email}</TableCell>
                           <TableCell>{row.code}</TableCell>
                           <TableCell>{row.status}</TableCell>
@@ -149,6 +187,16 @@ const UserManagementPage = (props: IpropUserMgt) => {
             isShowModal={isShowModalAdd}
             onCloseModal={() => setShowModalAdd(false)}
             fetchUsers={() => fetchUsers(page + 1, limit)}
+          />
+          <FilterAndImportModal
+            type={modalTypes.IMPORT}
+            isShowModal={isShowModalImport}
+            onCloseModal={() => setShowModalImport(false)}
+          />
+          <FilterAndImportModal
+            type={modalTypes.FILTER}
+            isShowModal={isShowModalFilter}
+            onCloseModal={() => setShowModalFilter(false)}
           />
         </div>
       ) : (

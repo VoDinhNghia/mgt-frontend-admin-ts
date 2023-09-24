@@ -13,7 +13,7 @@ export const findModuleName = (moduleName: string) => {
   const existPermission = permissionList?.find(
     (per: Ipermissions) => per?.moduleName === moduleName
   );
-  return existPermission;
+  return existPermission || [];
 };
 
 export const validateAccessModule = (moduleName: string) => {

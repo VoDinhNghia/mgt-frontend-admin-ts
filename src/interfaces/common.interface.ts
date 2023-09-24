@@ -51,4 +51,12 @@ export interface IpropAddAndSearchTable {
   title?: string;
   onSearch?: Function | any;
   onShowAdd?: Function | any;
+  isDisableBtnAdd?: boolean | any;
+}
+
+export interface IpropModalCommon {
+  dispatch?: any;
+  isShowModal?: boolean | any;
+  onCloseModal?: Function | any;
+  type?: string;
 }
