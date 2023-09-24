@@ -17,13 +17,15 @@ import {
   modalTypes,
   userGenderOptions,
   userRoleOptions,
+  userStatusOptions,
 } from "../../../constants/constant";
 import { connect } from "react-redux";
 import { userActions } from "../../../store/actions";
 import { IeventOnchangeInput } from "../../../interfaces/common.interface";
 
 const ModalUserMgtPage = (props: IpropUserMgtModal) => {
-  const { isShowModal, onCloseModal, type, dispatch, fetchUsers } = props;
+  const { isShowModal, onCloseModal, type, dispatch, fetchUsers, userInfo } =
+    props;
 
   const [email, setEmail] = useState("");
   const [passWord, setPassword] = useState("");
@@ -75,6 +77,8 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
     >
       <DialogTitle>
         {type === modalTypes.ADD ? "Add new user" : null}
+        {type === modalTypes.UPDATE ? "Update user info" : null}
+        {type === modalTypes.DELETE ? "Delete user" : null}
       </DialogTitle>
       <DialogContent>
         {type === modalTypes.ADD ? (
@@ -161,8 +165,67 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
             </Select>
           </>
         ) : null}
+        {type === modalTypes.UPDATE ? (
+          <>
+            <p>Email: </p>
+            <TextField
+              variant="outlined"
+              size="small"
+              fullWidth={true}
+              defaultValue={userInfo?.email}
+            />
+            <p className="mt-2">Role: </p>
+            <Select
+              variant="outlined"
+              size="small"
+              fullWidth={true}
+              defaultValue={userInfo?.role}
+            >
+              {userRoleOptions.map((role, index) => {
+                return (
+                  <MenuItem value={role.value} key={`${index}-${role.value}`}>
+                    {role.value}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+            <p className="mt-2">Status: </p>
+            <Select
+              variant="outlined"
+              size="small"
+              fullWidth={true}
+              defaultValue={userInfo.status}
+            >
+              {userStatusOptions.map((status, index) => {
+                return (
+                  <MenuItem
+                    key={`${index}-${status.value}`}
+                    value={status.value}
+                  >
+                    {status.value}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </>
+        ) : null}
+        {type === modalTypes.DELETE ? (
+          <span>
+            Are you want to delete user <b>{userInfo?.name}</b>?
+          </span>
+        ) : null}
       </DialogContent>
       <DialogActions>
+        {type === modalTypes.UPDATE ? (
+          <Button variant="outlined" size="small">
+            Save
+          </Button>
+        ) : null}
+        {type === modalTypes.DELETE ? (
+          <Button variant="outlined" size="small" color="error">
+            Yes
+          </Button>
+        ) : null}
         {type === modalTypes.ADD ? (
           <Button variant="outlined" size="small" onClick={() => addNewUser()}>
             Add
