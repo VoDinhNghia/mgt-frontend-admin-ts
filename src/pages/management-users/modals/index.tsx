@@ -74,7 +74,7 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
       maxWidth="xs"
     >
       <DialogTitle>
-        {type === modalTypes.ADD ? <h4>Add new user</h4> : null}
+        {type === modalTypes.ADD ? "Add new user" : null}
       </DialogTitle>
       <DialogContent>
         {type === modalTypes.ADD ? (
