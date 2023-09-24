@@ -73,6 +73,15 @@ const UserManagementPage = (props: IpropUserMgt) => {
     });
   };
 
+  const onSearch = (searchKey: string) => {
+    dispatch({
+      type: userActions.GET_LIST_USER,
+      payload: {
+        searchKey,
+      }
+    });
+  }
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -86,6 +95,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
             <Container className="p-3">
               <AddAndSearchTable
                 title="Add new user"
+                onSearch={(searchKey: string) => onSearch(searchKey)}
               />
               <TableContainer>
                 <Table stickyHeader aria-label="user table">
