@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IpayloadUpdateUser {
   email?: string;
@@ -46,4 +47,12 @@ export interface IrowUserTable {
   role?: string;
   status?: string;
   award?: any;
+}
+
+export interface IpropUserMgtModal {
+  dispatch?: any;
+  isShowModal?: boolean | any;
+  onCloseModal?: Function | any;
+  userInfo?: any;
+  type?: string;
 }

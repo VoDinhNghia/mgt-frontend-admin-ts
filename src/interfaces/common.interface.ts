@@ -50,5 +50,5 @@ export interface IpropAddAndSearchTable {
   dispatch?: any;
   title?: string;
   onSearch?: Function | any;
-  onShowAdd?: Function;
+  onShowAdd?: Function | any;
 }
