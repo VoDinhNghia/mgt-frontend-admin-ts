@@ -23,12 +23,11 @@ import {
 import { userActions } from "../../../store/actions";
 
 const FilterAndImportModal = (props: IpropImportFilterUser) => {
-  const { type, isShowModal, onCloseModal, dispatch } = props;
+  const { type, isShowModal, onCloseModal, dispatch, fetchUsers } = props;
   const [file, setFile] = useState("");
   const [role, setRole] = useState("");
   const [status, setStatus] = useState("");
 
-  console.log("file", file);
   const onFilter = () => {
     dispatch({
       type: userActions.GET_LIST_USER,
@@ -38,6 +37,19 @@ const FilterAndImportModal = (props: IpropImportFilterUser) => {
       },
     });
     closeModal();
+  };
+
+  const onImport = () => {
+    const formData = new FormData();
+    formData.append("file", file);
+    dispatch({
+      type: userActions.IMPORT_USER,
+      payload: formData,
+    });
+    setTimeout(() => {
+      fetchUsers();
+      onCloseModal();
+    }, 100);
   };
 
   const closeModal = () => {
@@ -107,7 +119,11 @@ const FilterAndImportModal = (props: IpropImportFilterUser) => {
       </DialogContent>
       <DialogActions>
         {type === modalTypes.IMPORT ? (
-          <Button variant="outlined" size="small">
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => onImport()}
+          >
             Import
           </Button>
         ) : null}

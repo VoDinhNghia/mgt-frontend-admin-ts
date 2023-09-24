@@ -67,4 +67,10 @@ export interface IpayloadAddUser {
   email?: string;
 }
 
-export type IpropImportFilterUser = IpropModalCommon;
+export interface IpropImportFilterUser extends IpropModalCommon {
+  fetchUsers?: Function | any;
+}
+
+export interface IpayloadImportUser {
+  file?: any;
+}
