@@ -1,11 +1,14 @@
 import React from "react";
 import { Card, Col, Form, Row } from "react-bootstrap";
 import { Button } from "@mui/material";
-import { IpropAddAndSearchTable } from "../../../interfaces/common.interface";
+import {
+  IeventOnchangeInput,
+  IpropAddAndSearchTable,
+} from "../../../interfaces/common.interface";
 import { BsPlusCircle } from "react-icons/bs";
 
 const AddAndSearchTable = (props: IpropAddAndSearchTable) => {
-  const { title } = props;
+  const { title, onSearch } = props;
 
   return (
     <div className="mb-3 fs-6">
@@ -27,7 +30,11 @@ const AddAndSearchTable = (props: IpropAddAndSearchTable) => {
         <Col xl={9}>
           <Card>
             <Card.Body>
-              <Form.Control type="text" placeholder="Search by name" />
+              <Form.Control
+                type="text"
+                placeholder="Search by name"
+                onChange={(e: IeventOnchangeInput) => onSearch(e.target.value)}
+              />
             </Card.Body>
           </Card>
         </Col>

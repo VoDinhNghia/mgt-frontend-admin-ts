@@ -49,4 +49,6 @@ export interface IpropsNavToggle {
 export interface IpropAddAndSearchTable {
   dispatch?: any;
   title?: string;
+  onSearch?: Function | any;
+  onShowAdd?: Function;
 }
