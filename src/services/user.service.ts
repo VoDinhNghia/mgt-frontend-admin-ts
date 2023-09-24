@@ -3,6 +3,7 @@ import { STUDENT_SERVER_URL } from "../constants/constant";
 import { setHeaderAxios } from "./auth.service";
 import { IparamsFetchList } from "../interfaces/common.interface";
 import {
+  IpayloadAddUser,
   IpayloadUpdateProfile,
   IpayloadUpdateUser,
 } from "../interfaces/user.interface";
@@ -44,5 +45,12 @@ export const updateProfile = async (
       headers: setHeaderAxios(),
     }
   );
+  return res;
+};
+
+export const addUser = async (payload: IpayloadAddUser) => {
+  const res = await axios.post(`${STUDENT_SERVER_URL}/api/users`, payload, {
+    headers: setHeaderAxios(),
+  });
   return res;
 };

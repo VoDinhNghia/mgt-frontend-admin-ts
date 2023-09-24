@@ -55,4 +55,16 @@ export interface IpropUserMgtModal {
   onCloseModal?: Function | any;
   userInfo?: any;
   type?: string;
+  fetchUsers?: Function | any;
+}
+
+export interface IpayloadAddUser {
+  firstName?: string;
+  lastName?: string;
+  middleName?: string;
+  gender?: string;
+  mobile?: string;
+  passWord?: string;
+  role?: string;
+  email?: string;
 }
