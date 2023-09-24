@@ -60,3 +60,52 @@ export const modalTypes = {
   DELETE: "DELETE",
   VIEW: "VIEW",
 };
+
+export const userGenderOptions = [
+  {
+    value: "Male",
+    label: "Male",
+  },
+  {
+    value: "Female",
+    label: "Female",
+  },
+];
+
+export const userRoleOptions = [
+  {
+    value: "ADMIN",
+    label: "ADMIN",
+  },
+  {
+    value: "STUDENT",
+    label: "STUDENT",
+  },
+  {
+    value: "LECTURER",
+    label: "LECTURER",
+  },
+  {
+    value: "LIBRARIAN",
+    label: "LIBRARIAN",
+  },
+  {
+    value: "ACCOUNTANT",
+    label: "ACCOUNTANT",
+  },
+  {
+    value: "STAFF",
+    label: "STAFF",
+  },
+];
+
+export const userStatusOptions = [
+  {
+    value: "ACTIVE",
+    label: "ACTIVE",
+  },
+  {
+    value: "INACTIVE",
+    label: "INACTIVE",
+  },
+];

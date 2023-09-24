@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ForbidenPage from "../commons/forbiden";
 import { validateAccessModule } from "../../utils/permission-handle.util";
-import { moduleNames } from "../../constants/constant";
+import { modalTypes, moduleNames } from "../../constants/constant";
 import MenuPage from "../commons/menu";
 import FooterPage from "../commons/footer";
 import { Container } from "rsuite";
@@ -29,20 +29,22 @@ import {
 import { Button } from "react-bootstrap";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import AddAndSearchTable from "../commons/add-search-table";
+import ModalUserMgtPage from "./modals";
 
 const UserManagementPage = (props: IpropUserMgt) => {
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
+  const [isShowModalAdd, setShowModalAdd] = useState(false);
   const isAccess = validateAccessModule(moduleNames.USER_MANAGEMENT);
   const { dispatch, listUsers = [], totalUser = 0 } = props;
   const columns = headersUserTable();
   const rows = handleDataUserTable(listUsers);
 
-  const fetchUsers = () => {
+  const fetchUsers = (page: number, limit: number) => {
     dispatch({
       type: userActions.GET_LIST_USER,
       payload: {
-        page: page + 1,
+        page,
         limit,
       },
     });
@@ -50,13 +52,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
-    dispatch({
-      type: userActions.GET_LIST_USER,
-      payload: {
-        limit,
-        page: newPage + 1,
-      },
-    });
+    fetchUsers(newPage + 1, limit);
   };
 
   const handleChangeRowsPerPage = (
@@ -64,13 +60,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
   ) => {
     const newLimit = parseInt(event.target.value);
     setLimit(newLimit);
-    dispatch({
-      type: userActions.GET_LIST_USER,
-      payload: {
-        limit: newLimit,
-        page: 1,
-      },
-    });
+    fetchUsers(1, newLimit);
   };
 
   const onSearch = (searchKey: string) => {
@@ -83,7 +73,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
   }
 
   useEffect(() => {
-    fetchUsers();
+    fetchUsers(page + 1, limit);
   }, []);
 
   return (
@@ -96,6 +86,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
               <AddAndSearchTable
                 title="Add new user"
                 onSearch={(searchKey: string) => onSearch(searchKey)}
+                onShowAdd={() => setShowModalAdd(true)}
               />
               <TableContainer>
                 <Table stickyHeader aria-label="user table">
@@ -153,6 +144,11 @@ const UserManagementPage = (props: IpropUserMgt) => {
             </Container>
           </Container>
           <FooterPage />
+          <ModalUserMgtPage
+            type={modalTypes.ADD}
+            isShowModal={isShowModalAdd}
+            onCloseModal={() => setShowModalAdd(false)}
+          />
         </div>
       ) : (
         <ForbidenPage />

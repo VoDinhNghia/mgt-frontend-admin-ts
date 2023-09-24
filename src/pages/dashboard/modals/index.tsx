@@ -13,7 +13,7 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import { modalTypes } from "../../../constants/constant";
+import { modalTypes, userGenderOptions } from "../../../constants/constant";
 import { connect } from "react-redux";
 import { userActions } from "../../../store/actions";
 import { IeventOnchangeInput } from "../../../interfaces/common.interface";
@@ -189,8 +189,16 @@ const DashboardModalPage = (props: IpropModal) => {
               fullWidth={true}
               onChange={(e: IeventOnchangeInput) => setGender(e.target.value)}
             >
-              <MenuItem value="Male">Male</MenuItem>
-              <MenuItem value="Female">Female</MenuItem>
+              {userGenderOptions.map((gender, index) => {
+                return (
+                  <MenuItem
+                    value={gender?.value}
+                    key={`${index}-${gender.value}`}
+                  >
+                    {gender.value}
+                  </MenuItem>
+                );
+              })}
             </Select>
             <p className="mt-2 mb-1">Mobile: </p>
             <TextField
