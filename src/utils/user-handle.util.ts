@@ -10,37 +10,37 @@ export const headersUserTable = () => {
     },
     {
       id: "name",
-      label: "name",
+      label: "Name",
       minWidth: 170,
     },
     {
       id: "email",
-      label: "email",
+      label: "Email",
       minWidth: 170,
     },
     {
       id: "code",
-      label: "code",
+      label: "Code",
       minWidth: 170,
     },
     {
       id: "status",
-      label: "status",
+      label: "Status",
       minWidth: 170,
     },
     {
       id: "role",
-      label: "role",
+      label: "Role",
       minWidth: 170,
     },
     {
       id: "award",
-      label: "award",
+      label: "Award",
       minWidth: 170,
     },
     {
       id: "actions",
-      label: "actions",
+      label: "Actions",
       minWidth: 170,
     }
   ];

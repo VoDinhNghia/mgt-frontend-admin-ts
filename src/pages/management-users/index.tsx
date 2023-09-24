@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ForbidenPage from "../commons/forbiden";
 import { validateAccessModule } from "../../utils/permission-handle.util";
 import { moduleNames } from "../../constants/constant";
@@ -24,13 +24,16 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TablePagination,
 } from "@mui/material";
 import { Button } from "react-bootstrap";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
 
 const UserManagementPage = (props: IpropUserMgt) => {
+  const [limit, setLimit] = useState(5);
+  const [page, setPage] = useState(0);
   const isAccess = validateAccessModule(moduleNames.USER_MANAGEMENT);
-  const { dispatch, listUsers = [] } = props;
+  const { dispatch, listUsers = [], totalUser = 0 } = props;
   const columns = headersUserTable();
   const rows = handleDataUserTable(listUsers);
 
@@ -38,8 +41,33 @@ const UserManagementPage = (props: IpropUserMgt) => {
     dispatch({
       type: userActions.GET_LIST_USER,
       payload: {
+        page: page + 1,
+        limit,
+      },
+    });
+  };
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+    dispatch({
+      type: userActions.GET_LIST_USER,
+      payload: {
+        limit,
+        page: newPage + 1,
+      },
+    });
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newLimit = parseInt(event.target.value);
+    setLimit(newLimit);
+    dispatch({
+      type: userActions.GET_LIST_USER,
+      payload: {
+        limit: newLimit,
         page: 1,
-        limit: 10,
       },
     });
   };
@@ -58,9 +86,14 @@ const UserManagementPage = (props: IpropUserMgt) => {
               <TableContainer>
                 <Table stickyHeader aria-label="user table">
                   <TableHead>
-                    <TableRow>
+                    <TableRow className="fs-6">
                       {columns?.map((column: IcolumnUserTable) => (
-                        <TableCell key={column.id}>{column.label}</TableCell>
+                        <TableCell
+                          key={column.id}
+                          className="bg-primary text-white"
+                        >
+                          {column.label}
+                        </TableCell>
                       ))}
                     </TableRow>
                   </TableHead>
@@ -94,6 +127,15 @@ const UserManagementPage = (props: IpropUserMgt) => {
                   </TableBody>
                 </Table>
               </TableContainer>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={totalUser}
+                rowsPerPage={limit}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
             </Container>
           </Container>
           <FooterPage />
