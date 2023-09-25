@@ -138,12 +138,14 @@ const PermissionMgtPage = (props: IpropPermission) => {
                 isShowModal={isShowModalAdd}
                 onCloseModal={() => setShowModalAdd(false)}
                 adminInfo={adminInfo}
+                fetchAdmins={() => fetchAdmins()}
               />
               <ModalPermissionMgtPage
                 type={modalTypes.DELETE}
                 isShowModal={isShowModalDelete}
                 onCloseModal={() => setShowModalDelete(false)}
                 adminInfo={adminInfo}
+                fetchAdmins={() => fetchAdmins()}
               />
             </Container>
           </Container>

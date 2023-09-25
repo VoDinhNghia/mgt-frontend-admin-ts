@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { IpropModalCommon } from "./common.interface";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -23,4 +24,11 @@ export interface IpropPermission {
 
 export interface IpropModalPermission extends IpropModalCommon {
   adminInfo?: any;
+  fetchAdmins?: Function | any;
+}
+
+export interface IpayloadAddPermission {
+  user?: string;
+  moduleName?: string;
+  permission?: string[];
 }
