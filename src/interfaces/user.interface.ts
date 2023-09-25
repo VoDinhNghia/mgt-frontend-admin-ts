@@ -36,7 +36,7 @@ export interface IpropUserMgt {
 }
 
 export interface IcolumnUserTable {
-  id?: number | any;
+  id?: string | any;
   label?: string;
   minWidth?: number;
 }

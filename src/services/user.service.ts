@@ -1,5 +1,5 @@
 import axios from "axios";
-import { STUDENT_SERVER_URL } from "../constants/constant";
+import { STUDENT_SERVER_URL, userRoles } from "../constants/constant";
 import { setHeaderAxios, setMultipartHeader } from "./auth.service";
 import { IparamsFetchList } from "../interfaces/common.interface";
 import {
@@ -73,3 +73,13 @@ export const importUser = async (payload: IpayloadImportUser) => {
   );
   return res;
 };
+
+export const getListAdmin = async () => {
+  const res = await axios.get(`${STUDENT_SERVER_URL}/api/users`, {
+    params: {
+      role: userRoles.ADMIN,
+    },
+    headers: setHeaderAxios(),
+  });
+  return res;
+}

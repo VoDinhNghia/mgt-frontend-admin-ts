@@ -5,6 +5,8 @@ const initState = {
   listUsers: [],
   totalUser: 0,
   userInfo: {},
+  listAdmins: [],
+  totalAdmin: 0,
 };
 
 const UserReducer = (state = initState, action: IactionRedux) => {
@@ -27,7 +29,13 @@ const UserReducer = (state = initState, action: IactionRedux) => {
         userInfo: action?.payload,
         loading: false,
       };
-
+    case userActions.GET_LIST_ADMIN_SUCCESS:
+      return {
+        ...state,
+        listAdmins: action?.payload?.results,
+        totalAdmin: action?.payload?.total,
+        loading: false,
+      };
     default:
       return state;
   }

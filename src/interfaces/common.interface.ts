@@ -35,6 +35,7 @@ export interface IuserReducer {
   totalUser?: number;
   userInfo?: any;
   dispatch?: any;
+  listAdmins?: any;
 }
 export interface IstateRedux {
   UserReducer: IuserReducer;

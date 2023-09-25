@@ -1,5 +1,5 @@
 import { userRoles } from "../constants/constant";
-import { Ipermissions } from "../interfaces/login.interface";
+import { Ipermissions, IuserInfo } from "../interfaces/login.interface";
 import { getCurrentUser, getPermission } from "../services/auth.service";
 
 export const validateRoleSa = () => {
@@ -31,3 +31,53 @@ export const validateAction = (action: string, moduleName: string) => {
   const isPermisson = isRoleSa || isPermissonAction ? true : false;
   return isPermisson;
 };
+
+export const headerPermisionTable = () => {
+  const headers = [
+    {
+      id: "index",
+      label: "#",
+      minWidth: 170,
+    },
+    {
+      id: "name",
+      label: "Name",
+      minWidth: 170,
+    },
+    {
+      id: "code",
+      label: "Code",
+      minWidth: 170,
+    },
+    {
+      id: "moduleName",
+      label: "Module Name",
+      minWidth: 170,
+    },
+    {
+      id: "actions",
+      label: "Actions",
+      minWidth: 170,
+    },
+  ];
+  return headers;
+};
+
+export const handleDataPermissionTable = (listAdmin = []) => {
+  const data = listAdmin?.map((admin: IuserInfo, index: number) => {
+    const { profile } = admin;
+    return {
+      _id: admin?._id,
+      index: index + 1,
+      name: `${profile?.lastName} ${profile?.middleName} ${profile?.firstName}`,
+      code: profile?.code,
+      moduleNames: admin?.permissions?.map((per: Ipermissions) => {
+        return per?.moduleName;
+      }),
+      profile,
+    };
+  });
+  return data;
+};
+
+export const colors = ["primary", "success", "warning", "danger", "info"];

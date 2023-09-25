@@ -11,6 +11,7 @@ import {
   addUser,
   deleteUser,
   importUser,
+  getListAdmin,
 } from "../../services/user.service";
 import { userActions } from "../actions";
 import { IparamSaga, IresponseAxios } from "../../interfaces/common.interface";
@@ -48,11 +49,7 @@ function* updateUserInfo(params: IparamSaga): Generator<any> {
   try {
     const { payload, id } = params;
     const res: IresponseAxios | any = yield call(updateUser, id, payload);
-    NotificationManager.success(
-      res?.data?.message,
-      "Update user",
-      4000
-    );
+    NotificationManager.success(res?.data?.message, "Update user", 4000);
   } catch (error: any) {
     NotificationManager.error(
       error?.response?.data?.message,
@@ -96,7 +93,11 @@ function* importMultiUsers(params: IparamSaga): Generator<any> {
     const res: IresponseAxios | any = yield call(importUser, payload);
     NotificationManager.success(res?.data?.message, "Import User", 4000);
   } catch (error: any) {
-    NotificationManager.error(error?.response?.data?.message, "Import user", 4000);
+    NotificationManager.error(
+      error?.response?.data?.message,
+      "Import user",
+      4000
+    );
   }
 }
 
@@ -106,14 +107,33 @@ function* removeUser(params: IparamSaga): Generator<any> {
     const res: IresponseAxios | any = yield call(deleteUser, id);
     NotificationManager.success(res?.data?.message, "Delete user", 4000);
   } catch (error: any) {
-    NotificationManager.error(error?.response?.data?.message, "Delete user", 4000);
+    NotificationManager.error(
+      error?.response?.data?.message,
+      "Delete user",
+      4000
+    );
+  }
+}
+
+function* fetchAdmins(): Generator<any> {
+  try {
+    const res: IresponseAxios | any = yield call(getListAdmin);
+    yield put({
+      type: userActions.GET_LIST_ADMIN_SUCCESS,
+      payload: res?.data?.data,
+    });
+  } catch (error: any) {
+    NotificationManager.error(
+      error?.response?.data?.message,
+      "Get admin list",
+      4000
+    );
   }
 }
 
 function* UserSaga() {
   // @ts-ignore
   yield takeLatest(userActions.GET_LIST_USER, fetchListUsers);
-  yield takeLatest(userActions.GET_ME, fetchMe);
   // @ts-ignore
   yield takeLatest(userActions.UPDATE_USER_INFO, updateUserInfo);
   // @ts-ignore
@@ -124,6 +144,8 @@ function* UserSaga() {
   yield takeLatest(userActions.IMPORT_USER, importMultiUsers);
   // @ts-ignore
   yield takeLatest(userActions.DELETE_USER, removeUser);
+  yield takeLatest(userActions.GET_ME, fetchMe);
+  yield takeLatest(userActions.GET_LIST_ADMIN, fetchAdmins);
 }
 
 export default UserSaga;
