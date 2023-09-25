@@ -169,7 +169,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
                           <TableCell>{row.code}</TableCell>
                           <TableCell>{row.status}</TableCell>
                           <TableCell>{row.role}</TableCell>
-                          <TableCell>{row.award}</TableCell>
+                          <TableCell><Button variant="outline-primary" size="sm">Detail</Button></TableCell>
                           <TableCell>
                             <Button variant="outline-primary" size="sm" onClick={() => onShowUpdate(row)}>
                               <BsPencilSquare />
