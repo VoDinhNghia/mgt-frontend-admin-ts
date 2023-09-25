@@ -6,6 +6,8 @@ export interface IeventOnchangeInput {
   };
 }
 
+export type IeventOnchangeSelect = any;
+
 export interface IparamsFetchList {
   searchKey?: string;
   page?: number;

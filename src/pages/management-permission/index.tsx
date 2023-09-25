@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ForbidenPage from "../commons/forbiden";
 import {
   handleDataPermissionTable,
@@ -6,7 +6,7 @@ import {
   validateAccessModule,
   colors,
 } from "../../utils/permission-handle.util";
-import { moduleNames } from "../../constants/constant";
+import { modalTypes, moduleNames } from "../../constants/constant";
 import { Container } from "rsuite";
 import MenuPage from "../commons/menu";
 import FooterPage from "../commons/footer";
@@ -27,18 +27,32 @@ import {
 } from "@mui/material";
 import { Badge, Button } from "react-bootstrap";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
+import ModalPermissionMgtPage from "./modals";
 
 const PermissionMgtPage = (props: IpropPermission) => {
   const { listAdmins = [], dispatch } = props;
   const isAccess = validateAccessModule(moduleNames.PERMISSION_MANAGEMENT);
   const columns = headerPermisionTable();
   const rows = handleDataPermissionTable(listAdmins);
+  const [isShowModalAdd, setShowModalAdd] = useState(false);
+  const [adminInfo, setAdminInfo] = useState({});
+  const [isShowModalDelete, setShowModalDelete] = useState(false);
 
   const fetchAdmins = () => {
     dispatch({
       type: userActions.GET_LIST_ADMIN,
     });
   };
+
+  const onClickAddPermission = (adminInfo = {}) => {
+    setShowModalAdd(true);
+    setAdminInfo(adminInfo);
+  };
+
+  const onClickDeletePermission = (adminInfo = {}) => {
+    setShowModalDelete(true);
+    setAdminInfo(adminInfo);
+  }
 
   useEffect(() => {
     fetchAdmins();
@@ -102,10 +116,14 @@ const PermissionMgtPage = (props: IpropPermission) => {
                             )}
                           </TableCell>
                           <TableCell>
-                            <Button variant="outline-primary" size="sm">
+                            <Button
+                              variant="outline-primary"
+                              size="sm"
+                              onClick={() => onClickAddPermission(row)}
+                            >
                               <BsPencilSquare />
                             </Button>{" "}
-                            <Button variant="outline-danger" size="sm">
+                            <Button variant="outline-danger" size="sm" onClick={() => onClickDeletePermission(row)}>
                               <BsTrash />
                             </Button>
                           </TableCell>
@@ -115,6 +133,18 @@ const PermissionMgtPage = (props: IpropPermission) => {
                   </TableBody>
                 </Table>
               </TableContainer>
+              <ModalPermissionMgtPage
+                type={modalTypes.ADD}
+                isShowModal={isShowModalAdd}
+                onCloseModal={() => setShowModalAdd(false)}
+                adminInfo={adminInfo}
+              />
+              <ModalPermissionMgtPage
+                type={modalTypes.DELETE}
+                isShowModal={isShowModalDelete}
+                onCloseModal={() => setShowModalDelete(false)}
+                adminInfo={adminInfo}
+              />
             </Container>
           </Container>
           <FooterPage />

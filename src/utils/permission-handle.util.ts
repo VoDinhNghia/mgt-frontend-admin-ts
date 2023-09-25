@@ -71,6 +71,7 @@ export const handleDataPermissionTable = (listAdmin = []) => {
       index: index + 1,
       name: `${profile?.lastName} ${profile?.middleName} ${profile?.firstName}`,
       code: profile?.code,
+      permissions: admin?.permissions,
       moduleNames: admin?.permissions?.map((per: Ipermissions) => {
         return per?.moduleName;
       }),

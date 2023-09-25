@@ -119,3 +119,22 @@ export const permissonTypes = {
   DELETE: "DELETE",
   ADD: "ADD",
 };
+
+export const permissionOptions = [
+  {
+    value: "ONLY_VIEW",
+    label: "ONLY_VIEW",
+  },
+  {
+    value: "EDIT",
+    label: "EDIT",
+  },
+  {
+    value: "DELETE",
+    label: "DELETE",
+  },
+  {
+    value: "ADD",
+    label: "ADD",
+  },
+];
