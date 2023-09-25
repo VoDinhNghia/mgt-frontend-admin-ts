@@ -39,8 +39,13 @@ export interface IuserReducer {
   dispatch?: any;
   listAdmins?: any;
 }
+
 export interface IstateRedux {
   UserReducer: IuserReducer;
+  PermissionReducer: {
+    listPermissions: any;
+    totalPermission: any;
+  };
 }
 
 export interface IpropsNavToggle {
