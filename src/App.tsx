@@ -13,6 +13,7 @@ import ProtectedRoutes from "./utils/protected-route.util";
 import NotfoundPage from "./pages/notfound";
 import UserManagementPage from "./pages/management-users";
 import PermissionMgtPage from "./pages/management-permission";
+import RoomMgtPage from "./pages/management-rooms";
 
 const App = () => {
   return (
@@ -42,6 +43,14 @@ const App = () => {
             element={
               <ProtectedRoutes>
                 <PermissionMgtPage />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path={routes.roomMgt}
+            element={
+              <ProtectedRoutes>
+                <RoomMgtPage />
               </ProtectedRoutes>
             }
           />
