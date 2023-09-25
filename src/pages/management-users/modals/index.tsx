@@ -35,6 +35,7 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
   const [mobile, setMobile] = useState("");
   const [gender, setGender] = useState("");
   const [role, setRole] = useState("");
+  const [status, setStatus] = useState("");
 
   const addNewUser = () => {
     if (!email || !passWord || !lastName || !firstName || !role) {
@@ -59,6 +60,27 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
       });
       fetchAndCloseModal();
     }
+  };
+
+  const updateUser = () => {
+    dispatch({
+      type: userActions.UPDATE_USER_INFO,
+      id: userInfo?._id,
+      payload: {
+        email: email || userInfo?.email,
+        status: status || userInfo?.status,
+        role: role || userInfo?.role,
+      },
+    });
+    fetchAndCloseModal();
+  };
+
+  const deleteUser = () => {
+    dispatch({
+      type: userActions.DELETE_USER,
+      id: userInfo?._id,
+    });
+    fetchAndCloseModal();
   };
 
   const fetchAndCloseModal = () => {
@@ -173,6 +195,7 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
               size="small"
               fullWidth={true}
               defaultValue={userInfo?.email}
+              onChange={(e: IeventOnchangeInput) => setEmail(e.target.value)}
             />
             <p className="mt-2">Role: </p>
             <Select
@@ -180,6 +203,7 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
               size="small"
               fullWidth={true}
               defaultValue={userInfo?.role}
+              onChange={(e: IeventOnchangeInput) => setRole(e.target.value)}
             >
               {userRoleOptions.map((role, index) => {
                 return (
@@ -195,6 +219,7 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
               size="small"
               fullWidth={true}
               defaultValue={userInfo.status}
+              onChange={(e: IeventOnchangeInput) => setStatus(e.target.value)}
             >
               {userStatusOptions.map((status, index) => {
                 return (
@@ -211,18 +236,27 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
         ) : null}
         {type === modalTypes.DELETE ? (
           <span>
-            Are you want to delete user <b>{userInfo?.name}</b>?
+            Are you want to delete user{" "}
+            <b>
+              {userInfo?.name}-{userInfo?.code}
+            </b>
+            ?
           </span>
         ) : null}
       </DialogContent>
       <DialogActions>
         {type === modalTypes.UPDATE ? (
-          <Button variant="outlined" size="small">
+          <Button variant="outlined" size="small" onClick={() => updateUser()}>
             Save
           </Button>
         ) : null}
         {type === modalTypes.DELETE ? (
-          <Button variant="outlined" size="small" color="error">
+          <Button
+            variant="outlined"
+            size="small"
+            color="error"
+            onClick={() => deleteUser()}
+          >
             Yes
           </Button>
         ) : null}

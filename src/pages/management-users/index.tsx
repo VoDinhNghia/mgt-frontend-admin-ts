@@ -119,6 +119,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
                     <Button
                       variant="outline-primary"
                       onClick={() => setShowModalImport(true)}
+                      disabled={!isPermissionAdd}
                     >
                       <TbDatabaseImport /> Import users
                     </Button>{" "}
