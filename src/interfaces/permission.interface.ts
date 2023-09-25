@@ -1,3 +1,5 @@
+import { IpropModalCommon } from "./common.interface";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IcolumnPermissionTable {
   id?: string;
@@ -17,4 +19,8 @@ export interface IrowPermissionTable {
 export interface IpropPermission {
   dispatch?: any;
   listAdmins?: any;
+}
+
+export interface IpropModalPermission extends IpropModalCommon {
+  adminInfo?: any;
 }

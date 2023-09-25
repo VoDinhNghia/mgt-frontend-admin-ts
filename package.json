@@ -29,6 +29,7 @@
     "react-notifications": "^1.7.4",
     "react-redux": "^8.1.2",
     "react-scripts": "5.0.1",
+    "react-select": "^5.7.5",
     "redux": "^4.2.1",
     "redux-saga": "^1.2.3",
     "rsuite": "^5.40.0",
