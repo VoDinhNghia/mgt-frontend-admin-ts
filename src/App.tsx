@@ -14,6 +14,7 @@ import NotfoundPage from "./pages/notfound";
 import UserManagementPage from "./pages/management-users";
 import PermissionMgtPage from "./pages/management-permission";
 import RoomMgtPage from "./pages/management-rooms";
+import FacultyMgtPage from "./pages/management-faculties";
 
 const App = () => {
   return (
@@ -51,6 +52,14 @@ const App = () => {
             element={
               <ProtectedRoutes>
                 <RoomMgtPage />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path={routes.facultyMgt}
+            element={
+              <ProtectedRoutes>
+                <FacultyMgtPage />
               </ProtectedRoutes>
             }
           />

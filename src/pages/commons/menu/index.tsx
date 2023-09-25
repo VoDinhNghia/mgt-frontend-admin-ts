@@ -15,6 +15,7 @@ import UserMgtIcon from "@rsuite/icons/legacy/Group";
 import PermissonIcon from "@rsuite/icons/legacy/Gear";
 import { validateAccessModule } from "../../../utils/permission-handle.util";
 import RoomIcon from "@rsuite/icons/legacy/Home";
+import FacultyIcon from "@rsuite/icons/legacy/List";
 
 const MenuPage = (props: IuserReducer) => {
   const { userInfo = {} } = props;
@@ -26,6 +27,7 @@ const MenuPage = (props: IuserReducer) => {
     moduleNames.PERMISSION_MANAGEMENT
   );
   const isAccessModuleRoom = validateAccessModule(moduleNames.ROOM_MANAGEMENT);
+  const isAccessModuleFaculty = validateAccessModule(moduleNames.FACULTIES_MANAGEMENT);
 
   const fetchUserInfo = () => {
     const { dispatch } = props;
@@ -104,6 +106,16 @@ const MenuPage = (props: IuserReducer) => {
                 href={routes.roomMgt}
               >
                 {moduleNames.ROOM_MANAGEMENT}
+              </Nav.Item>
+            ) : null}
+            {isAccessModuleFaculty ? (
+              <Nav.Item
+                eventKey={moduleNames.FACULTIES_MANAGEMENT}
+                icon={<FacultyIcon />}
+                className="ItemMenuPage"
+                href={routes.facultyMgt}
+              >
+                {moduleNames.FACULTIES_MANAGEMENT}
               </Nav.Item>
             ) : null}
             <Nav.Item

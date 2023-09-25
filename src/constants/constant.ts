@@ -4,6 +4,7 @@ export const routes = {
   userMgt: "/user-mgt",
   permissionMgt: "/permission-mgt",
   roomMgt: "/room-mgt",
+  facultyMgt: "/faculty-mgt",
 };
 
 export const STUDENT_SERVER_URL = process.env.REACT_APP_API_STUDENT_URL;
