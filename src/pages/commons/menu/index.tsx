@@ -12,6 +12,7 @@ import {
 import { connect } from "react-redux";
 import { userActions } from "../../../store/actions";
 import UserMgtIcon from "@rsuite/icons/legacy/Group";
+import PermissonIcon from "@rsuite/icons/legacy/Gear";
 import { validateAccessModule } from "../../../utils/permission-handle.util";
 
 const MenuPage = (props: IuserReducer) => {
@@ -20,6 +21,9 @@ const MenuPage = (props: IuserReducer) => {
 
   const userName = `${userInfo?.profile?.lastName} ${userInfo?.profile?.middleName} ${userInfo?.profile?.firstName}`;
   const isAccessModuleUser = validateAccessModule(moduleNames.USER_MANAGEMENT);
+  const isAccessModulePermission = validateAccessModule(
+    moduleNames.PERMISSION_MANAGEMENT
+  );
 
   const fetchUserInfo = () => {
     const { dispatch } = props;
@@ -63,9 +67,7 @@ const MenuPage = (props: IuserReducer) => {
         >
           <a href={routes.dashboard} className="text-white">
             <img src="/images/userIcon.jpg" alt="" className="UserAvatar" />
-            <span>
-              {expand ? userName : null}
-            </span>
+            <span>{expand ? userName : null}</span>
           </a>
         </div>
       </Sidenav.Header>
@@ -74,7 +76,7 @@ const MenuPage = (props: IuserReducer) => {
           <Nav>
             {isAccessModuleUser ? (
               <Nav.Item
-                eventKey="1"
+                eventKey={moduleNames.USER_MANAGEMENT}
                 icon={<UserMgtIcon />}
                 className="ItemMenuPage"
                 href={routes.userMgt}
@@ -82,8 +84,18 @@ const MenuPage = (props: IuserReducer) => {
                 {moduleNames.USER_MANAGEMENT}
               </Nav.Item>
             ) : null}
+            {isAccessModulePermission ? (
+              <Nav.Item
+                eventKey={moduleNames.PERMISSION_MANAGEMENT}
+                icon={<PermissonIcon />}
+                className="ItemMenuPage"
+                href={routes.permissionMgt}
+              >
+                {moduleNames.PERMISSION_MANAGEMENT}
+              </Nav.Item>
+            ) : null}
             <Nav.Item
-              eventKey="2"
+              eventKey="LOGOUT"
               icon={<LogOutIcon />}
               className="ItemMenuPage"
               onClick={() => logOutHandle()}

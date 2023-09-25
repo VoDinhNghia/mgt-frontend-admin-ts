@@ -12,6 +12,7 @@ import DashboardPage from "./pages/dashboard";
 import ProtectedRoutes from "./utils/protected-route.util";
 import NotfoundPage from "./pages/notfound";
 import UserManagementPage from "./pages/management-users";
+import PermissionMgtPage from "./pages/management-permission";
 
 const App = () => {
   return (
@@ -33,6 +34,14 @@ const App = () => {
             element={
               <ProtectedRoutes>
                 <UserManagementPage />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path={routes.permissionMgt}
+            element={
+              <ProtectedRoutes>
+                <PermissionMgtPage />
               </ProtectedRoutes>
             }
           />
