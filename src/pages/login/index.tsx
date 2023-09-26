@@ -38,7 +38,7 @@ const LoginPage = () => {
           <img src="/images/loginIconLeft.png" className="ImgLoginPage" />
         </Col>
         <Col xl={6} className="p-4">
-          <h3 className="text-center">Login</h3>
+          <h3 className="text-center">Admin Dashboard</h3>
           <Form.Label className="mt-3">Email</Form.Label>
           <Form.Control
             type="email"
