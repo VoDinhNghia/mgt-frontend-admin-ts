@@ -22,3 +22,8 @@ export interface IpropRoomMgt {
   listRooms?: any;
   totalRoom?: number;
 }
+
+export interface IrowTableRoom extends IpayloadCreateRoom {
+  _id?: string;
+  createdBy?: string;
+}
