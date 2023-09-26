@@ -44,7 +44,11 @@ export interface IstateRedux {
   UserReducer: IuserReducer;
   PermissionReducer: {
     listPermissions: any;
-    totalPermission: any;
+    totalPermission: number;
+  };
+  RoomReducer: {
+    listRooms: any;
+    totalRoom: number;
   };
 }
 
