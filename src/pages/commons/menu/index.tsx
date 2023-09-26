@@ -109,7 +109,7 @@ const MenuPage = (props: IuserReducer) => {
     logOut();
     setTimeout(() => {
       window.location.href = routes.login;
-    }, 100);
+    }, 70);
   };
 
   useEffect(() => {
