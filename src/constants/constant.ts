@@ -25,7 +25,7 @@ export const routes = {
   studyProcessMgt: "/study-process-mgt",
   blogServiceMgt: "/blogs-service-mgt",
   attendanceServiceMgt: "/attendance-mgt",
-  libraryServiceMgt: "/library-service-mgt"
+  libraryServiceMgt: "/library-service-mgt",
 };
 
 export const STUDENT_SERVER_URL = process.env.REACT_APP_API_STUDENT_URL;
@@ -60,7 +60,7 @@ export const moduleNames = {
   STUDY_PROCESS_MANAGEMENT: "Study Process Management",
   BLOG_SERVICE_MANAGEMENT: "Blogs Service Management",
   ATTENDANCE_SERVICE_MANAGEMENT: "Attendance Management",
-  LIBRARY_SERVICE_MANAGEMENT: "Library Service Management"
+  LIBRARY_SERVICE_MANAGEMENT: "Library Service Management",
 };
 
 export const moduleOptions = [
@@ -249,5 +249,28 @@ export const permissionOptions = [
   {
     value: "ADD",
     label: "ADD",
+  },
+];
+
+export const roomOptions = [
+  {
+    value: "CLASS_ROOM",
+    label: "CLASS_ROOM",
+  },
+  {
+    value: "MEETING",
+    label: "MEETING",
+  },
+  {
+    value: "GROUP_STUDY",
+    label: "GROUP_STUDY",
+  },
+  {
+    value: "LIBRARIAN",
+    label: "LIBRARIAN",
+  },
+  {
+    value: "OFFICE_DEPARTMENT",
+    label: "OFFICE_DEPARTMENT",
   },
 ];
