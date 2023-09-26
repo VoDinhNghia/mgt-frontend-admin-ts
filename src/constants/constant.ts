@@ -5,6 +5,27 @@ export const routes = {
   permissionMgt: "/permission-mgt",
   roomMgt: "/room-mgt",
   facultyMgt: "/faculty-mgt",
+  settingMgt: "/setting-mgt",
+  awardMgt: "/award-mgt",
+  branchMgt: "/branch-mgt",
+  classSubjectMgt: "/class-subject-mgt",
+  courseMgt: "/course-mgt",
+  unionsMgt: "/unions-mgt",
+  semesterMgt: "/semester-mgt",
+  schoolMgt: "/school-mgt",
+  scholarshipMgt: "/scholarship-mgt",
+  degreelevelMgt: "/degreelevel-mgt",
+  paymentMgt: "/payment-mgt",
+  institutesMgt: "/institutes-mgt",
+  deparmentMgt: "/department-mgt",
+  centerMgt: "/center-mgt",
+  countriesMgt: "/countries-mgt",
+  newsMgt: "/news-mgt",
+  trainningPointMgt: "/trainning-point-mgt",
+  studyProcessMgt: "/study-process-mgt",
+  blogServiceMgt: "/blogs-service-mgt",
+  attendanceServiceMgt: "/attendance-mgt",
+  libraryServiceMgt: "/library-service-mgt"
 };
 
 export const STUDENT_SERVER_URL = process.env.REACT_APP_API_STUDENT_URL;
@@ -22,6 +43,24 @@ export const moduleNames = {
   SETTINGS: "Settings",
   AWARDS_MANAGEMENT: "Awards Management",
   BRANCH_MANAGEMENT: "Branch Management",
+  CLASS_SUBJECT_MANAGEMENT: "Class Subject Management",
+  COURSE_MANAGEMENT: "Courses Management",
+  UNIONS_MANAGEMENT: "Unions Management",
+  SEMESTERS_MANAGEMENT: "Semesters Management",
+  SCHOOL_MANAGEMENT: "School Management",
+  SCHOLARSHIPS_MANAGEMENT: "Scholarships Management",
+  DEGREELEVELS_MANAGEMENT: "Degreelevels Management",
+  PAYMENTS_MANAGEMENT: "Payments Management",
+  INSTITUTES_MANAGEMENT: "Institutes Management",
+  DEPARTMENTS_MANAGEMENT: "Departments Management",
+  CENTER_MANAGEMENT: "Center Management",
+  COUNTRIES_MANAGEMENT: "Countries Management",
+  NEWS_MANAGEMENT: "News Management",
+  TRAINNING_POINT_MANAGEMENT: "Trainning Point Management",
+  STUDY_PROCESS_MANAGEMENT: "Study Process Management",
+  BLOG_SERVICE_MANAGEMENT: "Blogs Service Management",
+  ATTENDANCE_SERVICE_MANAGEMENT: "Attendance Management",
+  LIBRARY_SERVICE_MANAGEMENT: "Library Service Management"
 };
 
 export const moduleOptions = [
@@ -52,6 +91,78 @@ export const moduleOptions = [
   {
     value: "Branch Management",
     label: "Branch Management",
+  },
+  {
+    value: "Class Subject Management",
+    label: "Class Subject Management",
+  },
+  {
+    value: "Courses Management",
+    label: "Courses Management",
+  },
+  {
+    value: "Unions Management",
+    label: "Unions Management",
+  },
+  {
+    value: "Semesters Management",
+    label: "Semesters Management",
+  },
+  {
+    value: "School Management",
+    label: "School Management",
+  },
+  {
+    value: "Scholarships Management",
+    label: "Scholarships Management",
+  },
+  {
+    value: "Degreelevels Management",
+    label: "Degreelevels Management",
+  },
+  {
+    value: "Payments Management",
+    label: "Payments Management",
+  },
+  {
+    value: "Institutes Management",
+    label: "Institutes Management",
+  },
+  {
+    value: "Departments Management",
+    label: "Departments Management",
+  },
+  {
+    value: "Center Management",
+    label: "Center Management",
+  },
+  {
+    value: "Countries Management",
+    label: "Countries Management",
+  },
+  {
+    value: "News Management",
+    label: "News Management",
+  },
+  {
+    value: "Trainning Point Management",
+    label: "Trainning Point Management",
+  },
+  {
+    value: "Study Process Management",
+    label: "Study Process Management",
+  },
+  {
+    value: "Blogs Service Management",
+    label: "Blogs Service Management",
+  },
+  {
+    value: "Attendance Management",
+    label: "Attendance Management",
+  },
+  {
+    value: "Library Service Management",
+    label: "Library Service Management",
   },
 ];
 
