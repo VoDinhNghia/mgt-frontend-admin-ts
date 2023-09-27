@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import { validateAccessModule } from "../../utils/permission-handle.util";
 import { modalTypes, moduleNames } from "../../constants/constant";
@@ -22,17 +23,22 @@ import { headerRoomTable } from "../../utils/room.util";
 import { Button } from "react-bootstrap";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import ModalRomMgtPage from "./modals";
+import ReadMoreCommon from "../commons/readmore";
 
 const RoomMgtPage = (props: IpropRoomMgt) => {
   const { dispatch, listRooms = [], totalRoom = 0 } = props;
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(5);
   const [roomInfo, setRoomInfo] = useState({});
+  const [readMore, setReadMore] = useState({});
   const [isShowModalDivice, setShowModalDivice] = useState(false);
   const [isShowModalUpdate, setShowModalUpdate] = useState(false);
   const [isShowModalDelete, setShowModalDelete] = useState(false);
   const isAccess = validateAccessModule(moduleNames.ROOM_MANAGEMENT);
   const columns = headerRoomTable();
+  const allStateReadMore: any = readMore;
+  const roomInfoReadme: any = roomInfo;
+  
   const fetchRooms = (page: number, limit: number) => {
     dispatch({
       type: roomActions.GET_LIST_ROOM,
@@ -70,6 +76,15 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
     setShowModalDelete(true);
     setRoomInfo(roomInfo);
   };
+
+  const handleReadMore = (roomInfo: any) => {
+    const isReadMore = allStateReadMore[`${roomInfo?._id}`];
+    setReadMore({
+      ...readMore,
+      [`${roomInfo?._id}`]: !isReadMore,
+    });
+    setRoomInfo(roomInfo);
+  }
 
   useEffect(() => {
     fetchRooms(page + 1, limit);
@@ -111,7 +126,15 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                           </TableCell>
                           <TableCell>{room?.type}</TableCell>
                           <TableCell>{room?.capacity}</TableCell>
-                          <TableCell>{room?.description}</TableCell>
+                          <TableCell>
+                            <ReadMoreCommon
+                              isReadMore={room._id === roomInfoReadme?._id ? allStateReadMore[`${room._id}`] : false}
+                              setReadMore={() => handleReadMore(room)}
+                              lengthSlice={20}
+                            >
+                              {room?.description}
+                            </ReadMoreCommon>
+                          </TableCell>
                           <TableCell>
                             <Button
                               variant="outline-primary"
