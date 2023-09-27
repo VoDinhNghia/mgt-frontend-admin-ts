@@ -73,3 +73,10 @@ export interface IpropModalCommon {
 }
 
 export type IeventOnchangeFile = any;
+
+export interface IpropReadMore {
+  children?: any;
+  isReadMore?: boolean | any;
+  setReadMore?: Function | any;
+  lengthSlice?: number;
+}
