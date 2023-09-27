@@ -43,7 +43,7 @@ function* editRoom(params: IparamSaga): Generator<any> {
   try {
     const { payload, id } = params;
     const res: IresponseAxios | any = yield call(updateRoom, id, payload);
-    NotificationManager.success(res?.data?.data, "Add room", 4000);
+    NotificationManager.success(res?.data?.message, "Add room", 4000);
   } catch (error: any) {
     NotificationManager.error(
       error?.response?.data?.message,
@@ -57,7 +57,7 @@ function* removeRoom(params: IparamSaga): Generator<any> {
   try {
     const { id } = params;
     const res: IresponseAxios | any = yield call(deleteRoom, id);
-    NotificationManager.success(res?.data?.data, "Delete room", 4000);
+    NotificationManager.success(res?.data?.message, "Delete room", 4000);
   } catch (error: any) {
     NotificationManager.error(
       error?.response?.data?.message,

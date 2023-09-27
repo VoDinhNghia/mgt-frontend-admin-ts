@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import {
   Dialog,
@@ -12,9 +12,55 @@ import {
 } from "@mui/material";
 import { IpropModalRoom } from "../../../interfaces/room.interface";
 import { modalTypes, roomOptions } from "../../../constants/constant";
+import { roomActions } from "../../../store/actions";
+import {
+  IeventOnchangeInput,
+  IeventOnchangeSelect,
+} from "../../../interfaces/common.interface";
 
 const ModalRoomMgtPage = (props: IpropModalRoom) => {
-  const { type, size = "sm", isShowModal, onCloseModal, roomInfo = {} } = props;
+  const {
+    type,
+    size = "sm",
+    isShowModal,
+    onCloseModal,
+    roomInfo = {},
+    dispatch,
+    fetchRooms,
+  } = props;
+  const [name, setName] = useState(roomInfo?.name);
+  const [roomType, setType] = useState(roomInfo?.type);
+  const [capacity, setCapacity] = useState(roomInfo?.capacity);
+  const [description, setDescription] = useState(roomInfo?.description);
+
+  const updateRoom = () => {
+    dispatch({
+      type: roomActions.UPDATE_ROOM,
+      id: roomInfo?._id,
+      payload: {
+        name,
+        type: roomType,
+        capacity,
+        description,
+      },
+    });
+    fetchAndCloseModal();
+  };
+
+  const deleteRoom = () => {
+    dispatch({
+      type: roomActions.DELETE_ROOM,
+      id: roomInfo?._id,
+    });
+    fetchAndCloseModal();
+  };
+
+  const fetchAndCloseModal = () => {
+    setTimeout(() => {
+      fetchRooms();
+      onCloseModal();
+    }, 100);
+  };
 
   return (
     <Dialog
@@ -45,9 +91,15 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
               type="text"
               fullWidth={true}
               defaultValue={roomInfo?.name}
+              onChange={(e: IeventOnchangeInput) => setName(e.target.value)}
             />
             <p className="mt-2">Type: </p>
-            <Select size="small" fullWidth={true} defaultValue={roomInfo?.type}>
+            <Select
+              size="small"
+              fullWidth={true}
+              defaultValue={roomInfo?.type}
+              onChange={(e: IeventOnchangeSelect) => setType(e.target.value)}
+            >
               {roomOptions.map((room) => {
                 return (
                   <MenuItem key={room?.value} value={room?.value}>
@@ -62,6 +114,9 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
               type="number"
               fullWidth={true}
               defaultValue={roomInfo?.capacity}
+              onChange={(e: IeventOnchangeSelect) =>
+                setCapacity(e.target.value)
+              }
             />
             <p className="mt-2">Description: </p>
             <TextField
@@ -71,6 +126,9 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
               rows={4}
               fullWidth={true}
               defaultValue={roomInfo?.description}
+              onChange={(e: IeventOnchangeInput) =>
+                setDescription(e.target.value)
+              }
             />
           </>
         ) : null}
@@ -82,12 +140,17 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
       </DialogContent>
       <DialogActions>
         {type === modalTypes.UPDATE ? (
-          <Button variant="outlined" size="small">
+          <Button variant="outlined" size="small" onClick={() => updateRoom()}>
             Save
           </Button>
         ) : null}
         {type === modalTypes.DELETE ? (
-          <Button variant="outlined" size="small" color="error">
+          <Button
+            variant="outlined"
+            size="small"
+            color="error"
+            onClick={() => deleteRoom()}
+          >
             Yes
           </Button>
         ) : null}
