@@ -50,6 +50,12 @@ export interface IstateRedux {
     listRooms: any;
     totalRoom: number;
   };
+  FacultyReducer: {
+    listFaculties: any;
+    totalFaculty: number;
+    listMajors: any;
+    totalMajor: number;
+  };
 }
 
 export interface IpropsNavToggle {
