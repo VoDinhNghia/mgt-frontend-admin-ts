@@ -1,0 +1,9 @@
+.ReadMoreCommon {
+  display: "inline";
+  width: 100%;
+}
+
+.ReadMoreCommon span {
+  cursor: "pointer";
+  color: "blue";
+}

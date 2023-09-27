@@ -1,4 +1,5 @@
 import React from "react";
+import "./index.css";
 import { Button } from "react-bootstrap";
 import { IpropReadMore } from "../../../interfaces/common.interface";
 
@@ -7,14 +8,11 @@ const ReadMoreCommon = (props: IpropReadMore) => {
   const text = children;
 
   return (
-    <p style={{ display: "inline", width: "100%" }}>
+    <p className="ReadMoreCommon">
       {!isReadMore && text?.length > lengthSlice
         ? text?.slice(0, lengthSlice)
         : text}
-      <span
-        onClick={() => setReadMore()}
-        style={{ cursor: "pointer", color: "blue" }}
-      >
+      <span onClick={() => setReadMore()}>
         {text && text?.length > lengthSlice ? (
           !isReadMore ? (
             <Button size="sm" variant="outline-light" className="text-primary">
