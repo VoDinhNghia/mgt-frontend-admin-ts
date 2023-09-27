@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IparamsFetchList } from "./common.interface";
+import { IparamsFetchList, IpropModalCommon } from "./common.interface";
 
 export interface IpayloadCreateRoom {
   name?: string;
@@ -26,4 +27,10 @@ export interface IpropRoomMgt {
 export interface IrowTableRoom extends IpayloadCreateRoom {
   _id?: string;
   createdBy?: string;
+}
+
+export interface IpropModalRoom extends IpropModalCommon {
+  roomInfo?: IrowTableRoom;
+  fetchRooms?: Function | any;
+  size?: string | any;
 }

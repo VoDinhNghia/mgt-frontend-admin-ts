@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { validateAccessModule } from "../../utils/permission-handle.util";
-import { moduleNames } from "../../constants/constant";
+import { modalTypes, moduleNames } from "../../constants/constant";
 import MenuPage from "../commons/menu";
 import FooterPage from "../commons/footer";
 import ForbidenPage from "../commons/forbiden";
@@ -16,16 +16,21 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  TablePagination
+  TablePagination,
 } from "@mui/material";
 import { headerRoomTable } from "../../utils/room.util";
 import { Button } from "react-bootstrap";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
+import ModalRomMgtPage from "./modals";
 
 const RoomMgtPage = (props: IpropRoomMgt) => {
   const { dispatch, listRooms = [], totalRoom = 0 } = props;
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(5);
+  const [roomInfo, setRoomInfo] = useState({});
+  const [isShowModalDivice, setShowModalDivice] = useState(false);
+  const [isShowModalUpdate, setShowModalUpdate] = useState(false);
+  const [isShowModalDelete, setShowModalDelete] = useState(false);
   const isAccess = validateAccessModule(moduleNames.ROOM_MANAGEMENT);
   const columns = headerRoomTable();
   const fetchRooms = (page: number, limit: number) => {
@@ -51,11 +56,24 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
     fetchRooms(1, newLimit);
   };
 
+  const handleModalDivice = (roomInfo = {}) => {
+    setShowModalDivice(true);
+    setRoomInfo(roomInfo);
+  };
+
+  const handleModalUpdate = (roomInfo = {}) => {
+    setShowModalUpdate(true);
+    setRoomInfo(roomInfo);
+  };
+
+  const handleModalDelete = (roomInfo = {}) => {
+    setShowModalDelete(true);
+    setRoomInfo(roomInfo);
+  };
+
   useEffect(() => {
     fetchRooms(page + 1, limit);
   }, []);
-
-  console.log("listRoom", listRooms);
 
   return (
     <div>
@@ -93,17 +111,21 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                           </TableCell>
                           <TableCell>{room?.type}</TableCell>
                           <TableCell>{room?.capacity}</TableCell>
+                          <TableCell>{room?.description}</TableCell>
                           <TableCell>
-                            <Button variant="outline-primary" size="sm">
+                            <Button
+                              variant="outline-primary"
+                              size="sm"
+                              onClick={() => handleModalDivice(room)}
+                            >
                               Detail
                             </Button>
                           </TableCell>
-                          <TableCell>{room?.description}</TableCell>
                           <TableCell>
-                            <Button variant="outline-primary" size="sm">
+                            <Button variant="outline-primary" size="sm" onClick={() => handleModalUpdate(room)}>
                               <BsPencilSquare />
                             </Button>{" "}
-                            <Button variant="outline-danger" size="sm">
+                            <Button variant="outline-danger" size="sm" onClick={() => handleModalDelete(room)}>
                               <BsTrash />
                             </Button>
                           </TableCell>
@@ -114,13 +136,37 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                 </Table>
               </TableContainer>
               <TablePagination
-                rowsPerPageOptions={[5,10,25]}
+                rowsPerPageOptions={[5, 10, 25]}
                 component="div"
                 count={totalRoom}
                 rowsPerPage={limit}
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+              <ModalRomMgtPage
+                type={modalTypes.VIEW}
+                isShowModal={isShowModalDivice}
+                roomInfo={roomInfo}
+                size="sm"
+                fetchRooms={() => fetchRooms(page + 1, limit)}
+                onCloseModal={() => setShowModalDivice(false)}
+              />
+              <ModalRomMgtPage
+                type={modalTypes.UPDATE}
+                isShowModal={isShowModalUpdate}
+                roomInfo={roomInfo}
+                size="xs"
+                fetchRooms={() => fetchRooms(page + 1, limit)}
+                onCloseModal={() => setShowModalUpdate(false)}
+              />
+              <ModalRomMgtPage
+                type={modalTypes.DELETE}
+                isShowModal={isShowModalDelete}
+                roomInfo={roomInfo}
+                size="xs"
+                fetchRooms={() => fetchRooms(page + 1, limit)}
+                onCloseModal={() => setShowModalDelete(false)}
               />
             </Container>
           </Container>

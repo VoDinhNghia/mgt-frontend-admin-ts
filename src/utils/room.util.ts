@@ -21,13 +21,13 @@ export const headerRoomTable = () => {
       minWidth: 170,
     },
     {
-      id: "divice",
-      label: "Divice",
+      id: "description",
+      label: "Description",
       minWidth: 170,
     },
     {
-      id: "description",
-      label: "Description",
+      id: "divice",
+      label: "Divice",
       minWidth: 170,
     },
     {
