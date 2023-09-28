@@ -1,14 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
-import { validateAccessModule } from "../../utils/permission-handle.util";
-import { modalTypes, moduleNames } from "../../constants/constant";
+import { validateAccessModule, validateAction } from "../../utils/permission-handle.util";
+import { modalTypes, moduleNames, permissonTypes } from "../../constants/constant";
 import MenuPage from "../commons/menu";
 import FooterPage from "../commons/footer";
 import ForbidenPage from "../commons/forbiden";
 import { Container } from "rsuite";
 import { connect } from "react-redux";
 import { IstateRedux } from "../../interfaces/common.interface";
-import { IpropRoomMgt, IrowTableRoom } from "../../interfaces/room.interface";
+import { IallStateReadMore, IpropRoomMgt, IroomInfoReadMore, IrowTableRoom } from "../../interfaces/room.interface";
 import { roomActions } from "../../store/actions";
 import {
   TableContainer,
@@ -24,6 +23,7 @@ import { Button } from "react-bootstrap";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import ModalRomMgtPage from "./modals";
 import ReadMoreCommon from "../commons/readmore";
+import AddAndSearchTable from "../commons/add-search-table";
 
 const RoomMgtPage = (props: IpropRoomMgt) => {
   const { dispatch, listRooms = [], totalRoom = 0 } = props;
@@ -34,10 +34,14 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
   const [isShowModalDivice, setShowModalDivice] = useState(false);
   const [isShowModalUpdate, setShowModalUpdate] = useState(false);
   const [isShowModalDelete, setShowModalDelete] = useState(false);
+  const [isShowModalAdd, setShowModalAdd] = useState(false);
   const isAccess = validateAccessModule(moduleNames.ROOM_MANAGEMENT);
+  const isPermissionAdd = validateAction(permissonTypes.ADD, moduleNames.ROOM_MANAGEMENT);
+  const isPermissionUpdate = validateAction(permissonTypes.EDIT, moduleNames.ROOM_MANAGEMENT);
+  const isPermissionDelete = validateAction(permissonTypes.DELETE, moduleNames.ROOM_MANAGEMENT);
   const columns = headerRoomTable();
-  const allStateReadMore: any = readMore;
-  const roomInfoReadme: any = roomInfo;
+  const allStateReadMore: IallStateReadMore = readMore;
+  const roomInfoReadmore: IroomInfoReadMore = roomInfo;
   
   const fetchRooms = (page: number, limit: number) => {
     dispatch({
@@ -77,13 +81,22 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
     setRoomInfo(roomInfo);
   };
 
-  const handleReadMore = (roomInfo: any) => {
+  const handleReadMore = (roomInfo: IroomInfoReadMore) => {
     const isReadMore = allStateReadMore[`${roomInfo?._id}`];
     setReadMore({
       ...readMore,
       [`${roomInfo?._id}`]: !isReadMore,
     });
     setRoomInfo(roomInfo);
+  }
+
+  const onSearch = (searchKey: string) => {
+    dispatch({
+      type: roomActions.GET_LIST_ROOM,
+      payload: {
+        searchKey,
+      }
+    });
   }
 
   useEffect(() => {
@@ -97,6 +110,12 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
           <Container>
             <MenuPage />
             <Container className="p-3 fs-6">
+              <AddAndSearchTable
+                isDisableBtnAdd={!isPermissionAdd}
+                title="Add new room"
+                onSearch={(searchKey: string) => onSearch(searchKey)}
+                onShowAdd={() => setShowModalAdd(true)}
+              />
               <TableContainer>
                 <Table stickyHeader aria-label="room table">
                   <TableHead>
@@ -128,7 +147,7 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                           <TableCell>{room?.capacity}</TableCell>
                           <TableCell>
                             <ReadMoreCommon
-                              isReadMore={room._id === roomInfoReadme?._id ? allStateReadMore[`${room._id}`] : false}
+                              isReadMore={room._id === roomInfoReadmore?._id ? allStateReadMore[`${room._id}`] : false}
                               setReadMore={() => handleReadMore(room)}
                               lengthSlice={20}
                             >
@@ -145,10 +164,10 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                             </Button>
                           </TableCell>
                           <TableCell>
-                            <Button variant="outline-primary" size="sm" onClick={() => handleModalUpdate(room)}>
+                            <Button variant="outline-primary" size="sm" onClick={() => handleModalUpdate(room)} disabled={!isPermissionUpdate}>
                               <BsPencilSquare />
                             </Button>{" "}
-                            <Button variant="outline-danger" size="sm" onClick={() => handleModalDelete(room)}>
+                            <Button variant="outline-danger" size="sm" onClick={() => handleModalDelete(room)} disabled={!isPermissionDelete}>
                               <BsTrash />
                             </Button>
                           </TableCell>
@@ -190,6 +209,14 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                 size="xs"
                 fetchRooms={() => fetchRooms(page + 1, limit)}
                 onCloseModal={() => setShowModalDelete(false)}
+              />
+              <ModalRomMgtPage
+                type={modalTypes.ADD}
+                isShowModal={isShowModalAdd}
+                roomInfo={roomInfo}
+                size="xs"
+                fetchRooms={() => fetchRooms(page + 1, limit)}
+                onCloseModal={() => setShowModalAdd(false)}
               />
             </Container>
           </Container>
