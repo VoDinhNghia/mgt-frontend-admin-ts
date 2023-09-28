@@ -5,8 +5,13 @@ import {
   headerPermisionTable,
   validateAccessModule,
   colors,
+  validateAction,
 } from "../../utils/permission-handle.util";
-import { modalTypes, moduleNames } from "../../constants/constant";
+import {
+  modalTypes,
+  moduleNames,
+  permissonTypes,
+} from "../../constants/constant";
 import { Container } from "rsuite";
 import MenuPage from "../commons/menu";
 import FooterPage from "../commons/footer";
@@ -32,6 +37,14 @@ import ModalPermissionMgtPage from "./modals";
 const PermissionMgtPage = (props: IpropPermission) => {
   const { listAdmins = [], dispatch } = props;
   const isAccess = validateAccessModule(moduleNames.PERMISSION_MANAGEMENT);
+  const isPermissionAdd = validateAction(
+    permissonTypes.ADD,
+    moduleNames.PERMISSION_MANAGEMENT
+  );
+  const isPermissionDelete = validateAction(
+    permissonTypes.DELETE,
+    moduleNames.PERMISSION_MANAGEMENT
+  );
   const columns = headerPermisionTable();
   const rows = handleDataPermissionTable(listAdmins);
   const [isShowModalAdd, setShowModalAdd] = useState(false);
@@ -52,7 +65,7 @@ const PermissionMgtPage = (props: IpropPermission) => {
   const onClickDeletePermission = (adminInfo = {}) => {
     setShowModalDelete(true);
     setAdminInfo(adminInfo);
-  }
+  };
 
   useEffect(() => {
     fetchAdmins();
@@ -120,10 +133,16 @@ const PermissionMgtPage = (props: IpropPermission) => {
                               variant="outline-primary"
                               size="sm"
                               onClick={() => onClickAddPermission(row)}
+                              disabled={!isPermissionAdd}
                             >
                               <BsPencilSquare />
                             </Button>{" "}
-                            <Button variant="outline-danger" size="sm" onClick={() => onClickDeletePermission(row)}>
+                            <Button
+                              variant="outline-danger"
+                              size="sm"
+                              onClick={() => onClickDeletePermission(row)}
+                              disabled={!isPermissionDelete}
+                            >
                               <BsTrash />
                             </Button>
                           </TableCell>

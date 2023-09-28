@@ -56,6 +56,14 @@ const UserManagementPage = (props: IpropUserMgt) => {
     permissonTypes.ADD,
     moduleNames.USER_MANAGEMENT
   );
+  const isPermissionUpdate = validateAction(
+    permissonTypes.EDIT,
+    moduleNames.USER_MANAGEMENT
+  );
+  const isPermissionDelete = validateAction(
+    permissonTypes.DELETE,
+    moduleNames.USER_MANAGEMENT
+  );
   const { dispatch, listUsers = [], totalUser = 0 } = props;
   const columns = headersUserTable();
   const rows = handleDataUserTable(listUsers);
@@ -86,12 +94,12 @@ const UserManagementPage = (props: IpropUserMgt) => {
   const onShowUpdate = (user: IrowUserTable) => {
     setShowModalUpdate(true);
     setUserInfo(user);
-  }
+  };
 
   const onShowDelete = (user: IrowUserTable) => {
     setShowModalDelete(true);
     setUserInfo(user);
-  }
+  };
 
   const onSearch = (searchKey: string) => {
     dispatch({
@@ -169,12 +177,26 @@ const UserManagementPage = (props: IpropUserMgt) => {
                           <TableCell>{row.code}</TableCell>
                           <TableCell>{row.status}</TableCell>
                           <TableCell>{row.role}</TableCell>
-                          <TableCell><Button variant="outline-primary" size="sm">Detail</Button></TableCell>
                           <TableCell>
-                            <Button variant="outline-primary" size="sm" onClick={() => onShowUpdate(row)}>
+                            <Button variant="outline-primary" size="sm">
+                              Detail
+                            </Button>
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              variant="outline-primary"
+                              size="sm"
+                              onClick={() => onShowUpdate(row)}
+                              disabled={!isPermissionUpdate}
+                            >
                               <BsPencilSquare />
                             </Button>{" "}
-                            <Button variant="outline-danger" size="sm" onClick={() => onShowDelete(row)}>
+                            <Button
+                              variant="outline-danger"
+                              size="sm"
+                              onClick={() => onShowDelete(row)}
+                              disabled={!isPermissionDelete}
+                            >
                               <BsTrash />
                             </Button>
                           </TableCell>
