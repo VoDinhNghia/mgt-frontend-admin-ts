@@ -27,3 +27,11 @@ export interface IpayloadCreateMajor {
 export interface IparamFetchMajor extends IparamsFetchList {
   faculty?: string;
 }
+
+export interface IpropFacultyMgt {
+  dispatch?: any;
+  listFaculties?: any;
+  listMajors?: any;
+  totalFaculty?: number;
+  totalMajor?: number;
+}
