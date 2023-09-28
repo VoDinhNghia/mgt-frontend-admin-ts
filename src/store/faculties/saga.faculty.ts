@@ -93,7 +93,7 @@ function* fetchMajors(params: IparamSaga): Generator<any> {
     const res: IresponseAxios | any = yield call(getMajors, payload);
     yield put({
       type: facultyActions.GET_LIST_MAJOR_SUCCESS,
-      action: res?.data?.data,
+      payload: res?.data?.data,
     });
   } catch (error: any) {
     NotificationManager.error(
