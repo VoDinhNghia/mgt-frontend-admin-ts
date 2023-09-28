@@ -18,15 +18,15 @@ const FacultyReducer = (state = initSate, action: IactionRedux) => {
     case facultyActions.GET_LIST_FACULTY_SUCCESS:
       return {
         ...state,
-        listFaculties: action.payload.results,
-        totalFaculty: action.payload.total,
+        listFaculties: action?.payload?.results,
+        totalFaculty: action?.payload?.total,
         loading: false,
       };
     case facultyActions.GET_LIST_MAJOR_SUCCESS:
       return {
         ...state,
-        listMajors: action.payload.results,
-        totalMajor: action.payload.total,
+        listMajors: action?.payload?.results,
+        totalMajor: action?.payload?.total,
         loading: false,
       };
 

@@ -76,7 +76,7 @@ function* fetchFaculties(params: IparamSaga): Generator<any> {
     const res: IresponseAxios | any = yield call(getFaculties, payload);
     yield put({
       type: facultyActions.GET_LIST_FACULTY_SUCCESS,
-      action: res?.data?.data,
+      payload: res?.data?.data,
     });
   } catch (error: any) {
     NotificationManager.error(
