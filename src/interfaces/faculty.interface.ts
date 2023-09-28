@@ -35,3 +35,15 @@ export interface IpropFacultyMgt {
   totalFaculty?: number;
   totalMajor?: number;
 }
+
+export interface IpropFacultyTab {
+  dispatch?: any;
+  listFaculties?: any;
+  totalFaculty?: number;
+}
+
+export interface IpropMajorTab {
+  dispatch?: any;
+  listMajors?: any;
+  totalMajor?: number;
+}

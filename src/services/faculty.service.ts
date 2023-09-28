@@ -38,14 +38,14 @@ export const updateFaculty = async (
 };
 
 export const createMajor = async (payload: IpayloadCreateMajor) => {
-  const res = await axios.post(`${STUDENT_SERVER_URL}/api/major`, payload, {
+  const res = await axios.post(`${STUDENT_SERVER_URL}/api/faculties/major`, payload, {
     headers: setHeaderAxios(),
   });
   return res;
 };
 
 export const getMajors = async (payload: IparamFetchMajor) => {
-  const res = await axios.get(`${STUDENT_SERVER_URL}/api/major`, {
+  const res = await axios.get(`${STUDENT_SERVER_URL}/api/faculties/major`, {
     params: payload,
     headers: setHeaderAxios(),
   });
@@ -54,7 +54,7 @@ export const getMajors = async (payload: IparamFetchMajor) => {
 
 export const updateMajor = async (id: string, payload: IpayloadCreateMajor) => {
   const res = await axios.put(
-    `${STUDENT_SERVER_URL}/api/major/${id}`,
+    `${STUDENT_SERVER_URL}/api/faculties/major/${id}`,
     payload,
     {
       headers: setHeaderAxios(),

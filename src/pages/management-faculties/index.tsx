@@ -1,33 +1,24 @@
-import React, { useEffect } from "react";
+import React, { SyntheticEvent, useState } from "react";
 import MenuPage from "../commons/menu";
 import FooterPage from "../commons/footer";
 import ForbidenPage from "../commons/forbiden";
 import { Container } from "rsuite";
 import { validateAccessModule } from "../../utils/permission-handle.util";
 import { moduleNames } from "../../constants/constant";
-import { connect } from "react-redux";
-import { IstateRedux } from "../../interfaces/common.interface";
-import { IpropFacultyMgt } from "../../interfaces/faculty.interface";
-import { facultyActions } from "../../store/actions";
+import { Box, Tab } from "@mui/material";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import FacultyTabPage from "./tab-faculty";
+import MajorTabPage from "./tab-major";
 
-const FacultyMgtPage = (props: IpropFacultyMgt) => {
-  const { listFaculties = [], dispatch } = props;
+const FacultyMgtPage = () => {
+  const facultyTab = "Faculty";
+  const majorTab = "Major";
+  const [tabIndex, setTabIndex] = useState(facultyTab);
   const isAccess = validateAccessModule(moduleNames.FACULTIES_MANAGEMENT);
-  const fetchFaculties = () => {
-    dispatch({
-      type: facultyActions.GET_LIST_FACULTY,
-      payload: {
-        limit: 10,
-        page: 1,
-      }
-    });
-  }
 
-  useEffect(() => {
-    fetchFaculties();
-  }, []);
-
-  console.log("listFaculties", listFaculties);
+  const onChangeTab = (e: SyntheticEvent, newTab: string) => {
+    setTabIndex(newTab);
+  };
 
   return (
     <div>
@@ -36,7 +27,27 @@ const FacultyMgtPage = (props: IpropFacultyMgt) => {
           <Container>
             <MenuPage />
             <Container className="p-3 fs-6">
-              <p>Faculty management page</p>
+              <Box>
+                <TabContext value={tabIndex}>
+                  <Box>
+                    <TabList
+                      onChange={onChangeTab}
+                      textColor="secondary"
+                      indicatorColor="secondary"
+                      aria-label="faculties lab"
+                    >
+                      <Tab value={facultyTab} label={facultyTab} />
+                      <Tab value={majorTab} label={majorTab} />
+                    </TabList>
+                  </Box>
+                  <TabPanel value={facultyTab}>
+                    <FacultyTabPage />
+                  </TabPanel>
+                  <TabPanel value={majorTab}>
+                    <MajorTabPage />
+                  </TabPanel>
+                </TabContext>
+              </Box>
             </Container>
           </Container>
           <FooterPage />
@@ -48,13 +59,4 @@ const FacultyMgtPage = (props: IpropFacultyMgt) => {
   );
 };
 
-const mapStateToProps = (state: IstateRedux) => {
-  return {
-    listFaculties: state.FacultyReducer.listFaculties,
-    totalFaculty: state.FacultyReducer.totalFaculty,
-    listMajors: state.FacultyReducer.listMajors,
-    totalMajor: state.FacultyReducer.totalMajor,
-  };
-}
-
-export default connect(mapStateToProps)(FacultyMgtPage);
+export default FacultyMgtPage;
