@@ -3,6 +3,14 @@ import { connect } from "react-redux";
 import { IpropMajorTab } from "../../../interfaces/faculty.interface";
 import { IstateRedux } from "../../../interfaces/common.interface";
 import { facultyActions } from "../../../store/actions";
+import {
+  TableContainer,
+  TableRow,
+  TableCell,
+  TableHead,
+  TableBody,
+  Table,
+} from "@mui/material";
 
 const MajorTabPage = (props: IpropMajorTab) => {
   const { dispatch, listMajors = [] } = props;

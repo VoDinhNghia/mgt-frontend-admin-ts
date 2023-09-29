@@ -274,3 +274,6 @@ export const roomOptions = [
     label: "OFFICE_DEPARTMENT",
   },
 ];
+
+export const formatDateTime = "YYYY-MM-DD Hm:mm:ss";
+export const formatDate = "YYYY-MM-DD";
