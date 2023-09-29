@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { validateAccessModule, validateAction } from "../../utils/permission-handle.util";
-import { modalTypes, moduleNames, permissonTypes } from "../../constants/constant";
+import {
+  validateAccessModule,
+  validateAction,
+} from "../../utils/permission-handle.util";
+import {
+  modalTypes,
+  moduleNames,
+  permissonTypes,
+} from "../../constants/constant";
 import MenuPage from "../commons/menu";
 import FooterPage from "../commons/footer";
 import ForbidenPage from "../commons/forbiden";
 import { Container } from "rsuite";
 import { connect } from "react-redux";
 import { IstateRedux } from "../../interfaces/common.interface";
-import { IallStateReadMore, IpropRoomMgt, IroomInfoReadMore, IrowTableRoom } from "../../interfaces/room.interface";
+import {
+  IallStateReadMore,
+  IpropRoomMgt,
+  IroomInfoReadMore,
+  IrowTableRoom,
+} from "../../interfaces/room.interface";
 import { roomActions } from "../../store/actions";
 import {
   TableContainer,
@@ -27,22 +39,43 @@ import AddAndSearchTable from "../commons/add-search-table";
 
 const RoomMgtPage = (props: IpropRoomMgt) => {
   const { dispatch, listRooms = [], totalRoom = 0 } = props;
-  const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(5);
-  const [roomInfo, setRoomInfo] = useState({});
-  const [readMore, setReadMore] = useState({});
-  const [isShowModalDivice, setShowModalDivice] = useState(false);
-  const [isShowModalUpdate, setShowModalUpdate] = useState(false);
-  const [isShowModalDelete, setShowModalDelete] = useState(false);
-  const [isShowModalAdd, setShowModalAdd] = useState(false);
+  const [state, setState] = useState({
+    isShowModalDivice: false,
+    isShowModalUpdate: false,
+    isShowModalDelete: false,
+    isShowModalAdd: false,
+    page: 0,
+    limit: 5,
+    roomInfo: {},
+    readMore: {},
+  });
   const isAccess = validateAccessModule(moduleNames.ROOM_MANAGEMENT);
-  const isPermissionAdd = validateAction(permissonTypes.ADD, moduleNames.ROOM_MANAGEMENT);
-  const isPermissionUpdate = validateAction(permissonTypes.EDIT, moduleNames.ROOM_MANAGEMENT);
-  const isPermissionDelete = validateAction(permissonTypes.DELETE, moduleNames.ROOM_MANAGEMENT);
+  const isPermissionAdd = validateAction(
+    permissonTypes.ADD,
+    moduleNames.ROOM_MANAGEMENT
+  );
+  const isPermissionUpdate = validateAction(
+    permissonTypes.EDIT,
+    moduleNames.ROOM_MANAGEMENT
+  );
+  const isPermissionDelete = validateAction(
+    permissonTypes.DELETE,
+    moduleNames.ROOM_MANAGEMENT
+  );
   const columns = headerRoomTable();
+  const {
+    isShowModalAdd,
+    isShowModalDelete,
+    isShowModalDivice,
+    isShowModalUpdate,
+    page,
+    limit,
+    roomInfo,
+    readMore,
+  } = state;
   const allStateReadMore: IallStateReadMore = readMore;
   const roomInfoReadmore: IroomInfoReadMore = roomInfo;
-  
+
   const fetchRooms = (page: number, limit: number) => {
     dispatch({
       type: roomActions.GET_LIST_ROOM,
@@ -54,7 +87,7 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
+    setState({ ...state, page: newPage });
     fetchRooms(newPage + 1, limit);
   };
 
@@ -62,42 +95,35 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newLimit = parseInt(event.target.value);
-    setLimit(newLimit);
+    setState({ ...state, limit: newLimit });
     fetchRooms(1, newLimit);
   };
 
   const handleModalDivice = (roomInfo = {}) => {
-    setShowModalDivice(true);
-    setRoomInfo(roomInfo);
+    setState({ ...state, isShowModalDivice: true, roomInfo });
   };
 
   const handleModalUpdate = (roomInfo = {}) => {
-    setShowModalUpdate(true);
-    setRoomInfo(roomInfo);
+    setState({ ...state, isShowModalUpdate: true, roomInfo });
   };
 
   const handleModalDelete = (roomInfo = {}) => {
-    setShowModalDelete(true);
-    setRoomInfo(roomInfo);
+    setState({ ...state, isShowModalDelete: true, roomInfo });
   };
 
   const handleReadMore = (roomInfo: IroomInfoReadMore) => {
     const isReadMore = allStateReadMore[`${roomInfo?._id}`];
-    setReadMore({
-      ...readMore,
-      [`${roomInfo?._id}`]: !isReadMore,
-    });
-    setRoomInfo(roomInfo);
-  }
+    setState({ ...state, [`${roomInfo?._id}`]: !isReadMore, roomInfo });
+  };
 
   const onSearch = (searchKey: string) => {
     dispatch({
       type: roomActions.GET_LIST_ROOM,
       payload: {
         searchKey,
-      }
+      },
     });
-  }
+  };
 
   useEffect(() => {
     fetchRooms(page + 1, limit);
@@ -114,7 +140,7 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                 isDisableBtnAdd={!isPermissionAdd}
                 title="Add new room"
                 onSearch={(searchKey: string) => onSearch(searchKey)}
-                onShowAdd={() => setShowModalAdd(true)}
+                onShowAdd={() => setState({ ...state, isShowModalAdd: true })}
               />
               <TableContainer>
                 <Table stickyHeader aria-label="room table">
@@ -147,7 +173,11 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                           <TableCell>{room?.capacity}</TableCell>
                           <TableCell>
                             <ReadMoreCommon
-                              isReadMore={room._id === roomInfoReadmore?._id ? allStateReadMore[`${room._id}`] : false}
+                              isReadMore={
+                                room._id === roomInfoReadmore?._id
+                                  ? allStateReadMore[`${room._id}`]
+                                  : false
+                              }
                               setReadMore={() => handleReadMore(room)}
                               lengthSlice={20}
                             >
@@ -164,10 +194,20 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                             </Button>
                           </TableCell>
                           <TableCell>
-                            <Button variant="outline-primary" size="sm" onClick={() => handleModalUpdate(room)} disabled={!isPermissionUpdate}>
+                            <Button
+                              variant="outline-primary"
+                              size="sm"
+                              onClick={() => handleModalUpdate(room)}
+                              disabled={!isPermissionUpdate}
+                            >
                               <BsPencilSquare />
                             </Button>{" "}
-                            <Button variant="outline-danger" size="sm" onClick={() => handleModalDelete(room)} disabled={!isPermissionDelete}>
+                            <Button
+                              variant="outline-danger"
+                              size="sm"
+                              onClick={() => handleModalDelete(room)}
+                              disabled={!isPermissionDelete}
+                            >
                               <BsTrash />
                             </Button>
                           </TableCell>
@@ -192,7 +232,9 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                 roomInfo={roomInfo}
                 size="sm"
                 fetchRooms={() => fetchRooms(page + 1, limit)}
-                onCloseModal={() => setShowModalDivice(false)}
+                onCloseModal={() =>
+                  setState({ ...state, isShowModalDivice: false })
+                }
               />
               <ModalRomMgtPage
                 type={modalTypes.UPDATE}
@@ -200,7 +242,9 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                 roomInfo={roomInfo}
                 size="xs"
                 fetchRooms={() => fetchRooms(page + 1, limit)}
-                onCloseModal={() => setShowModalUpdate(false)}
+                onCloseModal={() =>
+                  setState({ ...state, isShowModalUpdate: false })
+                }
               />
               <ModalRomMgtPage
                 type={modalTypes.DELETE}
@@ -208,7 +252,9 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                 roomInfo={roomInfo}
                 size="xs"
                 fetchRooms={() => fetchRooms(page + 1, limit)}
-                onCloseModal={() => setShowModalDelete(false)}
+                onCloseModal={() =>
+                  setState({ ...state, isShowModalDelete: false })
+                }
               />
               <ModalRomMgtPage
                 type={modalTypes.ADD}
@@ -216,7 +262,9 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                 roomInfo={roomInfo}
                 size="xs"
                 fetchRooms={() => fetchRooms(page + 1, limit)}
-                onCloseModal={() => setShowModalAdd(false)}
+                onCloseModal={() =>
+                  setState({ ...state, isShowModalAdd: false })
+                }
               />
             </Container>
           </Container>
