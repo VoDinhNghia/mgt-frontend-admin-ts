@@ -51,8 +51,6 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
     fetchFaculties();
   }, []);
 
-  console.log("listFaculties", listFaculties);
-
   return (
     <TableContainer>
       <Table stickyHeader aria-label="faculty table">

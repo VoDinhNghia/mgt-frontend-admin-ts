@@ -51,3 +51,27 @@ export interface IpropMajorTab {
 export interface IrowFacutyTable extends IpayloadCreateFaculty {
   _id?: string;
 }
+
+export interface IrowMajorTable {
+  _id?: string;
+  name?: string;
+  faculty?: {
+    _id?: string;
+    name?: string;
+  };
+  introduction?: string;
+  foundYear?: string;
+  award?: any;
+  headOfSection?: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    middleName: string;
+  };
+  eputeHead: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    middleName: string;
+  };
+}
