@@ -47,3 +47,7 @@ export interface IpropMajorTab {
   listMajors?: any;
   totalMajor?: number;
 }
+
+export interface IrowFacutyTable extends IpayloadCreateFaculty {
+  _id?: string;
+}
