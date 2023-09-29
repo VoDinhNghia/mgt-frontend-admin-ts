@@ -31,13 +31,25 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
     dispatch,
     fetchRooms,
   } = props;
-  const [name, setName] = useState(roomInfo?.name);
-  const [roomType, setType] = useState(roomInfo?.type);
-  const [capacity, setCapacity] = useState(roomInfo?.capacity);
-  const [description, setDescription] = useState(roomInfo?.description);
-  const [airConditioner, setAirConditioner] = useState("");
-  const [projector, setProjector] = useState("");
-  const [status, setStatus] = useState("");
+  const [state, setState] = useState({
+    name: roomInfo?.name,
+    roomType: roomInfo?.type,
+    capacity: roomInfo?.capacity,
+    description: roomInfo?.description,
+    airConditioner: "",
+    projector: "",
+    status: "",
+  });
+
+  const {
+    name,
+    roomType,
+    capacity,
+    description,
+    airConditioner,
+    projector,
+    status,
+  } = state;
 
   const addNewRoom = () => {
     if (!name || !roomType || !capacity) {
@@ -124,14 +136,18 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
               type="text"
               fullWidth={true}
               defaultValue={type === modalTypes.UPDATE ? roomInfo?.name : null}
-              onChange={(e: IeventOnchangeInput) => setName(e.target.value)}
+              onChange={(e: IeventOnchangeInput) =>
+                setState({ ...state, name: e.target.value })
+              }
             />
             <p className="mt-2">Type: </p>
             <Select
               size="small"
               fullWidth={true}
               defaultValue={type === modalTypes.UPDATE ? roomInfo?.type : null}
-              onChange={(e: IeventOnchangeSelect) => setType(e.target.value)}
+              onChange={(e: IeventOnchangeSelect) =>
+                setState({ ...state, roomType: e.target.value })
+              }
             >
               {roomOptions.map((room) => {
                 return (
@@ -150,7 +166,7 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
                 type === modalTypes.UPDATE ? roomInfo?.capacity : null
               }
               onChange={(e: IeventOnchangeSelect) =>
-                setCapacity(e.target.value)
+                setState({ ...state, capacity: e.target.value })
               }
             />
             <p className="mt-2">Description: </p>
@@ -164,7 +180,7 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
                 type === modalTypes.UPDATE ? roomInfo?.description : null
               }
               onChange={(e: IeventOnchangeInput) =>
-                setDescription(e.target.value)
+                setState({ ...state, description: e.target.value })
               }
             />
           </>
@@ -177,7 +193,7 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
               type="text"
               fullWidth={true}
               onChange={(e: IeventOnchangeInput) =>
-                setAirConditioner(e.target.value)
+                setState({ ...state, airConditioner: e.target.value })
               }
             />
             <p className="mt-2">Projector: </p>
@@ -186,7 +202,7 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
               type="text"
               fullWidth={true}
               onChange={(e: IeventOnchangeInput) =>
-                setProjector(e.target.value)
+                setState({ ...state, projector: e.target.value })
               }
             />
             <p className="mt-2">Status: </p>
@@ -194,7 +210,9 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
               size="small"
               type="text"
               fullWidth={true}
-              onChange={(e: IeventOnchangeInput) => setStatus(e.target.value)}
+              onChange={(e: IeventOnchangeInput) =>
+                setState({ ...state, status: e.target.value })
+              }
             />
           </>
         ) : null}
