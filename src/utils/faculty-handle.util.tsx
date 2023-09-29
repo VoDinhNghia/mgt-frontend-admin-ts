@@ -79,7 +79,7 @@ export const headerTableMajor = () => {
     {
       id: "actions",
       label: "Actions",
-      minWidth: 170,
+      minWidth: 120,
     },
   ];
   return data;
