@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-ignore
-import { NotificationManager } from "react-notifications";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { connect } from "react-redux";
+import "./index.css";
 import {
   Dialog,
   DialogTitle,
@@ -12,14 +12,12 @@ import {
   TextField,
   Select,
   MenuItem,
+  IconButton,
 } from "@mui/material";
 import { IpropModalRoom } from "../../../interfaces/room.interface";
 import { modalTypes, roomOptions } from "../../../constants/constant";
 import { roomActions } from "../../../store/actions";
-import {
-  IeventOnchangeInput,
-  IeventOnchangeSelect,
-} from "../../../interfaces/common.interface";
+import { registerSchema, IregisterInput } from "../../../utils/room.util";
 
 const ModalRoomMgtPage = (props: IpropModalRoom) => {
   const {
@@ -31,53 +29,49 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
     dispatch,
     fetchRooms,
   } = props;
-  const [state, setState] = useState({
-    name: roomInfo?.name,
-    roomType: roomInfo?.type,
-    capacity: roomInfo?.capacity,
-    description: roomInfo?.description,
-    airConditioner: "",
-    projector: "",
-    status: "",
-  });
-
   const {
-    name,
-    roomType,
-    capacity,
-    description,
-    airConditioner,
-    projector,
-    status,
-  } = state;
-
-  const addNewRoom = () => {
-    if (!name || !roomType || !capacity) {
-      NotificationManager.error(
-        "name, room type and capacity must is provided!",
-        "Add room",
-        4000
-      );
-    } else {
-      dispatch({
-        type: roomActions.ADD_ROOM,
-        payload: {
-          name,
-          type: roomType,
-          capacity,
-          description,
-          divice: {
-            airConditioner,
-            projector,
-            status,
-          },
-        },
-      });
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors, isSubmitSuccessful },
+  } = useForm<IregisterInput>({
+    resolver: zodResolver(registerSchema),
+  });
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
     }
+  }, [isSubmitSuccessful]);
+
+  const onSubmitHandlerAdd: SubmitHandler<IregisterInput> = (values) => {
+    const {
+      name,
+      roomType,
+      capacity,
+      description,
+      airConditioner,
+      projector,
+      status,
+    } = values;
+    dispatch({
+      type: roomActions.ADD_ROOM,
+      payload: {
+        name,
+        type: roomType,
+        capacity,
+        description,
+        divice: {
+          airConditioner,
+          projector,
+          status,
+        },
+      },
+    });
     fetchAndCloseModal();
   };
 
-  const updateRoom = () => {
+  const onSubmitHandlerUpdate: SubmitHandler<IregisterInput> = (values) => {
+    const { name, roomType, capacity, description } = values;
     dispatch({
       type: roomActions.UPDATE_ROOM,
       id: roomInfo?._id,
@@ -119,6 +113,9 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
         {type === modalTypes.UPDATE ? "Update room" : null}
         {type === modalTypes.DELETE ? "Delete room" : null}
         {type === modalTypes.ADD ? "Add new room" : null}
+        <IconButton className="DialogTitleClose" onClick={() => onCloseModal()}>
+          X
+        </IconButton>
       </DialogTitle>
       <DialogContent>
         {type === modalTypes.VIEW ? (
@@ -130,90 +127,117 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
         ) : null}
         {type === modalTypes.ADD || type === modalTypes.UPDATE ? (
           <>
-            <p>Name: </p>
-            <TextField
-              size="small"
-              type="text"
-              fullWidth={true}
-              defaultValue={type === modalTypes.UPDATE ? roomInfo?.name : null}
-              onChange={(e: IeventOnchangeInput) =>
-                setState({ ...state, name: e.target.value })
-              }
-            />
-            <p className="mt-2">Type: </p>
-            <Select
-              size="small"
-              fullWidth={true}
-              defaultValue={type === modalTypes.UPDATE ? roomInfo?.type : null}
-              onChange={(e: IeventOnchangeSelect) =>
-                setState({ ...state, roomType: e.target.value })
+            <form
+              onSubmit={
+                type === modalTypes.ADD
+                  ? handleSubmit(onSubmitHandlerAdd)
+                  : handleSubmit(onSubmitHandlerUpdate)
               }
             >
-              {roomOptions.map((room) => {
-                return (
-                  <MenuItem key={room?.value} value={room?.value}>
-                    {room?.label}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-            <p className="mt-2">Capacity: </p>
-            <TextField
-              size="small"
-              type="number"
-              fullWidth={true}
-              defaultValue={
-                type === modalTypes.UPDATE ? roomInfo?.capacity : null
-              }
-              onChange={(e: IeventOnchangeSelect) =>
-                setState({ ...state, capacity: e.target.value })
-              }
-            />
-            <p className="mt-2">Description: </p>
-            <TextField
-              size="small"
-              type="textarea"
-              multiline={true}
-              rows={4}
-              fullWidth={true}
-              defaultValue={
-                type === modalTypes.UPDATE ? roomInfo?.description : null
-              }
-              onChange={(e: IeventOnchangeInput) =>
-                setState({ ...state, description: e.target.value })
-              }
-            />
-          </>
-        ) : null}
-        {type === modalTypes.ADD ? (
-          <>
-            <p className="mt-2">Air Conditioner: </p>
-            <TextField
-              size="small"
-              type="text"
-              fullWidth={true}
-              onChange={(e: IeventOnchangeInput) =>
-                setState({ ...state, airConditioner: e.target.value })
-              }
-            />
-            <p className="mt-2">Projector: </p>
-            <TextField
-              size="small"
-              type="text"
-              fullWidth={true}
-              onChange={(e: IeventOnchangeInput) =>
-                setState({ ...state, projector: e.target.value })
-              }
-            />
-            <p className="mt-2">Status: </p>
-            <TextField
-              size="small"
-              type="text"
-              fullWidth={true}
-              onChange={(e: IeventOnchangeInput) =>
-                setState({ ...state, status: e.target.value })
-              }
-            />
+              <p>Name: </p>
+              <TextField
+                size="small"
+                type="text"
+                fullWidth={true}
+                defaultValue={
+                  type === modalTypes.UPDATE ? roomInfo?.name : null
+                }
+                error={!!errors["name"]}
+                helperText={errors["name"] ? errors["name"].message : ""}
+                {...register("name")}
+              />
+              <p className="mt-2">Type: </p>
+              <Select
+                size="small"
+                fullWidth={true}
+                defaultValue={type === modalTypes.UPDATE ? roomInfo?.type : ""}
+                error={!!errors["roomType"]}
+                {...register("roomType")}
+              >
+                {roomOptions.map((room) => {
+                  return (
+                    <MenuItem key={room?.value} value={room?.value}>
+                      {room?.label}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+              <p className="mt-2">Capacity: </p>
+              <TextField
+                size="small"
+                type="number"
+                fullWidth={true}
+                defaultValue={
+                  type === modalTypes.UPDATE ? roomInfo?.capacity : ""
+                }
+                error={!!errors["capacity"]}
+                helperText={
+                  errors["capacity"] ? errors["capacity"].message : ""
+                }
+                {...register("capacity")}
+              />
+              <p className="mt-2">Description: </p>
+              <TextField
+                size="small"
+                type="textarea"
+                multiline={true}
+                rows={4}
+                fullWidth={true}
+                defaultValue={
+                  type === modalTypes.UPDATE ? roomInfo?.description : ""
+                }
+                error={!!errors["description"]}
+                helperText={
+                  errors["description"] ? errors["description"].message : ""
+                }
+                {...register("description")}
+              />
+              <p className="mt-2">Air Conditioner: </p>
+              <TextField
+                size="small"
+                type="text"
+                fullWidth={true}
+                defaultValue={
+                  type === modalTypes.UPDATE ? roomInfo?.divice?.airConditioner : ""
+                }
+                error={!!errors["airConditioner"]}
+                helperText={
+                  errors["airConditioner"]
+                    ? errors["airConditioner"].message
+                    : ""
+                }
+                {...register("airConditioner")}
+              />
+              <p className="mt-2">Projector: </p>
+              <TextField
+                size="small"
+                type="text"
+                fullWidth={true}
+                defaultValue={
+                  type === modalTypes.UPDATE ? roomInfo?.divice?.projector : ""
+                }
+                error={!!errors["projector"]}
+                helperText={
+                  errors["projector"] ? errors["projector"].message : ""
+                }
+                {...register("projector")}
+              />
+              <p className="mt-2">Status: </p>
+              <TextField
+                size="small"
+                type="text"
+                fullWidth={true}
+                defaultValue={
+                  type === modalTypes.UPDATE ? roomInfo?.divice?.status : ""
+                }
+                error={!!errors["status"]}
+                helperText={errors["status"] ? errors["status"].message : ""}
+                {...register("status")}
+              />
+              <Button type="submit" variant="outlined" size="small" className="mt-4 w-100">
+                SAVE
+              </Button>
+            </form>
           </>
         ) : null}
         {type === modalTypes.DELETE ? (
@@ -223,16 +247,6 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
         ) : null}
       </DialogContent>
       <DialogActions>
-        {type === modalTypes.ADD ? (
-          <Button variant="outlined" size="small" onClick={() => addNewRoom()}>
-            Add
-          </Button>
-        ) : null}
-        {type === modalTypes.UPDATE ? (
-          <Button variant="outlined" size="small" onClick={() => updateRoom()}>
-            Save
-          </Button>
-        ) : null}
         {type === modalTypes.DELETE ? (
           <Button
             variant="outlined"
@@ -243,14 +257,6 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
             Yes
           </Button>
         ) : null}
-        <Button
-          variant="outlined"
-          size="small"
-          color="error"
-          onClick={() => onCloseModal()}
-        >
-          Close
-        </Button>
       </DialogActions>
     </Dialog>
   );
