@@ -17,7 +17,7 @@ import {
 import { IpropModalRoom } from "../../../interfaces/room.interface";
 import { modalTypes, roomOptions } from "../../../constants/constant";
 import { roomActions } from "../../../store/actions";
-import { registerSchema, IregisterInput } from "../../../utils/room.util";
+import { registerSchemaRoomForm, IregisterInputRoomForm } from "../../../utils/room.util";
 
 const ModalRoomMgtPage = (props: IpropModalRoom) => {
   const {
@@ -34,8 +34,8 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
     register,
     reset,
     formState: { errors, isSubmitSuccessful },
-  } = useForm<IregisterInput>({
-    resolver: zodResolver(registerSchema),
+  } = useForm<IregisterInputRoomForm>({
+    resolver: zodResolver(registerSchemaRoomForm),
   });
   useEffect(() => {
     if (isSubmitSuccessful) {
@@ -43,7 +43,7 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
     }
   }, [isSubmitSuccessful]);
 
-  const onSubmitHandlerAdd: SubmitHandler<IregisterInput> = (values) => {
+  const onSubmitHandlerAdd: SubmitHandler<IregisterInputRoomForm> = (values) => {
     const {
       name,
       roomType,
@@ -70,7 +70,7 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
     fetchAndCloseModal();
   };
 
-  const onSubmitHandlerUpdate: SubmitHandler<IregisterInput> = (values) => {
+  const onSubmitHandlerUpdate: SubmitHandler<IregisterInputRoomForm> = (values) => {
     const { name, roomType, capacity, description } = values;
     dispatch({
       type: roomActions.UPDATE_ROOM,

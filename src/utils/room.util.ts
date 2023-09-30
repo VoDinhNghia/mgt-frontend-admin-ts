@@ -41,7 +41,7 @@ export const headerRoomTable = () => {
   return headers;
 };
 
-export const registerSchema = object({
+export const registerSchemaRoomForm = object({
   name: string().nonempty("name must is provided"),
   roomType: string().nonempty("type must is provided"),
   capacity: string().transform((capa) => parseInt(capa)).pipe(number().max(500).min(0)),
@@ -51,4 +51,4 @@ export const registerSchema = object({
   status: string().nonempty("status must is provided"),
 });
 
-export type IregisterInput = TypeOf<typeof registerSchema>;
+export type IregisterInputRoomForm = TypeOf<typeof registerSchemaRoomForm>;
