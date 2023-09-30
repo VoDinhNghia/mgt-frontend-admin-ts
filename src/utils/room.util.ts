@@ -1,3 +1,5 @@
+import { TypeOf, number, object, string } from "zod";
+
 export const headerRoomTable = () => {
   const headers = [
     {
@@ -38,3 +40,15 @@ export const headerRoomTable = () => {
   ];
   return headers;
 };
+
+export const registerSchema = object({
+  name: string().nonempty("name must is provided"),
+  roomType: string().nonempty("type must is provided"),
+  capacity: string().transform((capa) => parseInt(capa)).pipe(number().max(500).min(0)),
+  description: string().nullable(),
+  airConditioner: string().nonempty("airConditioner must is provided"),
+  projector: string().nonempty("projector must is provided"),
+  status: string().nonempty("status must is provided"),
+});
+
+export type IregisterInput = TypeOf<typeof registerSchema>;
