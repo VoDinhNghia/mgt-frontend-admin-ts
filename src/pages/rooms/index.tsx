@@ -99,21 +99,9 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
     fetchRooms(1, newLimit);
   };
 
-  const handleModalDivice = (roomInfo = {}) => {
-    setState({ ...state, isShowModalDivice: true, roomInfo });
-  };
-
-  const handleModalUpdate = (roomInfo = {}) => {
-    setState({ ...state, isShowModalUpdate: true, roomInfo });
-  };
-
-  const handleModalDelete = (roomInfo = {}) => {
-    setState({ ...state, isShowModalDelete: true, roomInfo });
-  };
-
   const handleReadMore = (roomInfo: IroomInfoReadMore) => {
     const isReadMore = allStateReadMore[`${roomInfo?._id}`];
-    setState({ ...state, [`${roomInfo?._id}`]: !isReadMore, roomInfo });
+    setState({ ...state, readMore: { [`${roomInfo?._id}`]: !isReadMore }, roomInfo });
   };
 
   const onSearch = (searchKey: string) => {
@@ -188,7 +176,7 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                             <Button
                               variant="outline-primary"
                               size="sm"
-                              onClick={() => handleModalDivice(room)}
+                              onClick={() => setState({ ...state, isShowModalDivice: true, roomInfo: room })}
                             >
                               Detail
                             </Button>
@@ -197,7 +185,7 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                             <Button
                               variant="outline-primary"
                               size="sm"
-                              onClick={() => handleModalUpdate(room)}
+                              onClick={() => setState({ ...state, isShowModalUpdate: true, roomInfo: room })}
                               disabled={!isPermissionUpdate}
                             >
                               <BsPencilSquare />
@@ -205,7 +193,7 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                             <Button
                               variant="outline-danger"
                               size="sm"
-                              onClick={() => handleModalDelete(room)}
+                              onClick={() => setState({ ...state, isShowModalDelete: true, roomInfo: room })}
                               disabled={!isPermissionDelete}
                             >
                               <BsTrash />
