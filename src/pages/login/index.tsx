@@ -1,21 +1,41 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
 import { NotificationManager } from "react-notifications";
-import React, { useState } from "react";
-import { Row, Col, Form, Button } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { Row, Col, Button } from "react-bootstrap";
 import "./index.css";
-import { IeventOnchangeInput } from "../../interfaces/common.interface";
 import { fetchPermissions, login } from "../../services/auth.service";
 import { routes } from "../../constants/constant";
+import { TextField } from "@mui/material";
+import {
+  registerSchemaLoginForm,
+  IregisterInputLoginForm,
+} from "../../utils/login.util";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [passWord, setPassword] = useState("");
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors, isSubmitSuccessful },
+  } = useForm<IregisterInputLoginForm>({
+    resolver: zodResolver(registerSchemaLoginForm),
+  });
 
-  const loginAction = async (): Promise<void> => {
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful]);
+
+  const onSubmitHandlerLogin: SubmitHandler<IregisterInputLoginForm> = async (
+    values
+  ): Promise<void> => {
     const payload = {
-      email,
-      passWord,
+      email: values?.email,
+      passWord: values?.passWord,
     };
     const res = await login(payload);
     if (res?.statusCode === 200) {
@@ -25,7 +45,7 @@ const LoginPage = () => {
       NotificationManager.success(res?.message, "Login", 4000);
       setTimeout(() => {
         window.location.href = routes.dashboard;
-      }, 500);
+      }, 200);
     } else {
       NotificationManager.error(res?.message, "Login", 4000);
     }
@@ -39,26 +59,40 @@ const LoginPage = () => {
         </Col>
         <Col xl={6} className="p-4">
           <h3 className="text-center">Admin Dashboard</h3>
-          <Form.Label className="mt-3">Email</Form.Label>
-          <Form.Control
-            type="email"
-            onChange={(e: IeventOnchangeInput) => setEmail(e.target.value)}
-          />
-          <Form.Label className="mt-3">Password</Form.Label>
-          <Form.Control
-            type="password"
-            onChange={(e: IeventOnchangeInput) => setPassword(e.target.value)}
-          />
-          <Button
-            variant="outline-primary"
-            className="mt-4 w-100 mb-3"
-            onClick={() => loginAction()}
-          >
-            Login
-          </Button>
-          <a href="/" className="text-decoration-none text-muted">
-            Forget password ?
-          </a>
+          <div className="p-4">
+            <form onSubmit={handleSubmit(onSubmitHandlerLogin)}>
+              <p className="mt-3">Email: </p>
+              <TextField
+                fullWidth={true}
+                size="small"
+                type="email"
+                error={!!errors["email"]}
+                helperText={errors["email"] ? errors["email"].message : ""}
+                {...register("email")}
+              />
+              <p className="mt-2">Password: </p>
+              <TextField
+                fullWidth={true}
+                size="small"
+                type="password"
+                error={!!errors["passWord"]}
+                helperText={
+                  errors["passWord"] ? errors["passWord"].message : ""
+                }
+                {...register("passWord")}
+              />
+              <Button
+                type="submit"
+                variant="outline-primary"
+                className="mt-3 mb-2 w-100"
+              >
+                Login
+              </Button>
+            </form>
+            <a href="/" className="text-decoration-none text-muted">
+              Forget password ?
+            </a>
+          </div>
         </Col>
       </Row>
     </div>
