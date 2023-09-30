@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 import { userActions } from "../../../store/actions";
 import UserMgtIcon from "@rsuite/icons/legacy/Group";
 import PermissonIcon from "@rsuite/icons/legacy/Gear";
-import { validateAccessModule } from "../../../utils/permission-handle.util";
+import { validateAccessModule } from "../../../utils/permission.util";
 import RoomIcon from "@rsuite/icons/legacy/Home";
 import FacultyIcon from "@rsuite/icons/legacy/List";
 import SettingIcon from "@rsuite/icons/legacy/GearCircle";
