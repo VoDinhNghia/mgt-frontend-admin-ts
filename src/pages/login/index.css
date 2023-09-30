@@ -1,9 +1,29 @@
 .LoginPage {
-    margin: 30px;
-    border: 1px solid lightgray;
-    border-radius: 10px;
+  margin: 30px;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  background: rgb(2, 0, 36);
+  color: white;
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(95, 101, 72, 1) 0%,
+    rgba(8, 8, 109, 1) 0%,
+    rgba(8, 8, 114, 1) 0%,
+    rgba(8, 37, 140, 1) 0%,
+    rgba(34, 80, 193, 1) 0%,
+    rgba(9, 9, 121, 1) 50%,
+    rgba(8, 46, 146, 1) 50%,
+    rgba(0, 212, 255, 1) 100%
+  );
 }
 
 .ImgLoginPage {
-    width: 100%;
+  width: 100%;
+}
+
+.IconLoginPage {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
 }

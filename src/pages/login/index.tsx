@@ -58,6 +58,7 @@ const LoginPage = () => {
           <img src="/images/loginIconLeft.png" className="ImgLoginPage" />
         </Col>
         <Col xl={6} className="p-4">
+          <p className="text-center"><img src="/images/icon-login.jpg" alt="" className="IconLoginPage" /></p>
           <h3 className="text-center">Admin Dashboard</h3>
           <div className="p-4">
             <form onSubmit={handleSubmit(onSubmitHandlerLogin)}>
@@ -66,6 +67,7 @@ const LoginPage = () => {
                 fullWidth={true}
                 size="small"
                 type="email"
+                className="border border-white"
                 error={!!errors["email"]}
                 helperText={errors["email"] ? errors["email"].message : ""}
                 {...register("email")}
@@ -75,6 +77,7 @@ const LoginPage = () => {
                 fullWidth={true}
                 size="small"
                 type="password"
+                className="border border-white"
                 error={!!errors["passWord"]}
                 helperText={
                   errors["passWord"] ? errors["passWord"].message : ""
@@ -83,13 +86,13 @@ const LoginPage = () => {
               />
               <Button
                 type="submit"
-                variant="outline-primary"
-                className="mt-3 mb-2 w-100"
+                variant="light"
+                className="mt-3 mb-2 w-100 text-primary fs-5"
               >
                 Login
               </Button>
             </form>
-            <a href="/" className="text-decoration-none text-muted">
+            <a href="/" className="text-decoration-none text-white">
               Forget password ?
             </a>
           </div>
