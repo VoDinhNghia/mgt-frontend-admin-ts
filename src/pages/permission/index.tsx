@@ -47,24 +47,16 @@ const PermissionMgtPage = (props: IpropPermission) => {
   );
   const columns = headerPermisionTable();
   const rows = handleDataPermissionTable(listAdmins);
-  const [isShowModalAdd, setShowModalAdd] = useState(false);
-  const [adminInfo, setAdminInfo] = useState({});
-  const [isShowModalDelete, setShowModalDelete] = useState(false);
+  const [state, setState] = useState({
+    isShowModalAdd: false,
+    isShowModalDelete: false,
+    adminInfo: {},
+  });
 
   const fetchAdmins = () => {
     dispatch({
       type: userActions.GET_LIST_ADMIN,
     });
-  };
-
-  const onClickAddPermission = (adminInfo = {}) => {
-    setShowModalAdd(true);
-    setAdminInfo(adminInfo);
-  };
-
-  const onClickDeletePermission = (adminInfo = {}) => {
-    setShowModalDelete(true);
-    setAdminInfo(adminInfo);
   };
 
   useEffect(() => {
@@ -132,7 +124,13 @@ const PermissionMgtPage = (props: IpropPermission) => {
                             <Button
                               variant="outline-primary"
                               size="sm"
-                              onClick={() => onClickAddPermission(row)}
+                              onClick={() =>
+                                setState({
+                                  ...state,
+                                  isShowModalAdd: true,
+                                  adminInfo: row,
+                                })
+                              }
                               disabled={!isPermissionAdd}
                             >
                               <BsPencilSquare />
@@ -140,7 +138,13 @@ const PermissionMgtPage = (props: IpropPermission) => {
                             <Button
                               variant="outline-danger"
                               size="sm"
-                              onClick={() => onClickDeletePermission(row)}
+                              onClick={() =>
+                                setState({
+                                  ...state,
+                                  isShowModalDelete: true,
+                                  adminInfo: row,
+                                })
+                              }
                               disabled={!isPermissionDelete}
                             >
                               <BsTrash />
@@ -154,16 +158,20 @@ const PermissionMgtPage = (props: IpropPermission) => {
               </TableContainer>
               <ModalPermissionMgtPage
                 type={modalTypes.ADD}
-                isShowModal={isShowModalAdd}
-                onCloseModal={() => setShowModalAdd(false)}
-                adminInfo={adminInfo}
+                isShowModal={state.isShowModalAdd}
+                onCloseModal={() =>
+                  setState({ ...state, isShowModalAdd: false })
+                }
+                adminInfo={state.adminInfo}
                 fetchAdmins={() => fetchAdmins()}
               />
               <ModalPermissionMgtPage
                 type={modalTypes.DELETE}
-                isShowModal={isShowModalDelete}
-                onCloseModal={() => setShowModalDelete(false)}
-                adminInfo={adminInfo}
+                isShowModal={state.isShowModalDelete}
+                onCloseModal={() =>
+                  setState({ ...state, isShowModalDelete: false })
+                }
+                adminInfo={state.adminInfo}
                 fetchAdmins={() => fetchAdmins()}
               />
             </Container>
