@@ -14,9 +14,11 @@ import { permissionActions } from "../../../store/actions";
 const ModalPermissionMgtPage = (props: IpropModalPermission) => {
   const { type, isShowModal, onCloseModal, adminInfo, dispatch, fetchAdmins } =
     props;
-  const [moduleName, setModuleName] = useState("");
-  const [permissionId, setPermissionId] = useState("");
-  const [permission, setPermission] = useState([]);
+  const [state, setState] = useState({
+    moduleName: "",
+    permission: [],
+    permissionId: "",
+  });
   const permissions = adminInfo?.permissions?.map(
     (per: { _id: string; moduleName: string }) => {
       return {
@@ -25,6 +27,8 @@ const ModalPermissionMgtPage = (props: IpropModalPermission) => {
       };
     }
   );
+
+  const { moduleName, permission, permissionId } = state;
 
   const addPermisson = () => {
     dispatch({
@@ -67,7 +71,9 @@ const ModalPermissionMgtPage = (props: IpropModalPermission) => {
             <Form.Label>Select module name</Form.Label>
             <Select
               options={moduleOptions}
-              onChange={(e: IeventOnchangeSelect) => setModuleName(e.value)}
+              onChange={(e: IeventOnchangeSelect) =>
+                setState({ ...state, moduleName: e.value })
+              }
             />
             {moduleName ? (
               <>
@@ -76,7 +82,7 @@ const ModalPermissionMgtPage = (props: IpropModalPermission) => {
                   isMulti
                   options={permissionOptions}
                   onChange={(values: IeventOnchangeSelect) =>
-                    setPermission(values)
+                    setState({ ...state, permission: values })
                   }
                 />
               </>
@@ -88,7 +94,9 @@ const ModalPermissionMgtPage = (props: IpropModalPermission) => {
             <Form.Label>Select module name</Form.Label>
             <Select
               options={permissions}
-              onChange={(e: IeventOnchangeSelect) => setPermissionId(e.value)}
+              onChange={(e: IeventOnchangeSelect) =>
+                setState({ ...state, permissionId: e.value })
+              }
             />
           </>
         ) : null}
