@@ -1,4 +1,5 @@
-import { IparamsFetchList } from "./common.interface";
+/* eslint-disable @typescript-eslint/ban-types */
+import { IparamsFetchList, IpropModalCommon } from "./common.interface";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IpayloadCreateFaculty {
@@ -74,4 +75,9 @@ export interface IrowMajorTable {
     lastName: string;
     middleName: string;
   };
+}
+
+export interface IpropModalFaculty extends IpropModalCommon {
+  facultyInfo?: any;
+  fetchFaculties?: Function | any;
 }
