@@ -234,7 +234,7 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
                 helperText={errors["status"] ? errors["status"].message : ""}
                 {...register("status")}
               />
-              <Button type="submit" variant="contained" size="small" className="mt-4 w-100">
+              <Button type="submit" variant="contained" className="mt-4 w-100">
                 SAVE
               </Button>
             </form>

@@ -21,10 +21,7 @@ import {
   IrowUserTable,
 } from "../../interfaces/user.interface";
 import { userActions } from "../../store/actions";
-import {
-  handleDataUserTable,
-  headersUserTable,
-} from "../../utils/user.util";
+import { handleDataUserTable, headersUserTable } from "../../utils/user.util";
 import {
   Table,
   TableBody,
@@ -43,14 +40,17 @@ import { AiOutlineFilter } from "react-icons/ai";
 import FilterAndImportModal from "./filter-import";
 
 const UserManagementPage = (props: IpropUserMgt) => {
-  const [limit, setLimit] = useState(5);
-  const [page, setPage] = useState(0);
-  const [isShowModalAdd, setShowModalAdd] = useState(false);
-  const [isShowModalUpdate, setShowModalUpdate] = useState(false);
-  const [isShowModalDelete, setShowModalDelete] = useState(false);
-  const [userInfo, setUserInfo] = useState({});
-  const [isShowModalImport, setShowModalImport] = useState(false);
-  const [isShowModalFilter, setShowModalFilter] = useState(false);
+  const { dispatch, listUsers = [], totalUser = 0 } = props;
+  const [state, setState] = useState({
+    limit: 5,
+    page: 0,
+    isShowModalAdd: false,
+    isShowModalDelete: false,
+    isShowModalFilter: false,
+    isShowModalImport: false,
+    isShowModalUpdate: false,
+    userInfo: {},
+  });
   const isAccess = validateAccessModule(moduleNames.USER_MANAGEMENT);
   const isPermissionAdd = validateAction(
     permissonTypes.ADD,
@@ -64,9 +64,18 @@ const UserManagementPage = (props: IpropUserMgt) => {
     permissonTypes.DELETE,
     moduleNames.USER_MANAGEMENT
   );
-  const { dispatch, listUsers = [], totalUser = 0 } = props;
   const columns = headersUserTable();
   const rows = handleDataUserTable(listUsers);
+  const {
+    page,
+    limit,
+    isShowModalAdd,
+    isShowModalDelete,
+    isShowModalFilter,
+    isShowModalImport,
+    isShowModalUpdate,
+    userInfo,
+  } = state;
 
   const fetchUsers = (page: number, limit: number) => {
     dispatch({
@@ -79,7 +88,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
+    setState({ ...state, page: newPage });
     fetchUsers(newPage + 1, limit);
   };
 
@@ -87,18 +96,8 @@ const UserManagementPage = (props: IpropUserMgt) => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newLimit = parseInt(event.target.value);
-    setLimit(newLimit);
+    setState({ ...state, limit: newLimit });
     fetchUsers(1, newLimit);
-  };
-
-  const onShowUpdate = (user: IrowUserTable) => {
-    setShowModalUpdate(true);
-    setUserInfo(user);
-  };
-
-  const onShowDelete = (user: IrowUserTable) => {
-    setShowModalDelete(true);
-    setUserInfo(user);
   };
 
   const onSearch = (searchKey: string) => {
@@ -126,14 +125,18 @@ const UserManagementPage = (props: IpropUserMgt) => {
                   <span className="MenuMgtUser">
                     <Button
                       variant="outline-primary"
-                      onClick={() => setShowModalImport(true)}
+                      onClick={() =>
+                        setState({ ...state, isShowModalImport: true })
+                      }
                       disabled={!isPermissionAdd}
                     >
                       <TbDatabaseImport /> Import users
                     </Button>{" "}
                     <Button
                       variant="outline-primary"
-                      onClick={() => setShowModalFilter(true)}
+                      onClick={() =>
+                        setState({ ...state, isShowModalFilter: true })
+                      }
                     >
                       <AiOutlineFilter /> Filter
                     </Button>
@@ -143,7 +146,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
               <AddAndSearchTable
                 title="Add new user"
                 onSearch={(searchKey: string) => onSearch(searchKey)}
-                onShowAdd={() => setShowModalAdd(true)}
+                onShowAdd={() => setState({ ...state, isShowModalAdd: true })}
                 isDisableBtnAdd={!isPermissionAdd}
               />
               <TableContainer>
@@ -186,7 +189,13 @@ const UserManagementPage = (props: IpropUserMgt) => {
                             <Button
                               variant="outline-primary"
                               size="sm"
-                              onClick={() => onShowUpdate(row)}
+                              onClick={() =>
+                                setState({
+                                  ...state,
+                                  isShowModalUpdate: true,
+                                  userInfo: row,
+                                })
+                              }
                               disabled={!isPermissionUpdate}
                             >
                               <BsPencilSquare />
@@ -194,7 +203,13 @@ const UserManagementPage = (props: IpropUserMgt) => {
                             <Button
                               variant="outline-danger"
                               size="sm"
-                              onClick={() => onShowDelete(row)}
+                              onClick={() =>
+                                setState({
+                                  ...state,
+                                  isShowModalDelete: true,
+                                  userInfo: row,
+                                })
+                              }
                               disabled={!isPermissionDelete}
                             >
                               <BsTrash />
@@ -221,33 +236,41 @@ const UserManagementPage = (props: IpropUserMgt) => {
           <ModalUserMgtPage
             type={modalTypes.ADD}
             isShowModal={isShowModalAdd}
-            onCloseModal={() => setShowModalAdd(false)}
+            onCloseModal={() => setState({ ...state, isShowModalAdd: false })}
             fetchUsers={() => fetchUsers(page + 1, limit)}
           />
           <ModalUserMgtPage
             type={modalTypes.UPDATE}
             isShowModal={isShowModalUpdate}
-            onCloseModal={() => setShowModalUpdate(false)}
+            onCloseModal={() =>
+              setState({ ...state, isShowModalUpdate: false })
+            }
             fetchUsers={() => fetchUsers(page + 1, limit)}
             userInfo={userInfo}
           />
           <ModalUserMgtPage
             type={modalTypes.DELETE}
             isShowModal={isShowModalDelete}
-            onCloseModal={() => setShowModalDelete(false)}
+            onCloseModal={() =>
+              setState({ ...state, isShowModalDelete: false })
+            }
             fetchUsers={() => fetchUsers(page + 1, limit)}
             userInfo={userInfo}
           />
           <FilterAndImportModal
             type={modalTypes.IMPORT}
             isShowModal={isShowModalImport}
-            onCloseModal={() => setShowModalImport(false)}
+            onCloseModal={() =>
+              setState({ ...state, isShowModalImport: false })
+            }
             fetchUsers={() => fetchUsers(page + 1, limit)}
           />
           <FilterAndImportModal
             type={modalTypes.FILTER}
             isShowModal={isShowModalFilter}
-            onCloseModal={() => setShowModalFilter(false)}
+            onCloseModal={() =>
+              setState({ ...state, isShowModalFilter: false })
+            }
             fetchUsers={() => fetchUsers(page + 1, limit)}
           />
         </div>
