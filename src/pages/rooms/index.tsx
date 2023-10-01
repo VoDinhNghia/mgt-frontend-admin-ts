@@ -137,7 +137,7 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                       {columns.map((column, index) => (
                         <TableCell
                           key={`${index}-${column.id}`}
-                          className="bg-primary text-white"
+                          className="bg-success text-white"
                         >
                           {column.label}
                         </TableCell>

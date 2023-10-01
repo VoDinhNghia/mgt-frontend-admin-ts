@@ -59,7 +59,7 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
             {columns.map((column, index) => (
               <TableCell
                 key={`${index}-${column.label}`}
-                className="bg-primary text-white"
+                className="bg-success text-white"
               >
                 {column.label}
               </TableCell>

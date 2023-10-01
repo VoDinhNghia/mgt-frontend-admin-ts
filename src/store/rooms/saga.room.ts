@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
 import { NotificationManager } from "react-notifications";
@@ -10,72 +9,86 @@ import {
   deleteRoom,
   getRooms,
 } from "../../services/room.service";
-import { IparamSaga, IresponseAxios } from "../../interfaces/common.interface";
+import {
+  IparamSaga,
+  IresponseAxios,
+  IreturnTypeSaga,
+  ItakeLatestSaga,
+} from "../../interfaces/common.interface";
+import { AxiosError } from "axios";
 
-function* addNewRoom(params: IparamSaga): Generator<any> {
+function* addNewRoom(params: IparamSaga): ReturnType<IreturnTypeSaga> {
   try {
     const { payload } = params;
-    const res: IresponseAxios | any = yield call(createRoom, payload);
+    const res: IresponseAxios = yield call(createRoom, payload);
     NotificationManager.success(res?.data?.message, "Add room", 4000);
-  } catch (error: any) {
-    NotificationManager.error(error?.response?.data?.message, "Add room", 4000);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      NotificationManager.error(
+        error?.response?.data?.message,
+        "Add room",
+        4000
+      );
+    }
   }
 }
 
-function* fetchRooms(params: IparamSaga): Generator<any> {
+function* fetchRooms(params: IparamSaga): ReturnType<IreturnTypeSaga> {
   try {
     const { payload } = params;
-    const res: IresponseAxios | any = yield call(getRooms, payload);
+    const res: IresponseAxios = yield call(getRooms, payload);
     yield put({
       type: roomActions.GET_LIST_ROOM_SUCCESS,
       payload: res?.data?.data,
     });
-  } catch (error: any) {
-    NotificationManager.error(
-      error?.response?.data?.message,
-      "Get list rooms",
-      4000
-    );
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      NotificationManager.error(
+        error?.response?.data?.message,
+        "Get list rooms",
+        4000
+      );
+    }
   }
 }
 
-function* editRoom(params: IparamSaga): Generator<any> {
+function* editRoom(params: IparamSaga): ReturnType<IreturnTypeSaga> {
   try {
     const { payload, id } = params;
-    const res: IresponseAxios | any = yield call(updateRoom, id, payload);
+    const res: IresponseAxios = yield call(updateRoom, id, payload);
     NotificationManager.success(res?.data?.message, "Add room", 4000);
-  } catch (error: any) {
-    NotificationManager.error(
-      error?.response?.data?.message,
-      "Update room",
-      4000
-    );
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      NotificationManager.error(
+        error?.response?.data?.message,
+        "Update room",
+        4000
+      );
+    }
   }
 }
 
-function* removeRoom(params: IparamSaga): Generator<any> {
+function* removeRoom(params: IparamSaga): ReturnType<IreturnTypeSaga> {
   try {
     const { id } = params;
-    const res: IresponseAxios | any = yield call(deleteRoom, id);
+    const res: IresponseAxios = yield call(deleteRoom, id);
     NotificationManager.success(res?.data?.message, "Delete room", 4000);
-  } catch (error: any) {
-    NotificationManager.error(
-      error?.response?.data?.message,
-      "Delete room",
-      4000
-    );
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      NotificationManager.error(
+        error?.response?.data?.message,
+        "Delete room",
+        4000
+      );
+    }
   }
 }
 
 function* RoomSaga() {
-  // @ts-ignore
-  yield takeLatest(roomActions.ADD_ROOM, addNewRoom);
-  // @ts-ignore
-  yield takeLatest(roomActions.GET_LIST_ROOM, fetchRooms);
-  // @ts-ignore
-  yield takeLatest(roomActions.UPDATE_ROOM, editRoom);
-  // @ts-ignore
-  yield takeLatest(roomActions.DELETE_ROOM, removeRoom);
+  yield takeLatest<ItakeLatestSaga>(roomActions.ADD_ROOM, addNewRoom);
+  yield takeLatest<ItakeLatestSaga>(roomActions.GET_LIST_ROOM, fetchRooms);
+  yield takeLatest<ItakeLatestSaga>(roomActions.UPDATE_ROOM, editRoom);
+  yield takeLatest<ItakeLatestSaga>(roomActions.DELETE_ROOM, removeRoom);
 }
 
 export default RoomSaga;
