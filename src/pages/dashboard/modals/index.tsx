@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-ignore
-import { NotificationManager } from "react-notifications";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { IpropModal } from "../../../interfaces/dashboard.interface";
 import {
   Button,
@@ -12,72 +11,82 @@ import {
   TextField,
   Select,
   MenuItem,
+  IconButton,
 } from "@mui/material";
 import { modalTypes, userGenderOptions } from "../../../constants/constant";
 import { connect } from "react-redux";
 import { userActions } from "../../../store/actions";
 import { IeventOnchangeInput } from "../../../interfaces/common.interface";
+import {
+  IregisterInputUpdatePassordForm,
+  registerSchemaUpdatePasswordForm,
+} from "../../../utils/user.util";
 
 const DashboardModalPage = (props: IpropModal) => {
   const { type, isShowModal, onCloseModal, userInfo = {}, dispatch } = props;
-  const [email, setEmail] = useState("");
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [enterPassword, setEnterPassword] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [middleName, setMiddleName] = useState("");
-  const [gender, setGender] = useState("");
-  const [mobile, setMobile] = useState("");
+
+  const [state, setState] = useState({
+    email: userInfo?.email,
+    lastName: userInfo?.profile?.lastName,
+    firstName: userInfo?.profile?.firstName,
+    middleName: userInfo?.profile?.middleName,
+    gender: userInfo?.profile?.gender,
+    mobile: userInfo?.profile?.mobile,
+  });
+
+  const {
+    handleSubmit,
+    reset,
+    register,
+    formState: { errors, isSubmitSuccessful },
+  } = useForm<IregisterInputUpdatePassordForm>({
+    resolver: zodResolver(registerSchemaUpdatePasswordForm),
+  });
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful]);
+
+  const onHandleSubmitUpdatePassword: SubmitHandler<
+    IregisterInputUpdatePassordForm
+  > = (values) => {
+    const { currentPassword, newPassword } = values;
+    dispatch({
+      type: userActions.UPDATE_USER_INFO,
+      id: userInfo?._id,
+      payload: {
+        password: currentPassword,
+        newPassword,
+      },
+    });
+    fetchInfoAndCloseModal();
+  };
+
+  const { email, firstName, lastName, middleName, mobile, gender } = state;
 
   const updateInfo = () => {
     dispatch({
       type: userActions.UPDATE_USER_INFO,
       id: userInfo?._id,
       payload: {
-        email: email || userInfo?.email,
+        email,
       },
     });
     fetchInfoAndCloseModal();
   };
 
-  const updatePassword = () => {
-    if (!currentPassword || !newPassword || !enterPassword) {
-      NotificationManager.error(
-        "current password, new password and enter password must is provided!",
-        "Update password",
-        4000
-      );
-    } else if (newPassword !== enterPassword) {
-      NotificationManager.error(
-        "new password doesn't match with enter password",
-        "Update password",
-        4000
-      );
-    } else {
-      dispatch({
-        type: userActions.UPDATE_USER_INFO,
-        id: userInfo?._id,
-        payload: {
-          password: currentPassword,
-          newPassword,
-        },
-      });
-      fetchInfoAndCloseModal();
-    }
-  };
-
   const updateProfile = () => {
-    const { profile = {} } = userInfo;
     dispatch({
       type: userActions.UPDATE_USER_PROFILE,
-      id: profile?._id,
+      id: userInfo?.profile?._id,
       payload: {
-        firstName: firstName || profile?.firstName,
-        lastName: lastName || profile?.lastName,
+        firstName,
+        lastName,
         middleName,
-        mobile: mobile || profile?.mobile,
-        gender: gender || profile?.gender,
+        mobile,
+        gender,
       },
     });
     fetchInfoAndCloseModal();
@@ -103,6 +112,9 @@ const DashboardModalPage = (props: IpropModal) => {
         {type === modalTypes.UPDATE ? "Update general user info" : null}
         {type === modalTypes.UPDATE_PASSWORD ? "Update password" : null}
         {type === modalTypes.UPDATE_PROFILE ? "Update profile user" : null}
+        <IconButton className="DialogTitleClose" onClick={() => onCloseModal()}>
+          X
+        </IconButton>
       </DialogTitle>
       <DialogContent>
         {type === modalTypes.UPDATE ? (
@@ -113,21 +125,27 @@ const DashboardModalPage = (props: IpropModal) => {
               variant="outlined"
               defaultValue={userInfo?.email}
               fullWidth={true}
-              onChange={(e: IeventOnchangeInput) => setEmail(e.target.value)}
+              onChange={(e: IeventOnchangeInput) =>
+                setState({ ...state, email: e.target.value })
+              }
             />
           </>
         ) : null}
         {type === modalTypes.UPDATE_PASSWORD ? (
-          <>
+          <form onSubmit={handleSubmit(onHandleSubmitUpdatePassword)}>
             <p className="mb-1">Current password: </p>
             <TextField
               size="small"
               type="password"
               fullWidth={true}
               variant="outlined"
-              onChange={(e: IeventOnchangeInput) =>
-                setCurrentPassword(e.target.value)
+              error={!!errors["currentPassword"]}
+              helperText={
+                errors["currentPassword"]
+                  ? errors["currentPassword"].message
+                  : ""
               }
+              {...register("currentPassword")}
             />
             <p className="mt-2 mb-1">New password: </p>
             <TextField
@@ -135,9 +153,11 @@ const DashboardModalPage = (props: IpropModal) => {
               type="password"
               fullWidth={true}
               variant="outlined"
-              onChange={(e: IeventOnchangeInput) =>
-                setNewPassword(e.target.value)
+              error={!!errors["newPassword"]}
+              helperText={
+                errors["newPassword"] ? errors["newPassword"].message : null
               }
+              {...register("newPassword")}
             />
             <p className="mt-2 mb-1">Enter new password: </p>
             <TextField
@@ -145,11 +165,18 @@ const DashboardModalPage = (props: IpropModal) => {
               type="password"
               fullWidth={true}
               variant="outlined"
-              onChange={(e: IeventOnchangeInput) =>
-                setEnterPassword(e.target.value)
+              error={!!errors["confirmPassword"]}
+              helperText={
+                errors["confirmPassword"]
+                  ? errors["confirmPassword"].message
+                  : ""
               }
+              {...register("confirmPassword")}
             />
-          </>
+            <Button type="submit" variant="contained" className="mt-4 w-100">
+              Change password
+            </Button>
+          </form>
         ) : null}
         {type === modalTypes.UPDATE_PROFILE ? (
           <>
@@ -159,7 +186,9 @@ const DashboardModalPage = (props: IpropModal) => {
               variant="outlined"
               defaultValue={userInfo?.profile?.lastName}
               fullWidth={true}
-              onChange={(e: IeventOnchangeInput) => setLastName(e.target.value)}
+              onChange={(e: IeventOnchangeInput) =>
+                setState({ ...state, lastName: e.target.value })
+              }
             />
             <p className="mt-2 mb-1">MiddleName: </p>
             <TextField
@@ -168,7 +197,7 @@ const DashboardModalPage = (props: IpropModal) => {
               defaultValue={userInfo?.profile?.middleName}
               fullWidth={true}
               onChange={(e: IeventOnchangeInput) =>
-                setMiddleName(e.target.value)
+                setState({ ...state, middleName: e.target.value })
               }
             />
             <p className="mt-2 mb-1">FirstName: </p>
@@ -178,7 +207,7 @@ const DashboardModalPage = (props: IpropModal) => {
               defaultValue={userInfo?.profile?.firstName}
               fullWidth={true}
               onChange={(e: IeventOnchangeInput) =>
-                setFirstName(e.target.value)
+                setState({ ...state, firstName: e.target.value })
               }
             />
             <p className="mt-2 mb-1">Gender: </p>
@@ -187,7 +216,9 @@ const DashboardModalPage = (props: IpropModal) => {
               variant="outlined"
               defaultValue={userInfo?.profile?.gender}
               fullWidth={true}
-              onChange={(e: IeventOnchangeInput) => setGender(e.target.value)}
+              onChange={(e: IeventOnchangeInput) =>
+                setState({ ...state, gender: e.target.value })
+              }
             >
               {userGenderOptions.map((gender, index) => {
                 return (
@@ -206,7 +237,9 @@ const DashboardModalPage = (props: IpropModal) => {
               variant="outlined"
               defaultValue={userInfo?.profile?.mobile}
               fullWidth={true}
-              onChange={(e: IeventOnchangeInput) => setMobile(e.target.value)}
+              onChange={(e: IeventOnchangeInput) =>
+                setState({ ...state, mobile: e.target.value })
+              }
             />
           </>
         ) : null}
@@ -217,19 +250,11 @@ const DashboardModalPage = (props: IpropModal) => {
             Save Info
           </Button>
         ) : null}
-        {type === modalTypes.UPDATE_PASSWORD ? (
-          <Button variant="outlined" onClick={() => updatePassword()}>
-            Change Password
-          </Button>
-        ) : null}
         {type === modalTypes.UPDATE_PROFILE ? (
           <Button variant="outlined" onClick={() => updateProfile()}>
             Save Profile
           </Button>
         ) : null}
-        <Button variant="outlined" color="error" onClick={() => onCloseModal()}>
-          Cancle
-        </Button>
       </DialogActions>
     </Dialog>
   );
