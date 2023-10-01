@@ -54,7 +54,14 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
   );
   const columns = headerTableFaculty();
 
-  const { page, limit, isShowModalAdd, facultyInfo, isShowModalDelete, isShowModalUpdate } = state;
+  const {
+    page,
+    limit,
+    isShowModalAdd,
+    facultyInfo,
+    isShowModalDelete,
+    isShowModalUpdate,
+  } = state;
 
   const fetchFaculties = (page: number, limit: number) => {
     dispatch({
@@ -127,6 +134,16 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
                     {moment(faculty?.foundYear).format(formatDate)}
                   </TableCell>
                   <TableCell>
+                    {`${faculty?.headOfSection?.lastName || ""} ${
+                      faculty?.headOfSection?.middleName || ""
+                    } ${faculty?.headOfSection?.firstName || ""}`}
+                  </TableCell>
+                  <TableCell>
+                    {`${faculty?.eputeHead?.lastName || ""} ${
+                      faculty?.eputeHead?.middleName || ""
+                    } ${faculty?.eputeHead?.firstName || ""}`}
+                  </TableCell>
+                  <TableCell>
                     <Button variant="outline-primary" size="sm">
                       Detail
                     </Button>
@@ -136,7 +153,13 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
                       variant="outline-primary"
                       size="sm"
                       disabled={!isPermissionUpdate}
-                      onClick={() => setState({ ...state, isShowModalUpdate: true, facultyInfo: faculty })}
+                      onClick={() =>
+                        setState({
+                          ...state,
+                          isShowModalUpdate: true,
+                          facultyInfo: faculty,
+                        })
+                      }
                     >
                       <BsPencilSquare />
                     </Button>{" "}
@@ -144,7 +167,13 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
                       variant="outline-danger"
                       size="sm"
                       disabled={!isPermissionDelete}
-                      onClick={() => setState({ ...state, isShowModalDelete: true, facultyInfo: faculty })}
+                      onClick={() =>
+                        setState({
+                          ...state,
+                          isShowModalDelete: true,
+                          facultyInfo: faculty,
+                        })
+                      }
                     >
                       <BsTrash />
                     </Button>

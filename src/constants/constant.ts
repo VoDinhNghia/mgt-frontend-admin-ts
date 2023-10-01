@@ -33,6 +33,7 @@ export const STUDENT_SERVER_URL = process.env.REACT_APP_API_STUDENT_URL;
 export const userRoles = {
   SUPPER_ADMIN: "SUPPER_ADMIN",
   ADMIN: "ADMIN",
+  LECTURER: "LECTURER",
 };
 
 export const moduleNames = {
@@ -277,3 +278,4 @@ export const roomOptions = [
 
 export const formatDateTime = "YYYY-MM-DD Hm:mm:ss";
 export const formatDate = "YYYY-MM-DD";
+export const formatDateTextField = "MM/DD/YYYY";
