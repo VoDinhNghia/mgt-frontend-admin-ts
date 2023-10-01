@@ -10,6 +10,8 @@ import {
   TextField,
   MenuItem,
   IconButton,
+  FormControl,
+  FormHelperText,
 } from "@mui/material";
 import {
   modalTypes,
@@ -19,7 +21,7 @@ import {
 } from "../../../constants/constant";
 import { connect } from "react-redux";
 import { userActions } from "../../../store/actions";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   IregisterInputUserAddForm,
@@ -42,6 +44,7 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
     register,
     reset,
     formState: { errors, isSubmitSuccessful },
+    control,
   } = useForm<IregisterInputUserAddForm>({
     resolver: zodResolver(registerSchemaUserAddForm),
   });
@@ -148,21 +151,39 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
               {...register("passWord")}
             />
             <p className="mt-2">Role</p>
-            <Select
-              size="small"
+            <FormControl
               fullWidth={true}
-              variant="outlined"
-              error={!!errors["role"]}
-              {...register("role")}
+              size="small"
+              error={Boolean(errors["role"])}
             >
-              {userRoleOptions.map((role, index) => {
-                return (
-                  <MenuItem value={role.value} key={`${index}-${role.value}`}>
-                    {role.value}
-                  </MenuItem>
-                );
-              })}
-            </Select>
+              <Controller
+                render={() => (
+                  <Select
+                    size="small"
+                    fullWidth={true}
+                    variant="outlined"
+                    error={!!errors["role"]}
+                    {...register("role")}
+                  >
+                    {userRoleOptions.map((role, index) => {
+                      return (
+                        <MenuItem
+                          value={role.value}
+                          key={`${index}-${role.value}`}
+                        >
+                          {role.value}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                )}
+                name="role"
+                control={control}
+              />
+              <FormHelperText>
+                {errors["role"] ? errors["role"].message : ""}
+              </FormHelperText>
+            </FormControl>
             <p className="mt-2">FirstName</p>
             <TextField
               size="small"
@@ -204,24 +225,39 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
               {...register("mobile")}
             />
             <p className="mt-2">Gender</p>
-            <Select
-              size="small"
+            <FormControl
               fullWidth={true}
-              variant="outlined"
-              error={!!errors["gender"]}
-              {...register("gender")}
+              size="small"
+              error={Boolean(errors["gender"])}
             >
-              {userGenderOptions.map((gender, index) => {
-                return (
-                  <MenuItem
-                    value={gender.value}
-                    key={`${index}-${gender.value}`}
+              <Controller
+                render={() => (
+                  <Select
+                    size="small"
+                    fullWidth={true}
+                    variant="outlined"
+                    error={!!errors["gender"]}
+                    {...register("gender")}
                   >
-                    {gender.value}
-                  </MenuItem>
-                );
-              })}
-            </Select>
+                    {userGenderOptions.map((gender, index) => {
+                      return (
+                        <MenuItem
+                          value={gender.value}
+                          key={`${index}-${gender.value}`}
+                        >
+                          {gender.value}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                )}
+                name="gender"
+                control={control}
+              />
+              <FormHelperText>
+                {errors["gender"] ? errors["gender"].message : ""}
+              </FormHelperText>
+            </FormControl>
             <Button type="submit" variant="contained" className="mt-4 w-100">
               Save
             </Button>
