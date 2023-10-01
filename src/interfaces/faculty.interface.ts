@@ -7,8 +7,8 @@ export interface IpayloadCreateFaculty {
   introduction?: string;
   foundYear?: Date | any;
   award?: string[] | any[];
-  headOfSection?: string;
-  eputeHead?: string;
+  headOfSection?: string | any;
+  eputeHead?: string | any;
 }
 
 export interface IparamFetchFaculty extends IparamsFetchList {
@@ -80,4 +80,5 @@ export interface IrowMajorTable {
 export interface IpropModalFaculty extends IpropModalCommon {
   facultyInfo?: any;
   fetchFaculties?: Function | any;
+  listUsers?: any;
 }

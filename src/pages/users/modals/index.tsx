@@ -328,14 +328,13 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
       </DialogContent>
       <DialogActions>
         {type === modalTypes.UPDATE ? (
-          <Button variant="outlined" size="small" onClick={() => updateUser()}>
+          <Button variant="contained" className="w-100" onClick={() => updateUser()}>
             Save
           </Button>
         ) : null}
         {type === modalTypes.DELETE ? (
           <Button
-            variant="outlined"
-            size="small"
+            variant="contained"
             color="error"
             onClick={() => deleteUser()}
           >
