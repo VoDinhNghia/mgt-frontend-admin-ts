@@ -9,6 +9,7 @@ import {
   Button,
   Select,
   MenuItem,
+  IconButton,
 } from "@mui/material";
 import {
   modalTypes,
@@ -24,16 +25,18 @@ import { userActions } from "../../../store/actions";
 
 const FilterAndImportModal = (props: IpropImportFilterUser) => {
   const { type, isShowModal, onCloseModal, dispatch, fetchUsers } = props;
-  const [file, setFile] = useState("");
-  const [role, setRole] = useState("");
-  const [status, setStatus] = useState("");
+  const [state, setState] = useState({
+    file: "",
+    role: "",
+    status: "",
+  });
 
   const onFilter = () => {
     dispatch({
       type: userActions.GET_LIST_USER,
       payload: {
-        status,
-        role,
+        status: state.status,
+        role: state.role,
       },
     });
     closeModal();
@@ -41,7 +44,7 @@ const FilterAndImportModal = (props: IpropImportFilterUser) => {
 
   const onImport = () => {
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", state.file);
     dispatch({
       type: userActions.IMPORT_USER,
       payload: formData,
@@ -68,16 +71,25 @@ const FilterAndImportModal = (props: IpropImportFilterUser) => {
       <DialogTitle>
         {type === modalTypes.IMPORT ? "Import multi users" : null}
         {type === modalTypes.FILTER ? "Filter user" : null}
+        <IconButton className="DialogTitleClose" onClick={() => onCloseModal()}>
+          X
+        </IconButton>
       </DialogTitle>
       <DialogContent>
         {type === modalTypes.IMPORT ? (
-          <>
+          <form onSubmit={() => onImport()}>
             <Form.Label>Select file csv:</Form.Label>
             <Form.Control
               type="file"
-              onChange={(e: IeventOnchangeFile) => setFile(e.target.files[0])}
+              required={true}
+              onChange={(e: IeventOnchangeFile) =>
+                setState({ ...state, file: e.target.files[0] })
+              }
             />
-          </>
+            <Button variant="contained" className="mt-4 w-100" type="submit">
+              Import
+            </Button>
+          </form>
         ) : null}
         {type === modalTypes.FILTER ? (
           <>
@@ -86,7 +98,9 @@ const FilterAndImportModal = (props: IpropImportFilterUser) => {
               size="small"
               variant="outlined"
               fullWidth={true}
-              onChange={(e: IeventOnchangeInput) => setRole(e.target.value)}
+              onChange={(e: IeventOnchangeInput) =>
+                setState({ ...state, role: e.target.value })
+              }
             >
               {userRoleOptions.map((role, index) => {
                 return (
@@ -101,7 +115,9 @@ const FilterAndImportModal = (props: IpropImportFilterUser) => {
               size="small"
               variant="outlined"
               fullWidth={true}
-              onChange={(e: IeventOnchangeInput) => setStatus(e.target.value)}
+              onChange={(e: IeventOnchangeInput) =>
+                setState({ ...state, status: e.target.value })
+              }
             >
               {userStatusOptions.map((status, index) => {
                 return (
@@ -118,28 +134,15 @@ const FilterAndImportModal = (props: IpropImportFilterUser) => {
         ) : null}
       </DialogContent>
       <DialogActions>
-        {type === modalTypes.IMPORT ? (
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => onImport()}
-          >
-            Import
-          </Button>
-        ) : null}
         {type === modalTypes.FILTER ? (
-          <Button variant="outlined" size="small" onClick={() => onFilter()}>
+          <Button
+            variant="contained"
+            className="w-100"
+            onClick={() => onFilter()}
+          >
             Filter
           </Button>
         ) : null}
-        <Button
-          variant="outlined"
-          size="small"
-          color="error"
-          onClick={() => onCloseModal()}
-        >
-          Close
-        </Button>
       </DialogActions>
     </Dialog>
   );

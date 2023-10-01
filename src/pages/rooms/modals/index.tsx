@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { connect } from "react-redux";
 import "./index.css";
@@ -13,11 +13,16 @@ import {
   Select,
   MenuItem,
   IconButton,
+  FormHelperText,
+  FormControl,
 } from "@mui/material";
 import { IpropModalRoom } from "../../../interfaces/room.interface";
 import { modalTypes, roomOptions } from "../../../constants/constant";
 import { roomActions } from "../../../store/actions";
-import { registerSchemaRoomForm, IregisterInputRoomForm } from "../../../utils/room.util";
+import {
+  registerSchemaRoomForm,
+  IregisterInputRoomForm,
+} from "../../../utils/room.util";
 
 const ModalRoomMgtPage = (props: IpropModalRoom) => {
   const {
@@ -34,6 +39,7 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
     register,
     reset,
     formState: { errors, isSubmitSuccessful },
+    control,
   } = useForm<IregisterInputRoomForm>({
     resolver: zodResolver(registerSchemaRoomForm),
   });
@@ -43,7 +49,9 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
     }
   }, [isSubmitSuccessful]);
 
-  const onSubmitHandlerAdd: SubmitHandler<IregisterInputRoomForm> = (values) => {
+  const onSubmitHandlerAdd: SubmitHandler<IregisterInputRoomForm> = (
+    values
+  ) => {
     const {
       name,
       roomType,
@@ -70,8 +78,18 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
     fetchAndCloseModal();
   };
 
-  const onSubmitHandlerUpdate: SubmitHandler<IregisterInputRoomForm> = (values) => {
-    const { name, roomType, capacity, description } = values;
+  const onSubmitHandlerUpdate: SubmitHandler<IregisterInputRoomForm> = (
+    values
+  ) => {
+    const {
+      name,
+      roomType,
+      capacity,
+      description,
+      airConditioner,
+      projector,
+      status,
+    } = values;
     dispatch({
       type: roomActions.UPDATE_ROOM,
       id: roomInfo?._id,
@@ -80,6 +98,11 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
         type: roomType,
         capacity,
         description,
+        divice: {
+          airConditioner,
+          projector,
+          status,
+        },
       },
     });
     fetchAndCloseModal();
@@ -147,21 +170,38 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
                 {...register("name")}
               />
               <p className="mt-2">Type: </p>
-              <Select
-                size="small"
+              <FormControl
                 fullWidth={true}
-                defaultValue={type === modalTypes.UPDATE ? roomInfo?.type : ""}
-                error={!!errors["roomType"]}
-                {...register("roomType")}
+                size="small"
+                error={Boolean(errors["roomType"])}
               >
-                {roomOptions.map((room) => {
-                  return (
-                    <MenuItem key={room?.value} value={room?.value}>
-                      {room?.label}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
+                <Controller
+                  render={() => (
+                    <Select
+                      size="small"
+                      fullWidth={true}
+                      defaultValue={
+                        type === modalTypes.UPDATE ? roomInfo?.type : ""
+                      }
+                      error={!!errors["roomType"]}
+                      {...register("roomType")}
+                    >
+                      {roomOptions.map((room) => {
+                        return (
+                          <MenuItem key={room?.value} value={room?.value}>
+                            {room?.label}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  )}
+                  name="roomType"
+                  control={control}
+                />
+                <FormHelperText>
+                  {errors["roomType"] ? errors["roomType"].message : ""}
+                </FormHelperText>
+              </FormControl>
               <p className="mt-2">Capacity: </p>
               <TextField
                 size="small"
@@ -198,7 +238,9 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
                 type="text"
                 fullWidth={true}
                 defaultValue={
-                  type === modalTypes.UPDATE ? roomInfo?.divice?.airConditioner : ""
+                  type === modalTypes.UPDATE
+                    ? roomInfo?.divice?.airConditioner
+                    : ""
                 }
                 error={!!errors["airConditioner"]}
                 helperText={
