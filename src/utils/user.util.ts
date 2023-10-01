@@ -43,7 +43,7 @@ export const headersUserTable = () => {
       id: "actions",
       label: "Actions",
       minWidth: 170,
-    }
+    },
   ];
   return headers;
 };
@@ -66,7 +66,9 @@ export const handleDataUserTable = (listUsers = []) => {
 };
 
 export const registerSchemaUserAddForm = object({
-  email: string().nonempty("Email must is provided").email("This is not a valid email"),
+  email: string()
+    .nonempty("Email must is provided")
+    .email("This is not a valid email"),
   passWord: string().nonempty("password must is provided").min(6),
   role: string().nonempty("role must is provided"),
   mobile: string().nonempty("mobile must is provided"),
@@ -76,4 +78,19 @@ export const registerSchemaUserAddForm = object({
   middleName: string().nullable(),
 });
 
-export type IregisterInputUserAddForm = TypeOf<typeof registerSchemaUserAddForm>;
+export type IregisterInputUserAddForm = TypeOf<
+  typeof registerSchemaUserAddForm
+>;
+
+export const registerSchemaUpdatePasswordForm = object({
+  currentPassword: string().nonempty("currentPass must is provided"),
+  newPassword: string().nonempty("newPassword must is provided").min(6),
+  confirmPassword: string().nonempty("confirmPassword must is provided").min(6),
+}).refine((data) => data?.newPassword === data.confirmPassword, {
+  message: "confirmPassword don't match",
+  path: ["confirmPassword"],
+});
+
+export type IregisterInputUpdatePassordForm = TypeOf<
+  typeof registerSchemaUpdatePasswordForm
+>;
