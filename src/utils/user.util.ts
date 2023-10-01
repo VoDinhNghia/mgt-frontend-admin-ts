@@ -1,3 +1,4 @@
+import { object, string, TypeOf } from "zod";
 import { IuserInfo } from "../interfaces/login.interface";
 import { Iprofile } from "../interfaces/user.interface";
 
@@ -63,3 +64,16 @@ export const handleDataUserTable = (listUsers = []) => {
   });
   return data;
 };
+
+export const registerSchemaUserAddForm = object({
+  email: string().nonempty("Email must is provided").email("This is not a valid email"),
+  passWord: string().nonempty("password must is provided").min(6),
+  role: string().nonempty("role must is provided"),
+  mobile: string().nonempty("mobile must is provided"),
+  gender: string().nonempty("gender must is provided"),
+  firstName: string().nonempty("firstName must is provided"),
+  lastName: string().nonempty("lastName must is provided"),
+  middleName: string().nullable(),
+});
+
+export type IregisterInputUserAddForm = TypeOf<typeof registerSchemaUserAddForm>;

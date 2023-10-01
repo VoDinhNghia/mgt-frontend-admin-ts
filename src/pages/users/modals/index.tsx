@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-ignore
-import { NotificationManager } from "react-notifications";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IpropUserMgtModal } from "../../../interfaces/user.interface";
 import {
   Dialog,
@@ -12,6 +9,7 @@ import {
   Select,
   TextField,
   MenuItem,
+  IconButton,
 } from "@mui/material";
 import {
   modalTypes,
@@ -21,55 +19,77 @@ import {
 } from "../../../constants/constant";
 import { connect } from "react-redux";
 import { userActions } from "../../../store/actions";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  IregisterInputUserAddForm,
+  registerSchemaUserAddForm,
+} from "../../../utils/user.util";
 import { IeventOnchangeInput } from "../../../interfaces/common.interface";
 
 const ModalUserMgtPage = (props: IpropUserMgtModal) => {
   const { isShowModal, onCloseModal, type, dispatch, fetchUsers, userInfo } =
     props;
 
-  const [email, setEmail] = useState("");
-  const [passWord, setPassword] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [middleName, setMiddleName] = useState("");
-  const [mobile, setMobile] = useState("");
-  const [gender, setGender] = useState("");
-  const [role, setRole] = useState("");
-  const [status, setStatus] = useState("");
+  const [state, setState] = useState({
+    email: userInfo?.email,
+    role: userInfo?.role,
+    status: userInfo?.status,
+  });
 
-  const addNewUser = () => {
-    if (!email || !passWord || !lastName || !firstName || !role) {
-      NotificationManager.error(
-        "email, password, lasName, firstName and role must is provided!",
-        "Add user",
-        4000
-      );
-    } else {
-      dispatch({
-        type: userActions.ADD_USER,
-        payload: {
-          email,
-          passWord,
-          middleName,
-          lastName,
-          firstName,
-          role,
-          mobile,
-          gender,
-        },
-      });
-      fetchAndCloseModal();
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors, isSubmitSuccessful },
+  } = useForm<IregisterInputUserAddForm>({
+    resolver: zodResolver(registerSchemaUserAddForm),
+  });
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
     }
+  }, [isSubmitSuccessful]);
+
+  const onSubmitHandlerAdd: SubmitHandler<IregisterInputUserAddForm> = (
+    values
+  ) => {
+    const {
+      email,
+      passWord,
+      middleName,
+      lastName,
+      firstName,
+      role,
+      mobile,
+      gender,
+    } = values;
+    dispatch({
+      type: userActions.ADD_USER,
+      payload: {
+        email,
+        passWord,
+        middleName,
+        lastName,
+        firstName,
+        role,
+        mobile,
+        gender,
+      },
+    });
+    fetchAndCloseModal();
   };
 
   const updateUser = () => {
+    const { email, status, role } = state;
     dispatch({
       type: userActions.UPDATE_USER_INFO,
       id: userInfo?._id,
       payload: {
-        email: email || userInfo?.email,
-        status: status || userInfo?.status,
-        role: role || userInfo?.role,
+        email,
+        status,
+        role,
       },
     });
     fetchAndCloseModal();
@@ -101,16 +121,21 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
         {type === modalTypes.ADD ? "Add new user" : null}
         {type === modalTypes.UPDATE ? "Update user info" : null}
         {type === modalTypes.DELETE ? "Delete user" : null}
+        <IconButton className="DialogTitleClose" onClick={() => onCloseModal()}>
+          X
+        </IconButton>
       </DialogTitle>
       <DialogContent>
         {type === modalTypes.ADD ? (
-          <>
+          <form onSubmit={handleSubmit(onSubmitHandlerAdd)}>
             <p>Email</p>
             <TextField
               size="small"
               fullWidth={true}
               variant="outlined"
-              onChange={(e: IeventOnchangeInput) => setEmail(e.target.value)}
+              error={!!errors["email"]}
+              helperText={errors["email"] ? errors["email"].message : ""}
+              {...register("email")}
             />
             <p className="mt-2">Password</p>
             <TextField
@@ -118,14 +143,17 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
               fullWidth={true}
               variant="outlined"
               type="password"
-              onChange={(e: IeventOnchangeInput) => setPassword(e.target.value)}
+              error={!!errors["passWord"]}
+              helperText={errors["passWord"] ? errors["passWord"].message : ""}
+              {...register("passWord")}
             />
             <p className="mt-2">Role</p>
             <Select
               size="small"
               fullWidth={true}
               variant="outlined"
-              onChange={(e: IeventOnchangeInput) => setRole(e.target.value)}
+              error={!!errors["role"]}
+              {...register("role")}
             >
               {userRoleOptions.map((role, index) => {
                 return (
@@ -140,39 +168,48 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
               size="small"
               fullWidth={true}
               variant="outlined"
-              onChange={(e: IeventOnchangeInput) =>
-                setFirstName(e.target.value)
+              error={!!errors["firstName"]}
+              helperText={
+                errors["firstName"] ? errors["firstName"].message : ""
               }
+              {...register("firstName")}
             />
             <p className="mt-2">LastName</p>
             <TextField
               size="small"
               fullWidth={true}
               variant="outlined"
-              onChange={(e: IeventOnchangeInput) => setLastName(e.target.value)}
+              error={!!errors["lastName"]}
+              helperText={errors["lastName"] ? errors["lastName"].message : ""}
+              {...register("lastName")}
             />
             <p className="mt-2">MiddleName</p>
             <TextField
               size="small"
               fullWidth={true}
               variant="outlined"
-              onChange={(e: IeventOnchangeInput) =>
-                setMiddleName(e.target.value)
+              error={!!errors["middleName"]}
+              helperText={
+                errors["middleName"] ? errors["middleName"].message : ""
               }
+              {...register("middleName")}
             />
             <p className="mt-2">Mobile</p>
             <TextField
               size="small"
               fullWidth={true}
               variant="outlined"
-              onChange={(e: IeventOnchangeInput) => setMobile(e.target.value)}
+              error={!!errors["mobile"]}
+              helperText={errors["mobile"] ? errors["mobile"].message : ""}
+              {...register("mobile")}
             />
             <p className="mt-2">Gender</p>
             <Select
               size="small"
               fullWidth={true}
               variant="outlined"
-              onChange={(e: IeventOnchangeInput) => setGender(e.target.value)}
+              error={!!errors["gender"]}
+              {...register("gender")}
             >
               {userGenderOptions.map((gender, index) => {
                 return (
@@ -185,7 +222,10 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
                 );
               })}
             </Select>
-          </>
+            <Button type="submit" variant="contained" className="mt-4 w-100">
+              Save
+            </Button>
+          </form>
         ) : null}
         {type === modalTypes.UPDATE ? (
           <>
@@ -195,7 +235,9 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
               size="small"
               fullWidth={true}
               defaultValue={userInfo?.email}
-              onChange={(e: IeventOnchangeInput) => setEmail(e.target.value)}
+              onChange={(e: IeventOnchangeInput) =>
+                setState({ ...state, email: e.target.value })
+              }
             />
             <p className="mt-2">Role: </p>
             <Select
@@ -203,7 +245,9 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
               size="small"
               fullWidth={true}
               defaultValue={userInfo?.role}
-              onChange={(e: IeventOnchangeInput) => setRole(e.target.value)}
+              onChange={(e: IeventOnchangeInput) =>
+                setState({ ...state, role: e.target.value })
+              }
             >
               {userRoleOptions.map((role, index) => {
                 return (
@@ -219,7 +263,9 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
               size="small"
               fullWidth={true}
               defaultValue={userInfo.status}
-              onChange={(e: IeventOnchangeInput) => setStatus(e.target.value)}
+              onChange={(e: IeventOnchangeInput) =>
+                setState({ ...state, status: e.target.value })
+              }
             >
               {userStatusOptions.map((status, index) => {
                 return (
@@ -260,19 +306,6 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
             Yes
           </Button>
         ) : null}
-        {type === modalTypes.ADD ? (
-          <Button variant="outlined" size="small" onClick={() => addNewUser()}>
-            Add
-          </Button>
-        ) : null}
-        <Button
-          variant="outlined"
-          color="error"
-          onClick={() => onCloseModal()}
-          size="small"
-        >
-          Close
-        </Button>
       </DialogActions>
     </Dialog>
   );
