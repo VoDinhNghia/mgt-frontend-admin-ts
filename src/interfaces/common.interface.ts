@@ -32,6 +32,9 @@ export interface IresponseAxios {
   };
 }
 
+export type IreturnTypeSaga = any;
+export type ItakeLatestSaga = any;
+
 export interface IuserReducer {
   listUsers?: object[] | string | number | boolean | any;
   totalUser?: number;

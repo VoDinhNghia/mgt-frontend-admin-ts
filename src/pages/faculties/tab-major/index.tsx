@@ -59,7 +59,7 @@ const MajorTabPage = (props: IpropMajorTab) => {
             {columns.map((column, index) => (
               <TableCell
                 key={`${index}-${column.label}`}
-                className="bg-primary text-white"
+                className="bg-success text-white"
                 style={column.id === "actions" ? { width: column.minWidth } : undefined}
               >
                 {column.label}
