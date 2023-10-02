@@ -88,4 +88,6 @@ export type IfacultyReadMore = any;
 export interface IpropModalMajor extends IpropModalCommon {
   majorInfo?: any;
   fetchMajors?: Function | any;
+  listUsers?: any;
+  listFaculties?: any;
 }
