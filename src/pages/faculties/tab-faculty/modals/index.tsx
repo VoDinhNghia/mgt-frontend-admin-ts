@@ -15,7 +15,7 @@ import {
 import { connect } from "react-redux";
 import { IpropModalFaculty } from "../../../../interfaces/faculty.interface";
 import {
-  formatDateTextField,
+  formatDate,
   modalTypes,
   userRoles,
 } from "../../../../constants/constant";
@@ -26,7 +26,7 @@ import {
   registerSchemaFacultyForm,
 } from "../../../../utils/faculty.util";
 import { IstateRedux } from "../../../../interfaces/common.interface";
-import { userActions } from "../../../../store/actions";
+import { facultyActions, userActions } from "../../../../store/actions";
 import { IuserInfo } from "../../../../interfaces/login.interface";
 import moment from "moment";
 
@@ -38,6 +38,7 @@ const ModalFacultyPage = (props: IpropModalFaculty) => {
     listUsers = [],
     dispatch,
     facultyInfo,
+    fetchFaculties,
   } = props;
 
   const fetchUsers = () => {
@@ -76,8 +77,27 @@ const ModalFacultyPage = (props: IpropModalFaculty) => {
   const onSubmitHandlerUpdate: SubmitHandler<IregisterInputFacultyForm> = (
     values
   ) => {
-    console.log("values", values);
+    const { name, foundYear, headOfSection, eputeHead, introduction } = values;
+    dispatch({
+      type: facultyActions.UPDATE_FACULTY,
+      id: facultyInfo?._id,
+      payload: {
+        name,
+        foundYear,
+        headOfSection,
+        eputeHead,
+        introduction,
+      }
+    });
+    fetchAndCloseModal();
   };
+
+  const fetchAndCloseModal = () => {
+    setTimeout(() => {
+      fetchFaculties();
+      onCloseModal();
+    }, 70);
+  }
 
   useEffect(() => {
     if (isSubmitSuccessful) {
@@ -127,7 +147,7 @@ const ModalFacultyPage = (props: IpropModalFaculty) => {
               type="date"
               defaultValue={
                 type === modalTypes.UPDATE
-                  ? moment(facultyInfo?.foundYear).format(formatDateTextField)
+                  ? moment(facultyInfo?.foundYear).format(formatDate)
                   : ""
               }
               error={!!errors["foundYear"]}

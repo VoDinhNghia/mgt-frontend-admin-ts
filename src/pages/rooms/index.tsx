@@ -13,9 +13,11 @@ import FooterPage from "../commons/footer";
 import ForbidenPage from "../commons/forbiden";
 import { Container } from "rsuite";
 import { connect } from "react-redux";
-import { IstateRedux } from "../../interfaces/common.interface";
 import {
+  IstateRedux,
   IallStateReadMore,
+} from "../../interfaces/common.interface";
+import {
   IpropRoomMgt,
   IroomInfoReadMore,
   IrowTableRoom,
@@ -101,7 +103,11 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
 
   const handleReadMore = (roomInfo: IroomInfoReadMore) => {
     const isReadMore = allStateReadMore[`${roomInfo?._id}`];
-    setState({ ...state, readMore: { [`${roomInfo?._id}`]: !isReadMore }, roomInfo });
+    setState({
+      ...state,
+      readMore: { [`${roomInfo?._id}`]: !isReadMore },
+      roomInfo,
+    });
   };
 
   const onSearch = (searchKey: string) => {
@@ -176,7 +182,13 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                             <Button
                               variant="outline-primary"
                               size="sm"
-                              onClick={() => setState({ ...state, isShowModalDivice: true, roomInfo: room })}
+                              onClick={() =>
+                                setState({
+                                  ...state,
+                                  isShowModalDivice: true,
+                                  roomInfo: room,
+                                })
+                              }
                             >
                               Detail
                             </Button>
@@ -185,7 +197,13 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                             <Button
                               variant="outline-primary"
                               size="sm"
-                              onClick={() => setState({ ...state, isShowModalUpdate: true, roomInfo: room })}
+                              onClick={() =>
+                                setState({
+                                  ...state,
+                                  isShowModalUpdate: true,
+                                  roomInfo: room,
+                                })
+                              }
                               disabled={!isPermissionUpdate}
                             >
                               <BsPencilSquare />
@@ -193,7 +211,13 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                             <Button
                               variant="outline-danger"
                               size="sm"
-                              onClick={() => setState({ ...state, isShowModalDelete: true, roomInfo: room })}
+                              onClick={() =>
+                                setState({
+                                  ...state,
+                                  isShowModalDelete: true,
+                                  roomInfo: room,
+                                })
+                              }
                               disabled={!isPermissionDelete}
                             >
                               <BsTrash />

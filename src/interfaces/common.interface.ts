@@ -89,3 +89,5 @@ export interface IpropReadMore {
   setReadMore?: Function | any;
   lengthSlice?: number;
 }
+
+export type IallStateReadMore = any;

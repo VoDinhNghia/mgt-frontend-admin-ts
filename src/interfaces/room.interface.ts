@@ -35,5 +35,4 @@ export interface IpropModalRoom extends IpropModalCommon {
   size?: string | any;
 }
 
-export type IallStateReadMore = any;
 export type IroomInfoReadMore = any;

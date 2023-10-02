@@ -82,3 +82,5 @@ export interface IpropModalFaculty extends IpropModalCommon {
   fetchFaculties?: Function | any;
   listUsers?: any;
 }
+
+export type IfacultyReadMore = any;
