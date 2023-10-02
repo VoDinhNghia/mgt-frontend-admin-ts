@@ -23,11 +23,11 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   IregisterInputFacultyForm,
+  handleUserOptions,
   registerSchemaFacultyForm,
 } from "../../../../utils/faculty.util";
 import { IstateRedux } from "../../../../interfaces/common.interface";
 import { facultyActions, userActions } from "../../../../store/actions";
-import { IuserInfo } from "../../../../interfaces/login.interface";
 import moment from "moment";
 
 const ModalFacultyPage = (props: IpropModalFaculty) => {
@@ -50,13 +50,7 @@ const ModalFacultyPage = (props: IpropModalFaculty) => {
     });
   };
 
-  const userOptions = listUsers?.map((user: IuserInfo) => {
-    const label = `${user?.profile?.lastName} ${user?.profile?.middleName} ${user?.profile?.lastName}`;
-    return {
-      value: user?.profile?._id,
-      label,
-    };
-  });
+  const userOptions = handleUserOptions(listUsers);
 
   const {
     handleSubmit,
