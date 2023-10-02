@@ -74,7 +74,20 @@ const MajorModalPage = (props: IpropModalMajor) => {
   const onSubmitHandlerAdd: SubmitHandler<IregisterInputMajorForm> = (
     values
   ) => {
-    console.log("values", values);
+    const { name, headOfSection, eputeHead, faculty, introduction, foundYear } =
+      values;
+    dispatch({
+      type: facultyActions.ADD_MAJOR,
+      payload: {
+        name,
+        headOfSection,
+        eputeHead,
+        introduction,
+        faculty,
+        foundYear,
+      },
+    });
+    fetchAndCloseModal();
   };
 
   const onSubmitHandlerUpdate: SubmitHandler<IregisterInputMajorForm> = (
