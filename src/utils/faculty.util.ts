@@ -130,7 +130,7 @@ export type IregisterInputMajorForm = TypeOf<typeof registerSchemaMajorForm>;
 
 export const handleUserOptions = (listUsers = []) => {
   const userOptions = listUsers?.map((user: IuserInfo) => {
-    const label = `${user?.profile?.lastName} ${user?.profile?.middleName} ${user?.profile?.lastName}`;
+    const label = `${user?.profile?.lastName} ${user?.profile?.middleName} ${user?.profile?.firstName}`;
     return {
       value: user?.profile?._id,
       label,
