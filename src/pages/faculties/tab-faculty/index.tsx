@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import {
+  IfacultyReadMore,
   IpropFacultyTab,
   IrowFacutyTable,
 } from "../../../interfaces/faculty.interface";
 import { connect } from "react-redux";
-import { IstateRedux } from "../../../interfaces/common.interface";
+import {
+  IallStateReadMore,
+  IstateRedux,
+} from "../../../interfaces/common.interface";
 import { facultyActions } from "../../../store/actions";
 import {
   TableContainer,
@@ -28,6 +32,7 @@ import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import { validateAction } from "../../../utils/permission.util";
 import AddAndSearchTable from "../../commons/add-search-table";
 import ModalFacultyPage from "./modals";
+import ReadMoreCommon from "../../commons/readmore";
 
 const FacultyTabPage = (props: IpropFacultyTab) => {
   const { listFaculties = [], dispatch, totalFaculty = 0 } = props;
@@ -38,6 +43,7 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
     limit: 10,
     page: 0,
     facultyInfo: {},
+    readMore: {},
   });
 
   const isPermissionAdd = validateAction(
@@ -61,7 +67,11 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
     facultyInfo,
     isShowModalDelete,
     isShowModalUpdate,
+    readMore,
   } = state;
+
+  const allStateReadMore: IallStateReadMore = readMore;
+  const facultyReadMore: IfacultyReadMore = facultyInfo;
 
   const fetchFaculties = (page: number, limit: number) => {
     dispatch({
@@ -93,6 +103,15 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
     const newLimit = parseInt(event.target.value);
     setState({ ...state, limit: newLimit });
     fetchFaculties(1, newLimit);
+  };
+
+  const handleReadMore = (facultyInfo: IfacultyReadMore) => {
+    const isReadMore = allStateReadMore[`${facultyInfo?._id}`];
+    setState({
+      ...state,
+      readMore: { [`${facultyInfo?._id}`]: !isReadMore },
+      facultyInfo,
+    });
   };
 
   useEffect(() => {
@@ -129,7 +148,19 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
                   <TableCell className="text-primary">
                     {faculty?.name}
                   </TableCell>
-                  <TableCell>{faculty?.introduction}</TableCell>
+                  <TableCell>
+                    <ReadMoreCommon
+                      isReadMore={
+                        faculty?._id === facultyReadMore?._id
+                          ? allStateReadMore[`${faculty?._id}`]
+                          : false
+                      }
+                      setReadMore={() => handleReadMore(faculty)}
+                      lengthSlice={20}
+                    >
+                      {faculty?.introduction}
+                    </ReadMoreCommon>
+                  </TableCell>
                   <TableCell>
                     {moment(faculty?.foundYear).format(formatDate)}
                   </TableCell>

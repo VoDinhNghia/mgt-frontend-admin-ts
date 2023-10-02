@@ -278,4 +278,3 @@ export const roomOptions = [
 
 export const formatDateTime = "YYYY-MM-DD Hm:mm:ss";
 export const formatDate = "YYYY-MM-DD";
-export const formatDateTextField = "MM/DD/YYYY";
