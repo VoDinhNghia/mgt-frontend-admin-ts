@@ -124,7 +124,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
                 <Card.Body>
                   <span className="MenuMgtUser">
                     <Button
-                      variant="outline-primary"
+                      variant="primary"
                       onClick={() =>
                         setState({ ...state, isShowModalImport: true })
                       }
@@ -133,7 +133,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
                       <TbDatabaseImport /> Import users
                     </Button>{" "}
                     <Button
-                      variant="outline-primary"
+                      variant="primary"
                       onClick={() =>
                         setState({ ...state, isShowModalFilter: true })
                       }

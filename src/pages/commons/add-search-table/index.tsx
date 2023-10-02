@@ -14,10 +14,10 @@ const AddAndSearchTable = (props: IpropAddAndSearchTable) => {
     <div className="mb-3 fs-6">
       <Row>
         <Col xl={3} className="text-center">
-          <Card>
+          <Card className="border-0">
             <Card.Body>
               <Button
-                variant="outlined"
+                variant="contained"
                 startIcon={<BsPlusCircle />}
                 color="primary"
                 className="w-100"
@@ -30,7 +30,7 @@ const AddAndSearchTable = (props: IpropAddAndSearchTable) => {
           </Card>
         </Col>
         <Col xl={9}>
-          <Card>
+          <Card className="border-0">
             <Card.Body>
               <Form.Control
                 type="text"
