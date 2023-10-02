@@ -110,6 +110,14 @@ const MajorModalPage = (props: IpropModalMajor) => {
     fetchAndCloseModal();
   };
 
+  const onDeleteMajor = () => {
+    dispatch({
+      type: facultyActions.DELETE_MAJOR,
+      id: majorInfo?._id,
+    });
+    fetchAndCloseModal();
+  };
+
   const fetchAndCloseModal = () => {
     setTimeout(() => {
       fetchMajors();
@@ -327,7 +335,11 @@ const MajorModalPage = (props: IpropModalMajor) => {
       </DialogContent>
       <DialogActions>
         {type === modalTypes.DELETE ? (
-          <Button variant="contained" color="error">
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => onDeleteMajor()}
+          >
             Yes
           </Button>
         ) : (
