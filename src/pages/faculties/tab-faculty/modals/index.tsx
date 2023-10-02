@@ -81,7 +81,7 @@ const ModalFacultyPage = (props: IpropModalFaculty) => {
         headOfSection,
         eputeHead,
         introduction,
-      }
+      },
     });
     fetchAndCloseModal();
   };
@@ -99,7 +99,15 @@ const ModalFacultyPage = (props: IpropModalFaculty) => {
         headOfSection,
         eputeHead,
         introduction,
-      }
+      },
+    });
+    fetchAndCloseModal();
+  };
+
+  const onDeleteFaculty = () => {
+    dispatch({
+      type: facultyActions.DELETE_FACULTY,
+      id: facultyInfo?._id,
     });
     fetchAndCloseModal();
   };
@@ -109,7 +117,7 @@ const ModalFacultyPage = (props: IpropModalFaculty) => {
       fetchFaculties();
       onCloseModal();
     }, 70);
-  }
+  };
 
   useEffect(() => {
     if (isSubmitSuccessful) {
@@ -284,7 +292,11 @@ const ModalFacultyPage = (props: IpropModalFaculty) => {
       </DialogContent>
       <DialogActions>
         {type === modalTypes.DELETE ? (
-          <Button variant="contained" color="error">
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => onDeleteFaculty()}
+          >
             Yes
           </Button>
         ) : (
