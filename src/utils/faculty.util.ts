@@ -42,7 +42,7 @@ export const headerTableFaculty = () => {
     {
       id: "actions",
       label: "Actions",
-      minWidth: 170,
+      minWidth: 102,
     },
   ];
   return data;
@@ -93,7 +93,7 @@ export const headerTableMajor = () => {
     {
       id: "actions",
       label: "Actions",
-      minWidth: 120,
+      minWidth: 102,
     },
   ];
   return data;
