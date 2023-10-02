@@ -11,10 +11,14 @@ import {
   Select,
   FormControl,
   FormHelperText,
-  MenuItem
+  MenuItem,
 } from "@mui/material";
 import { IpropModalMajor } from "../../../../interfaces/faculty.interface";
-import { formatDate, modalTypes, userRoles } from "../../../../constants/constant";
+import {
+  formatDate,
+  modalTypes,
+  userRoles,
+} from "../../../../constants/constant";
 import { IstateRedux } from "../../../../interfaces/common.interface";
 import { facultyActions, userActions } from "../../../../store/actions";
 import {
@@ -36,6 +40,7 @@ const MajorModalPage = (props: IpropModalMajor) => {
     listFaculties = [],
     listUsers = [],
     dispatch,
+    fetchMajors,
   } = props;
 
   const fetchUsers = () => {
@@ -75,7 +80,28 @@ const MajorModalPage = (props: IpropModalMajor) => {
   const onSubmitHandlerUpdate: SubmitHandler<IregisterInputMajorForm> = (
     values
   ) => {
-    console.log("values", values);
+    const { name, headOfSection, eputeHead, faculty, introduction, foundYear } =
+      values;
+    dispatch({
+      type: facultyActions.UPDATE_MAJOR,
+      id: majorInfo?._id,
+      payload: {
+        name,
+        headOfSection,
+        eputeHead,
+        introduction,
+        faculty,
+        foundYear,
+      },
+    });
+    fetchAndCloseModal();
+  };
+
+  const fetchAndCloseModal = () => {
+    setTimeout(() => {
+      fetchMajors();
+      onCloseModal();
+    }, 70);
   };
 
   useEffect(() => {
@@ -103,7 +129,13 @@ const MajorModalPage = (props: IpropModalMajor) => {
       </DialogTitle>
       <DialogContent>
         {type === modalTypes.ADD || type === modalTypes.UPDATE ? (
-          <form onSubmit={type === modalTypes.ADD ? handleSubmit(onSubmitHandlerAdd) : handleSubmit(onSubmitHandlerUpdate)}>
+          <form
+            onSubmit={
+              type === modalTypes.ADD
+                ? handleSubmit(onSubmitHandlerAdd)
+                : handleSubmit(onSubmitHandlerUpdate)
+            }
+          >
             <p>Name: </p>
             <TextField
               fullWidth={true}
@@ -142,25 +174,21 @@ const MajorModalPage = (props: IpropModalMajor) => {
                     fullWidth={true}
                     size="small"
                     defaultValue={
-                      type === modalTypes.UPDATE
-                        ? majorInfo?.faculty?._id
-                        : ""
+                      type === modalTypes.UPDATE ? majorInfo?.faculty?._id : ""
                     }
                     error={!!errors["faculty"]}
                     {...register("faculty")}
                   >
-                    {facultyOptions?.map(
-                      (item) => {
-                        return (
-                          <MenuItem
-                            key={`${item.value}-faculty`}
-                            value={item.value}
-                          >
-                            {item.label}
-                          </MenuItem>
-                        );
-                      }
-                    )}
+                    {facultyOptions?.map((item) => {
+                      return (
+                        <MenuItem
+                          key={`${item.value}-faculty`}
+                          value={item.value}
+                        >
+                          {item.label}
+                        </MenuItem>
+                      );
+                    })}
                   </Select>
                 )}
                 name="faculty"
