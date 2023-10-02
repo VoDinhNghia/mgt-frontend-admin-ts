@@ -71,7 +71,19 @@ const ModalFacultyPage = (props: IpropModalFaculty) => {
   const onSubmitHandlerAdd: SubmitHandler<IregisterInputFacultyForm> = (
     values
   ) => {
-    console.log("values", values);
+    const { name, foundYear, headOfSection, eputeHead, introduction } = values;
+    dispatch({
+      type: facultyActions.ADD_FACULTY,
+      id: facultyInfo?._id,
+      payload: {
+        name,
+        foundYear,
+        headOfSection,
+        eputeHead,
+        introduction,
+      }
+    });
+    fetchAndCloseModal();
   };
 
   const onSubmitHandlerUpdate: SubmitHandler<IregisterInputFacultyForm> = (

@@ -134,6 +134,7 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
                 <TableCell
                   key={`${index}-${column.label}`}
                   className="bg-success text-white"
+                  style={column.id === "actions" ? { width: column.minWidth } : undefined}
                 >
                   {column.label}
                 </TableCell>
@@ -164,12 +165,12 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
                   <TableCell>
                     {moment(faculty?.foundYear).format(formatDate)}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="text-primary">
                     {`${faculty?.headOfSection?.lastName || ""} ${
                       faculty?.headOfSection?.middleName || ""
                     } ${faculty?.headOfSection?.firstName || ""}`}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="text-primary">
                     {`${faculty?.eputeHead?.lastName || ""} ${
                       faculty?.eputeHead?.middleName || ""
                     } ${faculty?.eputeHead?.firstName || ""}`}
