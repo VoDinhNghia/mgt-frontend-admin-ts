@@ -44,8 +44,8 @@ const ProfileDashboardPage = (props: IpropProfile) => {
           <Box>
             <TabList
               onChange={onChangeTab}
-              textColor="secondary"
-              indicatorColor="secondary"
+              textColor="primary"
+              indicatorColor="primary"
               aria-label="lab tabs"
             >
               <Tab value={generalTab} label="General Info" />
