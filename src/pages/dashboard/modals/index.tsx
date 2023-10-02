@@ -246,12 +246,12 @@ const DashboardModalPage = (props: IpropModal) => {
       </DialogContent>
       <DialogActions>
         {type === modalTypes.UPDATE ? (
-          <Button variant="outlined" onClick={() => updateInfo()}>
+          <Button variant="contained" className="w-100" onClick={() => updateInfo()}>
             Save Info
           </Button>
         ) : null}
         {type === modalTypes.UPDATE_PROFILE ? (
-          <Button variant="outlined" onClick={() => updateProfile()}>
+          <Button variant="contained" className="w-100" onClick={() => updateProfile()}>
             Save Profile
           </Button>
         ) : null}
