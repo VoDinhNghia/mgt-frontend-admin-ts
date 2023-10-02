@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {
+  ImajorReadMore,
   IpropMajorTab,
   IrowMajorTable,
 } from "../../../interfaces/faculty.interface";
-import { IstateRedux } from "../../../interfaces/common.interface";
+import {
+  IallStateReadMore,
+  IstateRedux,
+} from "../../../interfaces/common.interface";
 import { facultyActions } from "../../../store/actions";
 import {
   TableContainer,
@@ -28,6 +32,7 @@ import { Button } from "react-bootstrap";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import MajorModalPage from "./modals";
 import AddAndSearchTable from "../../commons/add-search-table";
+import ReadMoreCommon from "../../commons/readmore";
 
 const MajorTabPage = (props: IpropMajorTab) => {
   const { dispatch, listMajors = [], totalMajor = 0 } = props;
@@ -38,6 +43,7 @@ const MajorTabPage = (props: IpropMajorTab) => {
     majorInfo: {},
     page: 0,
     limit: 10,
+    readMore: {},
   });
 
   const isPermissionAdd = validateAction(
@@ -60,7 +66,10 @@ const MajorTabPage = (props: IpropMajorTab) => {
     page,
     limit,
     majorInfo = {},
+    readMore = {},
   } = state;
+  const allStateReadMore: IallStateReadMore = readMore;
+  const majorReadMore: ImajorReadMore = majorInfo;
 
   const fetchMajors = (page: number, limit: number) => {
     dispatch({
@@ -85,9 +94,14 @@ const MajorTabPage = (props: IpropMajorTab) => {
     fetchMajors(1, newLimit);
   };
 
-  useEffect(() => {
-    fetchMajors(page + 1, limit);
-  }, []);
+  const handleReadMore = (majorInfo: ImajorReadMore) => {
+    const isReadMore = allStateReadMore[`${majorInfo?._id}`];
+    setState({
+      ...state,
+      readMore: { [`${majorInfo?._id}`]: !isReadMore },
+      majorInfo,
+    });
+  };
 
   const onSearch = (searchKey: string) => {
     dispatch({
@@ -97,6 +111,10 @@ const MajorTabPage = (props: IpropMajorTab) => {
       },
     });
   };
+
+  useEffect(() => {
+    fetchMajors(page + 1, limit);
+  }, []);
 
   return (
     <div>
@@ -131,7 +149,19 @@ const MajorTabPage = (props: IpropMajorTab) => {
                 <TableRow hover tabIndex={-1} key={major?._id}>
                   <TableCell>{index + 1}</TableCell>
                   <TableCell className="text-primary">{major?.name}</TableCell>
-                  <TableCell>{major?.introduction}</TableCell>
+                  <TableCell>
+                    <ReadMoreCommon
+                      isReadMore={
+                        major?._id === majorReadMore?._id
+                          ? allStateReadMore[`${major?._id}`]
+                          : false
+                      }
+                      setReadMore={() => handleReadMore(major)}
+                      lengthSlice={20}
+                    >
+                      {major?.introduction}
+                    </ReadMoreCommon>
+                  </TableCell>
                   <TableCell>
                     {moment(major?.foundYear).format(formatDate)}
                   </TableCell>
