@@ -9,6 +9,8 @@ import {
   getMajors,
   updateFaculty,
   updateMajor,
+  deleteFaculty,
+  deleteMajor,
 } from "../../services/faculty.service";
 import {
   IparamSaga,
@@ -121,6 +123,38 @@ function* fetchMajors(params: IparamSaga): ReturnType<IreturnTypeSaga> {
   }
 }
 
+function* removeFaculty(params: IparamSaga): ReturnType<IreturnTypeSaga> {
+  try {
+    const { id } = params;
+    const res: IresponseAxios = yield call(deleteFaculty, id);
+    NotificationManager.success(res?.data?.message, "Delete faculty", 4000);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      NotificationManager.error(
+        error?.response?.data?.message,
+        "Delete faculty",
+        4000
+      );
+    }
+  }
+}
+
+function* removeMajor(params: IparamSaga): ReturnType<IreturnTypeSaga> {
+  try {
+    const { id } = params;
+    const res: IresponseAxios = yield call(deleteMajor, id);
+    NotificationManager.success(res?.data?.message, "Delete major", 4000);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      NotificationManager.error(
+        error?.response?.data?.message,
+        "Delete major",
+        4000
+      );
+    }
+  }
+}
+
 function* FacultySaga() {
   yield takeLatest<ItakeLatestSaga>(facultyActions.ADD_FACULTY, addFaculty);
   yield takeLatest<ItakeLatestSaga>(facultyActions.ADD_MAJOR, addMajor);
@@ -131,6 +165,11 @@ function* FacultySaga() {
     fetchFaculties
   );
   yield takeLatest<ItakeLatestSaga>(facultyActions.GET_LIST_MAJOR, fetchMajors);
+  yield takeLatest<ItakeLatestSaga>(
+    facultyActions.DELETE_FACULTY,
+    removeFaculty
+  );
+  yield takeLatest<ItakeLatestSaga>(facultyActions.DELETE_MAJOR, removeMajor);
 }
 
 export default FacultySaga;
