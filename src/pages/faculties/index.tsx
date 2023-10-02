@@ -32,8 +32,8 @@ const FacultyMgtPage = () => {
                   <Box>
                     <TabList
                       onChange={onChangeTab}
-                      textColor="secondary"
-                      indicatorColor="secondary"
+                      textColor="primary"
+                      indicatorColor="primary"
                       aria-label="faculties lab"
                     >
                       <Tab value={facultyTab} label={facultyTab} />
