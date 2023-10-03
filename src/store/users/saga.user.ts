@@ -1,8 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-ignore
-import { NotificationManager } from "react-notifications";
-import { call, put, takeLatest } from "redux-saga/effects";
-import { AxiosError } from "axios";
+import { takeLatest } from "redux-saga/effects";
 import {
   getMeInfo,
   getUserList,
@@ -14,146 +10,59 @@ import {
   getListAdmin,
 } from "../../services/user.service";
 import { userActions } from "../actions";
+import { IparamSaga, ItakeLatestSaga } from "../../interfaces/common.interface";
 import {
-  IparamSaga,
-  IresponseAxios,
-  IreturnTypeSaga,
-  ItakeLatestSaga,
-} from "../../interfaces/common.interface";
+  addSagaCommon,
+  fetchListSagaCommon,
+  removeSagaCommon,
+  updateSagaCommon,
+} from "../common";
 
-function* fetchMe(): ReturnType<IreturnTypeSaga> {
-  try {
-    const res: IresponseAxios = yield call(getMeInfo);
-    yield put({
-      type: userActions.GET_ME_SUCCESS,
-      payload: res?.data?.data,
-    });
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(error?.response?.data?.message, "Get me", 4000);
-    }
-  }
+function* fetchMe(params: IparamSaga) {
+  yield fetchListSagaCommon(
+    getMeInfo,
+    userActions.GET_ME_SUCCESS,
+    "Get me",
+    params
+  );
 }
 
-function* fetchListUsers(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { payload } = params;
-    const res: IresponseAxios = yield call(getUserList, payload);
-    yield put({
-      type: userActions.GET_LIST_USER_SUCCESS,
-      payload: res?.data?.data,
-    });
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Get list users",
-        4000
-      );
-    }
-  }
+function* fetchListUsers(params: IparamSaga) {
+  yield fetchListSagaCommon(
+    getUserList,
+    userActions.GET_LIST_USER_SUCCESS,
+    "Get list users",
+    params
+  );
 }
 
-function* updateUserInfo(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { payload, id } = params;
-    const res: IresponseAxios = yield call(updateUser, id, payload);
-    NotificationManager.success(res?.data?.message, "Update user", 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Update user info",
-        4000
-      );
-    }
-  }
+function* updateUserInfo(params: IparamSaga) {
+  yield updateSagaCommon(updateUser, params, "Update user info");
 }
 
-function* updateUserProfile(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { payload, id } = params;
-    const res: IresponseAxios = yield call(updateProfile, id, payload);
-    NotificationManager.success(
-      res?.data?.message,
-      "Update user profile",
-      4000
-    );
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Update user profile",
-        4000
-      );
-    }
-  }
+function* updateUserProfile(params: IparamSaga) {
+  yield updateSagaCommon(updateProfile, params, "Update user profile");
 }
 
-function* addNewUser(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { payload } = params;
-    const res: IresponseAxios = yield call(addUser, payload);
-    NotificationManager.success(res?.data?.message, "Add user", 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Add user",
-        4000
-      );
-    }
-  }
+function* addNewUser(params: IparamSaga) {
+  yield addSagaCommon(addUser, params, "Add user");
 }
 
-function* importMultiUsers(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { payload } = params;
-    const res: IresponseAxios = yield call(importUser, payload);
-    NotificationManager.success(res?.data?.message, "Import User", 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Import user",
-        4000
-      );
-    }
-  }
+function* importMultiUsers(params: IparamSaga) {
+  yield addSagaCommon(importUser, params, "Import user");
 }
 
-function* removeUser(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { id } = params;
-    const res: IresponseAxios = yield call(deleteUser, id);
-    NotificationManager.success(res?.data?.message, "Delete user", 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Delete user",
-        4000
-      );
-    }
-  }
+function* removeUser(params: IparamSaga) {
+  yield removeSagaCommon(deleteUser, params, "Delete user");
 }
 
-function* fetchAdmins(): ReturnType<IreturnTypeSaga> {
-  try {
-    const res: IresponseAxios = yield call(getListAdmin);
-    yield put({
-      type: userActions.GET_LIST_ADMIN_SUCCESS,
-      payload: res?.data?.data,
-    });
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Get admin list",
-        4000
-      );
-    }
-  }
+function* fetchAdmins(params: IparamSaga) {
+  yield fetchListSagaCommon(
+    getListAdmin,
+    userActions.GET_LIST_ADMIN_SUCCESS,
+    "Get admin list",
+    params
+  );
 }
 
 function* UserSaga() {

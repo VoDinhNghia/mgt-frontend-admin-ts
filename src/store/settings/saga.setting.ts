@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-ignore
-import { NotificationManager } from "react-notifications";
-import { call, put, takeLatest } from "redux-saga/effects";
+import { takeLatest } from "redux-saga/effects";
 import {
   createLearningRate,
   getLearningRate,
@@ -15,206 +12,80 @@ import {
   updateSubjectPass,
   deleteSubjectPass,
 } from "../../services/setting.service";
-import {
-  IparamSaga,
-  IresponseAxios,
-  IreturnTypeSaga,
-  ItakeLatestSaga,
-} from "../../interfaces/common.interface";
-import { AxiosError } from "axios";
+import { IparamSaga, ItakeLatestSaga } from "../../interfaces/common.interface";
 import { settingActions } from "../actions";
+import {
+  addSagaCommon,
+  fetchListSagaCommon,
+  removeSagaCommon,
+  updateSagaCommon,
+} from "../common";
 
-function* addLearningRate(params: IparamSaga): ReturnType<IreturnTypeSaga> {
+function* addLearningRate(params: IparamSaga) {
   const titleNotify = "Add learning rate";
-  try {
-    const { payload } = params;
-    const res: IresponseAxios = yield call(createLearningRate, payload);
-    NotificationManager.success(res?.data?.message, titleNotify, 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        titleNotify,
-        4000
-      );
-    }
-  }
+  yield addSagaCommon(createLearningRate, params, titleNotify);
 }
 
-function* fetchLearningRate(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { payload } = params;
-    const res: IresponseAxios = yield call(getLearningRate, payload);
-    yield put({
-      type: settingActions.GET_LIST_LEARNING_RATE_SUCCESS,
-      payload: res?.data?.data,
-    });
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Get lerning rate",
-        4000
-      );
-    }
-  }
+function* fetchLearningRate(params: IparamSaga) {
+  yield fetchListSagaCommon(
+    getLearningRate,
+    settingActions.GET_LIST_LEARNING_RATE_SUCCESS,
+    "Get list learning rate",
+    params
+  );
 }
 
-function* editLearningRate(params: IparamSaga): ReturnType<IreturnTypeSaga> {
+function* editLearningRate(params: IparamSaga) {
   const titleNotify = "Update learning rate";
-  try {
-    const { id, payload } = params;
-    const res: IresponseAxios = yield call(updateLearningRate, id, payload);
-    NotificationManager.success(res?.data?.message, titleNotify, 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        titleNotify,
-        4000
-      );
-    }
-  }
+  yield updateSagaCommon(updateLearningRate, params, titleNotify);
 }
 
-function* removeLearningRate(params: IparamSaga): ReturnType<IreturnTypeSaga> {
+function* removeLearningRate(params: IparamSaga) {
   const titleNotify = "Delete learning rate";
-  try {
-    const { id } = params;
-    const res: IresponseAxios = yield call(deleteLearningRate, id);
-    NotificationManager.success(res?.data?.message, titleNotify, 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        titleNotify,
-        4000
-      );
-    }
-  }
+  yield removeSagaCommon(deleteLearningRate, params, titleNotify);
 }
 
-function* addSubjectPass(params: IparamSaga): ReturnType<IreturnTypeSaga> {
+function* addSubjectPass(params: IparamSaga) {
   const titleNotify = "Add subject pass";
-  try {
-    const { payload } = params;
-    const res: IresponseAxios = yield call(createSubjectPass, payload);
-    NotificationManager.success(res?.data?.message, titleNotify, 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        titleNotify,
-        4000
-      );
-    }
-  }
+  yield addSagaCommon(createSubjectPass, params, titleNotify);
 }
 
-function* fetchSubjectPass(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { payload } = params;
-    const res: IresponseAxios = yield call(getSubjectPass, payload);
-    yield put({
-      type: settingActions.GET_LIST_SUBJECT_PASS_SUCCESS,
-      payload: res?.data?.data,
-    });
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Get subject pass",
-        4000
-      );
-    }
-  }
+function* fetchSubjectPass(params: IparamSaga) {
+  yield fetchListSagaCommon(
+    getSubjectPass,
+    settingActions.GET_LIST_SUBJECT_PASS_SUCCESS,
+    "Get list subject pass",
+    params
+  );
 }
 
-function* editSubjectPass(params: IparamSaga): ReturnType<IreturnTypeSaga> {
+function* editSubjectPass(params: IparamSaga) {
   const titleNotify = "Update subject pass";
-  try {
-    const { id, payload } = params;
-    const res: IresponseAxios = yield call(updateSubjectPass, id, payload);
-    NotificationManager.success(res?.data?.message, titleNotify, 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        titleNotify,
-        4000
-      );
-    }
-  }
+  yield updateSagaCommon(updateSubjectPass, params, titleNotify);
 }
 
-function* removeSubjectPass(params: IparamSaga): ReturnType<IreturnTypeSaga> {
+function* removeSubjectPass(params: IparamSaga) {
   const titleNotify = "Delete subject pass";
-  try {
-    const { id } = params;
-    const res: IresponseAxios = yield call(deleteSubjectPass, id);
-    NotificationManager.success(res?.data?.message, titleNotify, 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        titleNotify,
-        4000
-      );
-    }
-  }
+  yield removeSagaCommon(deleteSubjectPass, params, titleNotify);
 }
 
-function* addMoneyCredit(params: IparamSaga): ReturnType<IreturnTypeSaga> {
+function* addMoneyCredit(params: IparamSaga) {
   const titleNotify = "Add money credit";
-  try {
-    const { payload } = params;
-    const res: IresponseAxios = yield call(createMoneyCredit, payload);
-    NotificationManager.success(res?.data?.message, titleNotify, 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        titleNotify,
-        4000
-      );
-    }
-  }
+  yield addSagaCommon(createMoneyCredit, params, titleNotify);
 }
 
-function* fetchMoneyCredit(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { payload } = params;
-    const res: IresponseAxios = yield call(getMoneyCredit, payload);
-    yield put({
-      type: settingActions.GET_LIST_MONEY_CREDIT_SUCCESS,
-      payload: res?.data?.data,
-    });
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Get subject pass",
-        4000
-      );
-    }
-  }
+function* fetchMoneyCredit(params: IparamSaga) {
+  yield fetchListSagaCommon(
+    getMoneyCredit,
+    settingActions.GET_LIST_MONEY_CREDIT_SUCCESS,
+    "Get list money credit",
+    params
+  );
 }
 
-function* editMoneyCredit(params: IparamSaga): ReturnType<IreturnTypeSaga> {
+function* editMoneyCredit(params: IparamSaga) {
   const titleNotify = "Update money credit";
-  try {
-    const { id, payload } = params;
-    const res: IresponseAxios = yield call(updateMoneyCredit, id, payload);
-    NotificationManager.success(res?.data?.message, titleNotify, 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        titleNotify,
-        4000
-      );
-    }
-  }
+  yield updateSagaCommon(updateMoneyCredit, params, titleNotify);
 }
 
 function* SettingSaga() {

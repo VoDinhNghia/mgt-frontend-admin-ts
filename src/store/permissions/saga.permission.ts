@@ -1,50 +1,18 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-ignore
-import { NotificationManager } from "react-notifications";
-import { call, takeLatest } from "redux-saga/effects";
+import { takeLatest } from "redux-saga/effects";
 import {
   createPermission,
   deletePermission,
 } from "../../services/permission.service";
 import { permissionActions } from "../actions";
-import {
-  IparamSaga,
-  IresponseAxios,
-  IreturnTypeSaga,
-  ItakeLatestSaga,
-} from "../../interfaces/common.interface";
-import { AxiosError } from "axios";
+import { IparamSaga, ItakeLatestSaga } from "../../interfaces/common.interface";
+import { addSagaCommon, removeSagaCommon } from "../common";
 
-function* addNewPermission(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { payload } = params;
-    const res: IresponseAxios = yield call(createPermission, payload);
-    NotificationManager.success(res?.data?.message, "Add permission", 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Add permission",
-        4000
-      );
-    }
-  }
+function* addNewPermission(params: IparamSaga) {
+  yield addSagaCommon(createPermission, params, "Add permission");
 }
 
-function* removePermission(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { id } = params;
-    const res: IresponseAxios = yield call(deletePermission, id);
-    NotificationManager.success(res?.data?.message, "Delete permission", 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Delete permission",
-        4000
-      );
-    }
-  }
+function* removePermission(params: IparamSaga) {
+  yield removeSagaCommon(deletePermission, params, "Delete permission");
 }
 
 function* PermissionSaga() {
