@@ -59,6 +59,14 @@ export interface IstateRedux {
     listMajors: any;
     totalMajor: number;
   };
+  SettingReducer: {
+    listLearningRates: any;
+    totalLearningRate: number;
+    listSubjectPass: any;
+    totalSubjectPass: number;
+    listMoneyCredits: any;
+    totalMoneyCredit: number;
+  };
 }
 
 export interface IpropsNavToggle {
