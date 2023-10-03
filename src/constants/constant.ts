@@ -278,3 +278,14 @@ export const roomOptions = [
 
 export const formatDateTime = "YYYY-MM-DD Hm:mm:ss";
 export const formatDate = "YYYY-MM-DD";
+
+export const learningRateType = {
+  TEN_POINT_SCALE: 'TEN_POINT_SCALE',
+  FOUR_POINT_SCALE: 'FOUR_POINT_SCALE',
+  POINT_TRAINNING: 'POINT_TRAINNING',
+} 
+
+export const subjectPassSettingType = {
+  FINAL_EXAM_POINT: 'FINAL_EXAM_POINT',
+  ACCUMULATED_POINT: 'ACCUMULATED_POINT',
+}

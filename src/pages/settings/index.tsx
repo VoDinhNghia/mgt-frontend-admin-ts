@@ -9,10 +9,12 @@ import { Box, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import SubjectPassTabPage from "./subject-pass-tab";
 import LearningRateTabPage from "./learning-rate-tab";
+import MoneyCreditTabPage from "./money-credit-tab";
 
 const SettingMgtPage = () => {
   const learningRate = "Learning Rate";
   const subjectPass = "Subject Pass";
+  const moneyCredit = "Money Credit";
   const isAccess = validateAccessModule(moduleNames.SETTINGS);
   const [tabIndex, setTabIndex] = useState(learningRate);
   const onChangeTab = (e: SyntheticEvent, newTab: string) => {
@@ -37,6 +39,7 @@ const SettingMgtPage = () => {
                     >
                       <Tab value={learningRate} label={learningRate} />
                       <Tab value={subjectPass} label={subjectPass} />
+                      <Tab value={moneyCredit} label={moneyCredit} />
                     </TabList>
                   </Box>
                   <TabPanel value={learningRate}>
@@ -44,6 +47,9 @@ const SettingMgtPage = () => {
                   </TabPanel>
                   <TabPanel value={subjectPass}>
                     <SubjectPassTabPage />
+                  </TabPanel>
+                  <TabPanel value={moneyCredit}>
+                    <MoneyCreditTabPage />
                   </TabPanel>
                 </TabContext>
               </Box>
