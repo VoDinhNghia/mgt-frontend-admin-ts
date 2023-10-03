@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-ignore
-import { NotificationManager } from "react-notifications";
-import { call, put, takeLatest } from "redux-saga/effects";
+import { takeLatest } from "redux-saga/effects";
 import {
   createFaculty,
   createMajor,
@@ -12,147 +9,55 @@ import {
   deleteFaculty,
   deleteMajor,
 } from "../../services/faculty.service";
-import {
-  IparamSaga,
-  IresponseAxios,
-  IreturnTypeSaga,
-  ItakeLatestSaga,
-} from "../../interfaces/common.interface";
+import { IparamSaga, ItakeLatestSaga } from "../../interfaces/common.interface";
 import { facultyActions } from "../actions";
-import { AxiosError } from "axios";
+import {
+  addSagaCommon,
+  fetchListSagaCommon,
+  removeSagaCommon,
+  updateSagaCommon,
+} from "../common";
 
-function* addFaculty(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { payload } = params;
-    const res: IresponseAxios = yield call(createFaculty, payload);
-    NotificationManager.success(res?.data?.message, "Add faculty", 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Add faculty",
-        4000
-      );
-    }
-  }
+function* addFaculty(params: IparamSaga) {
+  yield addSagaCommon(createFaculty, params, "Add faculty");
 }
 
-function* addMajor(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { payload } = params;
-    const res: IresponseAxios = yield call(createMajor, payload);
-    NotificationManager.success(res?.data?.message, "Add major", 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Add major",
-        4000
-      );
-    }
-  }
+function* addMajor(params: IparamSaga) {
+  yield addSagaCommon(createMajor, params, "Add major");
 }
 
-function* editFaculty(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { id, payload } = params;
-    const res: IresponseAxios = yield call(updateFaculty, id, payload);
-    NotificationManager.success(res?.data?.message, "Update faculty", 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Update faculty",
-        4000
-      );
-    }
-  }
+function* editFaculty(params: IparamSaga) {
+  yield updateSagaCommon(updateFaculty, params, "Update faculty");
 }
 
-function* editMajor(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { id, payload } = params;
-    const res: IresponseAxios = yield call(updateMajor, id, payload);
-    NotificationManager.success(res?.data?.message, "Update major", 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Update major",
-        4000
-      );
-    }
-  }
+function* editMajor(params: IparamSaga) {
+  yield updateSagaCommon(updateMajor, params, "Update major");
 }
 
-function* fetchFaculties(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { payload } = params;
-    const res: IresponseAxios = yield call(getFaculties, payload);
-    yield put({
-      type: facultyActions.GET_LIST_FACULTY_SUCCESS,
-      payload: res?.data?.data,
-    });
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Get faculties",
-        4000
-      );
-    }
-  }
+function* fetchFaculties(params: IparamSaga) {
+  yield fetchListSagaCommon(
+    getFaculties,
+    facultyActions.GET_LIST_FACULTY_SUCCESS,
+    "Get list faculties",
+    params
+  );
 }
 
-function* fetchMajors(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { payload } = params;
-    const res: IresponseAxios = yield call(getMajors, payload);
-    yield put({
-      type: facultyActions.GET_LIST_MAJOR_SUCCESS,
-      payload: res?.data?.data,
-    });
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Get major",
-        4000
-      );
-    }
-  }
+function* fetchMajors(params: IparamSaga) {
+  yield fetchListSagaCommon(
+    getMajors,
+    facultyActions.GET_LIST_MAJOR_SUCCESS,
+    "Get list majors",
+    params
+  );
 }
 
-function* removeFaculty(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { id } = params;
-    const res: IresponseAxios = yield call(deleteFaculty, id);
-    NotificationManager.success(res?.data?.message, "Delete faculty", 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Delete faculty",
-        4000
-      );
-    }
-  }
+function* removeFaculty(params: IparamSaga) {
+  yield removeSagaCommon(deleteFaculty, params, "Delete faculty");
 }
 
-function* removeMajor(params: IparamSaga): ReturnType<IreturnTypeSaga> {
-  try {
-    const { id } = params;
-    const res: IresponseAxios = yield call(deleteMajor, id);
-    NotificationManager.success(res?.data?.message, "Delete major", 4000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      NotificationManager.error(
-        error?.response?.data?.message,
-        "Delete major",
-        4000
-      );
-    }
-  }
+function* removeMajor(params: IparamSaga) {
+  yield removeSagaCommon(deleteMajor, params, "Delete major");
 }
 
 function* FacultySaga() {
