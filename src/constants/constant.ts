@@ -280,12 +280,74 @@ export const formatDateTime = "YYYY-MM-DD Hm:mm:ss";
 export const formatDate = "YYYY-MM-DD";
 
 export const learningRateType = {
-  TEN_POINT_SCALE: 'TEN_POINT_SCALE',
-  FOUR_POINT_SCALE: 'FOUR_POINT_SCALE',
-  POINT_TRAINNING: 'POINT_TRAINNING',
-} 
+  TEN_POINT_SCALE: "TEN_POINT_SCALE",
+  FOUR_POINT_SCALE: "FOUR_POINT_SCALE",
+  POINT_TRAINNING: "POINT_TRAINNING",
+};
+
+export const learningRateOption = [
+  {
+    value: "TEN_POINT_SCALE",
+    label: "TEN_POINT_SCALE",
+  },
+  {
+    value: "FOUR_POINT_SCALE",
+    label: "FOUR_POINT_SCALE",
+  },
+  {
+    value: "POINT_TRAINNING",
+    label: "POINT_TRAINNING",
+  },
+];
 
 export const subjectPassSettingType = {
-  FINAL_EXAM_POINT: 'FINAL_EXAM_POINT',
-  ACCUMULATED_POINT: 'ACCUMULATED_POINT',
-}
+  FINAL_EXAM_POINT: "FINAL_EXAM_POINT",
+  ACCUMULATED_POINT: "ACCUMULATED_POINT",
+};
+
+export const subjectPassSettingOptions = [
+  {
+    value: "FINAL_EXAM_POINT",
+    label: "FINAL_EXAM_POINT",
+  },
+  {
+    value: "ACCUMULATED_POINT",
+    label: "ACCUMULATED_POINT",
+  },
+];
+
+export const awardTypes = {
+  PERSONAL: "PERSONAL",
+  GROUP: "GROUP",
+  FACULTY: "FACULTY",
+  CLASS: "CLASS",
+  MAJORS: "MAJORS",
+  UNIVERSITY: "UNIVERSITY",
+};
+
+export const awardOptions = [
+  {
+    value: "PERSONAL",
+    label: "PERSONAL",
+  },
+  {
+    value: "GROUP",
+    label: "GROUP",
+  },
+  {
+    value: "FACULTY",
+    label: "FACULTY",
+  },
+  {
+    value: "CLASS",
+    label: "CLASS",
+  },
+  {
+    value: "MAJORS",
+    label: "MAJORS",
+  },
+  {
+    value: "UNIVERSITY",
+    label: "UNIVERSITY",
+  },
+];
