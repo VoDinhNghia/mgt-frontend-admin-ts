@@ -71,6 +71,10 @@ export interface IstateRedux {
     listSemesters: any;
     totalSemester: number;
   };
+  AwardReducer: {
+    listAwards: any;
+    totalAward: number;
+  };
 }
 
 export interface IpropsNavToggle {
