@@ -67,6 +67,10 @@ export interface IstateRedux {
     listMoneyCredits: any;
     totalMoneyCredit: number;
   };
+  SemesterReducer: {
+    listSemesters: any;
+    totalSemester: number;
+  };
 }
 
 export interface IpropsNavToggle {
