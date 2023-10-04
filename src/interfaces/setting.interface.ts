@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IparamsFetchList } from "./common.interface";
 
 export interface IcreateLearningRate {
@@ -21,4 +22,22 @@ export interface IcreateMoneyCredit {
 
 export interface IparamsFetchMoneyCredit extends IparamsFetchList {
   semester?: string;
+}
+
+export interface IpropLearningRate {
+  dispatch?: any;
+  listLearningRates?: any;
+  totalLearningRate?: number;
+}
+
+export interface IpropSubjectPass {
+  dispatch?: any;
+  listSubjectPass?: any;
+  totalSubjectPass?: number;
+}
+
+export interface IpropMoneyCredit {
+  dispatch?: any;
+  listMoneyCredits?: any;
+  totalMoneyCredits?: number;
 }
