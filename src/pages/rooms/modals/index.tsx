@@ -30,7 +30,7 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
     size = "sm",
     isShowModal,
     onCloseModal,
-    roomInfo = {},
+    roomInfo,
     dispatch,
     fetchRooms,
   } = props;
@@ -43,11 +43,6 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
   } = useForm<IregisterInputRoomForm>({
     resolver: zodResolver(registerSchemaRoomForm),
   });
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
-    }
-  }, [isSubmitSuccessful]);
 
   const onSubmitHandlerAdd: SubmitHandler<IregisterInputRoomForm> = (
     values
@@ -122,6 +117,14 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
       onCloseModal();
     }, 100);
   };
+
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+    reset(roomInfo);
+  }, [isSubmitSuccessful, roomInfo]);
 
   return (
     <Dialog
