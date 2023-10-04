@@ -75,6 +75,10 @@ export interface IstateRedux {
     listAwards: any;
     totalAward: number;
   };
+  BranchReducer: {
+    listBranchs: any;
+    totalBranch: number;
+  };
 }
 
 export interface IpropsNavToggle {
