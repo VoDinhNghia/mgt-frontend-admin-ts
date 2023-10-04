@@ -131,7 +131,8 @@ const MajorModalPage = (props: IpropModalMajor) => {
     if (isSubmitSuccessful) {
       reset();
     }
-  }, [isSubmitSuccessful]);
+    reset(majorInfo);
+  }, [isSubmitSuccessful, majorInfo]);
 
   return (
     <Dialog

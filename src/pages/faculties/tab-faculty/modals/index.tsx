@@ -118,7 +118,8 @@ const ModalFacultyPage = (props: IpropModalFaculty) => {
       reset();
     }
     fetchUsers();
-  }, [isSubmitSuccessful]);
+    reset(facultyInfo);
+  }, [isSubmitSuccessful, facultyInfo]);
 
   return (
     <Dialog
