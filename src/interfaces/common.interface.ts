@@ -79,6 +79,12 @@ export interface IstateRedux {
     listBranchs: any;
     totalBranch: number;
   };
+  ClassSubjectReducer: {
+    listClasses: any;
+    totalClass: number;
+    listSubjects: any;
+    totalSubject: number;
+  };
 }
 
 export interface IpropsNavToggle {
