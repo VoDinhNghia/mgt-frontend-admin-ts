@@ -100,6 +100,12 @@ export interface IstateRedux {
   SchoolReducer: {
     schoolInfo: any;
   };
+  ScholarshipReducer: {
+    listScholarships: any;
+    totalScholarship: number;
+    listUserScholarships: any;
+    totalUserScholarship: number;
+  };
 }
 
 export interface IpropsNavToggle {
