@@ -97,6 +97,9 @@ export interface IstateRedux {
     listUnionImages: any;
     totalUnionImage: number;
   };
+  SchoolReducer: {
+    schoolInfo: any;
+  };
 }
 
 export interface IpropsNavToggle {
