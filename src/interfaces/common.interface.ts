@@ -89,6 +89,14 @@ export interface IstateRedux {
     listCourses: any;
     totalCourse: number;
   };
+  UnionReducer: {
+    listUnions: any;
+    totalUnion: number;
+    listUnionMembers: any;
+    totalUnionMember: number;
+    listUnionImages: any;
+    totalUnionImage: number;
+  };
 }
 
 export interface IpropsNavToggle {
