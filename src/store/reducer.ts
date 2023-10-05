@@ -6,6 +6,7 @@ import FacultyReducer from "./faculties/reducer.faculty";
 import SettingReducer from "./settings/reducer.setting";
 import AwardReducer from "./awards/reducer.award";
 import BranchReducer from "./branchs/reducer.branch";
+import CourseReducer from "./courses/reducer.course";
 
 const rootReducer = combineReducers({
   UserReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   SettingReducer,
   AwardReducer,
   BranchReducer,
+  CourseReducer,
 });
 
 export default rootReducer;
