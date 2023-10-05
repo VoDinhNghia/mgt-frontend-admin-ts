@@ -6,6 +6,7 @@ import FacultySaga from "./faculties/saga.faculty";
 import SettingSaga from "./settings/saga.setting";
 import AwardSaga from "./awards/saga.award";
 import BranchSaga from "./branchs/saga.branch";
+import CourseSaga from "./courses/saga.course";
 
 function* rootSaga() {
   yield all([
@@ -16,6 +17,7 @@ function* rootSaga() {
     fork(SettingSaga),
     fork(AwardSaga),
     fork(BranchSaga),
+    fork(CourseSaga),
   ]);
 }
 

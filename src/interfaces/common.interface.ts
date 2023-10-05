@@ -85,6 +85,10 @@ export interface IstateRedux {
     listSubjects: any;
     totalSubject: number;
   };
+  CourseReducer: {
+    listCourses: any;
+    totalCourse: number;
+  };
 }
 
 export interface IpropsNavToggle {
