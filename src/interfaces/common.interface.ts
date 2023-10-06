@@ -136,6 +136,12 @@ export interface IstateRedux {
     listNews: any;
     totalNews: number;
   };
+  TrainningPointReducer: {
+    listTrainningPoints: any;
+    totalTrainningPoint: number;
+    listVoluntees: any;
+    totalVoluntee: number;
+  };
 }
 
 export interface IpropsNavToggle {
