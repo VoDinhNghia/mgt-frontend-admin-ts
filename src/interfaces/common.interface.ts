@@ -106,6 +106,10 @@ export interface IstateRedux {
     listUserScholarships: any;
     totalUserScholarship: number;
   };
+  PaymentReducer: {
+    listPayments: any;
+    totalPayment: number;
+  };
 }
 
 export interface IpropsNavToggle {
