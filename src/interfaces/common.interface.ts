@@ -132,6 +132,10 @@ export interface IstateRedux {
     listWards: any;
     totalWard: number;
   };
+  NewsReducer: {
+    listNews: any;
+    totalNews: number;
+  };
 }
 
 export interface IpropsNavToggle {

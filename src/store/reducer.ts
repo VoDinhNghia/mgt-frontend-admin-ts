@@ -18,6 +18,7 @@ import InstitutesReducer from "./institutes/reducer.institutes";
 import DepartmentReducer from "./departments/reducer.department";
 import CenterReducer from "./centers/reducer.center";
 import CountryReducer from "./countries/reducer.countries";
+import NewsReducer from "./news/reducer.news";
 
 const rootReducer = combineReducers({
   UserReducer,
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
   DepartmentReducer,
   CenterReducer,
   CountryReducer,
+  NewsReducer,
 });
 
 export default rootReducer;
