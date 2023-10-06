@@ -7,6 +7,15 @@ import SettingSaga from "./settings/saga.setting";
 import AwardSaga from "./awards/saga.award";
 import BranchSaga from "./branchs/saga.branch";
 import CourseSaga from "./courses/saga.course";
+import ClassSubjectSaga from "./class-subject/saga.class-subject";
+import UnionSaga from "./unions/saga.union";
+import SemesterSaga from "./semesters/saga.semester";
+import PaymentSaga from "./payments/saga.payment";
+import InstitutesSaga from "./institutes/saga.institutes";
+import ScholarshipSaga from "./scholarships/saga.scholarship";
+import SchoolSaga from "./school/saga.school";
+import DepartmentSaga from "./departments/saga.department";
+import DegreelevelSaga from "./degreelevels/saga.degreelevel";
 
 function* rootSaga() {
   yield all([
@@ -18,6 +27,15 @@ function* rootSaga() {
     fork(AwardSaga),
     fork(BranchSaga),
     fork(CourseSaga),
+    fork(ClassSubjectSaga),
+    fork(UnionSaga),
+    fork(SemesterSaga),
+    fork(PaymentSaga),
+    fork(InstitutesSaga),
+    fork(ScholarshipSaga),
+    fork(SchoolSaga),
+    fork(DepartmentSaga),
+    fork(DegreelevelSaga),
   ]);
 }
 
