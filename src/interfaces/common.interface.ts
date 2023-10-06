@@ -110,6 +110,10 @@ export interface IstateRedux {
     listPayments: any;
     totalPayment: number;
   };
+  InstitutesReducer: {
+    listInstitutes: any;
+    totalInstitutes: number;
+  };
 }
 
 export interface IpropsNavToggle {
