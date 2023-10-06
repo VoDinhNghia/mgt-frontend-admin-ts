@@ -17,6 +17,7 @@ import SchoolSaga from "./school/saga.school";
 import DepartmentSaga from "./departments/saga.department";
 import DegreelevelSaga from "./degreelevels/saga.degreelevel";
 import CenterSaga from "./centers/saga.center";
+import CountrySaga from "./countries/saga.countries";
 
 function* rootSaga() {
   yield all([
@@ -38,6 +39,7 @@ function* rootSaga() {
     fork(DepartmentSaga),
     fork(DegreelevelSaga),
     fork(CenterSaga),
+    fork(CountrySaga),
   ]);
 }
 
