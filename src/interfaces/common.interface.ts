@@ -114,6 +114,10 @@ export interface IstateRedux {
     listInstitutes: any;
     totalInstitutes: number;
   };
+  DepartmentReducer: {
+    listDepartments: any;
+    totalDepartment: number;
+  };
 }
 
 export interface IpropsNavToggle {
