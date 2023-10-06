@@ -122,6 +122,16 @@ export interface IstateRedux {
     listCenters: any;
     totalCenter: number;
   };
+  CountryReducer: {
+    listCountries: any;
+    totalCountry: number;
+    listProvinces: any;
+    totalProvince: number;
+    listDistricts: any;
+    totalDistrict: number;
+    listWards: any;
+    totalWard: number;
+  };
 }
 
 export interface IpropsNavToggle {
