@@ -118,6 +118,10 @@ export interface IstateRedux {
     listDepartments: any;
     totalDepartment: number;
   };
+  CenterReducer: {
+    listCenters: any;
+    totalCenter: number;
+  };
 }
 
 export interface IpropsNavToggle {

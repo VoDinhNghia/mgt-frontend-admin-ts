@@ -16,6 +16,7 @@ import DegreelevelReducer from "./degreelevels/reducer.degreelevel";
 import PaymentReducer from "./payments/reducer.payment";
 import InstitutesReducer from "./institutes/reducer.institutes";
 import DepartmentReducer from "./departments/reducer.department";
+import CenterReducer from "./centers/reducer.center";
 
 const rootReducer = combineReducers({
   UserReducer,
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
   PaymentReducer,
   InstitutesReducer,
   DepartmentReducer,
+  CenterReducer,
 });
 
 export default rootReducer;
