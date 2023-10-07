@@ -41,3 +41,7 @@ export interface IpropMoneyCredit {
   listMoneyCredits?: any;
   totalMoneyCredits?: number;
 }
+
+export interface IrowTableLearningRate extends IcreateLearningRate {
+  _id: string;
+}
