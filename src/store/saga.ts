@@ -20,6 +20,7 @@ import CenterSaga from "./centers/saga.center";
 import CountrySaga from "./countries/saga.countries";
 import NewsSaga from "./news/saga.news";
 import TrainningPointSaga from "./trainning-point/saga.trainning-point";
+import StudyProcessSaga from "./study-process/saga.study-process";
 
 function* rootSaga() {
   yield all([
@@ -44,6 +45,7 @@ function* rootSaga() {
     fork(CountrySaga),
     fork(NewsSaga),
     fork(TrainningPointSaga),
+    fork(StudyProcessSaga),
   ]);
 }
 
