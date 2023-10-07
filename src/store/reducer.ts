@@ -20,6 +20,7 @@ import CenterReducer from "./centers/reducer.center";
 import CountryReducer from "./countries/reducer.countries";
 import NewsReducer from "./news/reducer.news";
 import TrainningPointReducer from "./trainning-point/reducer.trainning-point";
+import StudyProcessReducer from "./study-process/reducer.study-process";
 
 const rootReducer = combineReducers({
   UserReducer,
@@ -43,6 +44,7 @@ const rootReducer = combineReducers({
   CountryReducer,
   NewsReducer,
   TrainningPointReducer,
+  StudyProcessReducer,
 });
 
 export default rootReducer;

@@ -142,6 +142,12 @@ export interface IstateRedux {
     listVoluntees: any;
     totalVoluntee: number;
   };
+  StudyProcessReducer: {
+    listStudyProcess: any;
+    totalStudyProcess: number;
+    listStudyStudents: any;
+    totalStudyStudent: number;
+  };
 }
 
 export interface IpropsNavToggle {
