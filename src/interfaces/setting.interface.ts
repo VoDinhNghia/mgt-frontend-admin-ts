@@ -54,3 +54,7 @@ export interface IpropModalLearningRate extends IpropModalCommon {
 export interface IrowTableMoneyCredit extends IcreateMoneyCredit {
   _id?: string;
 }
+
+export interface IrowTableSubjectPass extends IcreateSubjectPass {
+  _id?: string;
+}
