@@ -17,7 +17,7 @@ export interface IcreateSubjectPass {
 export interface IcreateMoneyCredit {
   name?: string;
   moneyPerCredit?: number;
-  semester?: string;
+  semester?: string | any;
 }
 
 export interface IparamsFetchMoneyCredit extends IparamsFetchList {
@@ -49,4 +49,8 @@ export interface IrowTableLearningRate extends IcreateLearningRate {
 export interface IpropModalLearningRate extends IpropModalCommon {
   learningRateInfo?: any;
   fetchLearningRate?: any;
+}
+
+export interface IrowTableMoneyCredit extends IcreateMoneyCredit {
+  _id?: string;
 }
