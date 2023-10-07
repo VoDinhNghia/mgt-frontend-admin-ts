@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IparamsFetchList } from "./common.interface";
+import { IparamsFetchList, IpropModalCommon } from "./common.interface";
 
 export interface IcreateLearningRate {
   name?: string;
@@ -44,4 +44,9 @@ export interface IpropMoneyCredit {
 
 export interface IrowTableLearningRate extends IcreateLearningRate {
   _id: string;
+}
+
+export interface IpropModalLearningRate extends IpropModalCommon {
+  learningRateInfo?: any;
+  fetchLearningRate?: any;
 }
