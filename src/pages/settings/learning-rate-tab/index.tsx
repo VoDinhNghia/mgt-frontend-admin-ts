@@ -18,15 +18,46 @@ import {
 } from "@mui/material";
 import { Button } from "react-bootstrap";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
+import AddAndSearchTable from "../../commons/add-search-table";
+import { validateAction } from "../../../utils/permission.util";
+import {
+  modalTypes,
+  moduleNames,
+  permissonTypes,
+} from "../../../constants/constant";
+import LearningRateModalPage from "./modals";
 
 const LearningRateTabPage = (props: IpropLearningRate) => {
   const { listLearningRates = [], dispatch, totalLearningRate = 0 } = props;
   const [state, setState] = useState({
     page: 0,
     limit: 10,
+    isShowModalAdd: false,
+    isShowModalUpdate: false,
+    isShowModalDelete: false,
+    learningRateInfo: {},
   });
   const columns = headerTableLearningRate;
-  const { page, limit } = state;
+  const isPermissionAdd = validateAction(
+    permissonTypes.ADD,
+    moduleNames.SETTINGS
+  );
+  const isPermissionUpdate = validateAction(
+    permissonTypes.EDIT,
+    moduleNames.SETTINGS
+  );
+  const isPermissionDelete = validateAction(
+    permissonTypes.DELETE,
+    moduleNames.SETTINGS
+  );
+  const {
+    page,
+    limit,
+    isShowModalAdd,
+    isShowModalDelete,
+    isShowModalUpdate,
+    learningRateInfo,
+  } = state;
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setState({ ...state, page: newPage });
@@ -51,12 +82,27 @@ const LearningRateTabPage = (props: IpropLearningRate) => {
     });
   };
 
+  const onSearch = (searchKey: string) => {
+    dispatch({
+      type: settingActions.GET_LIST_LEARNING_RATE,
+      payload: {
+        searchKey,
+      },
+    });
+  };
+
   useEffect(() => {
     fetchLearningRate(page + 1, limit);
   }, []);
 
   return (
     <div>
+      <AddAndSearchTable
+        isDisableBtnAdd={!isPermissionAdd}
+        title="Add new"
+        onSearch={(searchKey: string) => onSearch(searchKey)}
+        onShowAdd={() => setState({ ...state, isShowModalAdd: true })}
+      />
       <TableContainer>
         <Table stickyHeader aria-label="learningrate table">
           <TableHead>
@@ -82,10 +128,32 @@ const LearningRateTabPage = (props: IpropLearningRate) => {
                     <TableCell>{row?.minimum}</TableCell>
                     <TableCell>{row?.maximum}</TableCell>
                     <TableCell>
-                      <Button variant="outline-primary" size="sm">
+                      <Button
+                        variant="outline-primary"
+                        size="sm"
+                        disabled={!isPermissionUpdate}
+                        onClick={() =>
+                          setState({
+                            ...state,
+                            isShowModalUpdate: true,
+                            learningRateInfo: row,
+                          })
+                        }
+                      >
                         <BsPencilSquare />
                       </Button>{" "}
-                      <Button variant="outline-danger" size="sm">
+                      <Button
+                        variant="outline-danger"
+                        size="sm"
+                        disabled={!isPermissionDelete}
+                        onClick={() =>
+                          setState({
+                            ...state,
+                            isShowModalDelete: true,
+                            learningRateInfo: row,
+                          })
+                        }
+                      >
                         <BsTrash />
                       </Button>
                     </TableCell>
@@ -104,6 +172,27 @@ const LearningRateTabPage = (props: IpropLearningRate) => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+      <LearningRateModalPage
+        isShowModal={isShowModalAdd}
+        type={modalTypes.ADD}
+        onCloseModal={() => setState({ ...state, isShowModalAdd: false })}
+        learningRateInfo={learningRateInfo}
+        fetchLearningRate={() => fetchLearningRate(page + 1, limit)}
+      />
+      <LearningRateModalPage
+        isShowModal={isShowModalUpdate}
+        type={modalTypes.UPDATE}
+        onCloseModal={() => setState({ ...state, isShowModalUpdate: false })}
+        learningRateInfo={learningRateInfo}
+        fetchLearningRate={() => fetchLearningRate(page + 1, limit)}
+      />
+      <LearningRateModalPage
+        isShowModal={isShowModalDelete}
+        type={modalTypes.DELETE}
+        onCloseModal={() => setState({ ...state, isShowModalDelete: false })}
+        learningRateInfo={learningRateInfo}
+        fetchLearningRate={() => fetchLearningRate(page + 1, limit)}
       />
     </div>
   );
