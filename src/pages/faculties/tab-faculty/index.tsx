@@ -229,7 +229,7 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
         type={modalTypes.ADD}
         isShowModal={isShowModalAdd}
         onCloseModal={() => setState({ ...state, isShowModalAdd: false })}
-        facultyInfo={facultyInfo}
+        facultyInfo={{}}
         fetchFaculties={() => fetchFaculties(page + 1, limit)}
       />
       <ModalFacultyPage
