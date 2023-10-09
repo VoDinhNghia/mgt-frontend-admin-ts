@@ -82,7 +82,7 @@ const LearningRateModalPage = (props: IpropModalLearningRate) => {
       id: learningRateInfo?._id,
     });
     fetchAndCloseModal();
-  }
+  };
 
   const fetchAndCloseModal = () => {
     setTimeout(() => {
@@ -95,7 +95,11 @@ const LearningRateModalPage = (props: IpropModalLearningRate) => {
     if (isSubmitSuccessful) {
       reset();
     }
-    reset(learningRateInfo);
+    reset({
+      ...learningRateInfo,
+      minimum: learningRateInfo?.minimum?.toString(),
+      maximum: learningRateInfo?.maximum?.toString(),
+    });
   }, [isSubmitSuccessful, learningRateInfo]);
 
   return (
@@ -179,7 +183,7 @@ const LearningRateModalPage = (props: IpropModalLearningRate) => {
               size="small"
               fullWidth={true}
               defaultValue={
-                type === modalTypes.UPDATE ? learningRateInfo?.capacity : ""
+                type === modalTypes.UPDATE ? learningRateInfo?.minimum : ""
               }
               error={!!errors["minimum"]}
               helperText={errors["minimum"] ? errors["minimum"].message : ""}
@@ -190,7 +194,7 @@ const LearningRateModalPage = (props: IpropModalLearningRate) => {
               size="small"
               fullWidth={true}
               defaultValue={
-                type === modalTypes.UPDATE ? learningRateInfo?.capacity : ""
+                type === modalTypes.UPDATE ? learningRateInfo?.maximum : ""
               }
               error={!!errors["maximum"]}
               helperText={errors["maximum"] ? errors["maximum"].message : ""}

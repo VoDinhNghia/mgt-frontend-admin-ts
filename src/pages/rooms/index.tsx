@@ -271,7 +271,7 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
               <ModalRomMgtPage
                 type={modalTypes.ADD}
                 isShowModal={isShowModalAdd}
-                roomInfo={roomInfo}
+                roomInfo={{}}
                 size="xs"
                 fetchRooms={() => fetchRooms(page + 1, limit)}
                 onCloseModal={() =>

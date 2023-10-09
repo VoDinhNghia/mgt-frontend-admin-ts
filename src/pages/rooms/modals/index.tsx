@@ -30,7 +30,7 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
     size = "sm",
     isShowModal,
     onCloseModal,
-    roomInfo,
+    roomInfo = {},
     dispatch,
     fetchRooms,
   } = props;
@@ -123,7 +123,11 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
     if (isSubmitSuccessful) {
       reset();
     }
-    reset(roomInfo);
+    reset({
+      ...roomInfo,
+      capacity: roomInfo?.capacity?.toString(),
+      status: roomInfo?.divice?.status?.toString(),
+    });
   }, [isSubmitSuccessful, roomInfo]);
 
   return (
