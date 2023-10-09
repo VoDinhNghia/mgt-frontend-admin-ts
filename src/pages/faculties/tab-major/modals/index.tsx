@@ -131,7 +131,15 @@ const MajorModalPage = (props: IpropModalMajor) => {
     if (isSubmitSuccessful) {
       reset();
     }
-    reset(majorInfo);
+    reset({
+      ...majorInfo,
+      foundYear: majorInfo?.foundYear
+        ? moment(majorInfo?.foundYear).format(formatDate)
+        : "",
+      faculty: majorInfo?.faculty?._id,
+      headOfSection: majorInfo?.headOfSection?._id,
+      eputeHead: majorInfo?.eputeHead?._id,
+    });
   }, [isSubmitSuccessful, majorInfo]);
 
   return (

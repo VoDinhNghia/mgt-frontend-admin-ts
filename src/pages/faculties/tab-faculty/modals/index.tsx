@@ -118,7 +118,12 @@ const ModalFacultyPage = (props: IpropModalFaculty) => {
       reset();
     }
     fetchUsers();
-    reset(facultyInfo);
+    reset({
+      ...facultyInfo,
+      foundYear: facultyInfo?.foundYear ? moment(facultyInfo?.foundYear).format(formatDate) : "",
+      headOfSection: facultyInfo?.headOfSection?._id,
+      eputeHead: facultyInfo?.eputeHead?._id,
+    });
   }, [isSubmitSuccessful, facultyInfo]);
 
   return (

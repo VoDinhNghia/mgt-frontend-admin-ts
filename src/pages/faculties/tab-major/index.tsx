@@ -223,7 +223,7 @@ const MajorTabPage = (props: IpropMajorTab) => {
       <MajorModalPage
         type={modalTypes.ADD}
         isShowModal={isShowModalAdd}
-        majorInfo={majorInfo}
+        majorInfo={{}}
         onCloseModal={() => setState({ ...state, isShowModalAdd: false })}
         fetchMajors={() => fetchMajors(page + 1, limit)}
       />
