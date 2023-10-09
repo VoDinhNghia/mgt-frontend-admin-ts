@@ -1,3 +1,5 @@
+import { TypeOf, number, object, string } from "zod";
+
 export const headerTableLearningRate = [
   {
     id: "index",
@@ -86,3 +88,20 @@ export const headerTableMoneyCredit = [
     minWidth: 102,
   },
 ];
+
+export const registerSchemaLearningRateForm = object({
+  name: string().nonempty("name must is provided"),
+  type: string().nonempty("type must is provided"),
+  minimum: string()
+    .nonempty("minimum must is provided")
+    .transform((mini) => parseInt(mini))
+    .pipe(number().max(10).min(0)),
+  maximum: string()
+    .nonempty("maximum must is provided")
+    .transform((mini) => parseInt(mini))
+    .pipe(number().max(10).min(0)),
+});
+
+export type IregisterInputLearningRateForm = TypeOf<
+  typeof registerSchemaLearningRateForm
+>;
