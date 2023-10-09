@@ -94,11 +94,11 @@ export const registerSchemaLearningRateForm = object({
   type: string().nonempty("type must is provided"),
   minimum: string()
     .nonempty("minimum must is provided")
-    .transform((mini) => parseInt(mini))
+    .transform((mini) => parseFloat(mini))
     .pipe(number().max(10).min(0)),
   maximum: string()
     .nonempty("maximum must is provided")
-    .transform((mini) => parseInt(mini))
+    .transform((mini) => parseFloat(mini))
     .pipe(number().max(10).min(0)),
 });
 
