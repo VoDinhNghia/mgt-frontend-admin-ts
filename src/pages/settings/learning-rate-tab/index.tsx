@@ -177,7 +177,7 @@ const LearningRateTabPage = (props: IpropLearningRate) => {
         isShowModal={isShowModalAdd}
         type={modalTypes.ADD}
         onCloseModal={() => setState({ ...state, isShowModalAdd: false })}
-        learningRateInfo={learningRateInfo}
+        learningRateInfo={{}}
         fetchLearningRate={() => fetchLearningRate(page + 1, limit)}
       />
       <LearningRateModalPage

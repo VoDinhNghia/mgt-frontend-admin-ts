@@ -5,7 +5,7 @@ import { IparamsFetchList, IpropModalCommon } from "./common.interface";
 export interface IpayloadCreateRoom {
   name?: string;
   type?: string;
-  capacity?: number;
+  capacity?: number | string | any;
   divice?: {
     airConditioner?: string;
     projector?: string;
