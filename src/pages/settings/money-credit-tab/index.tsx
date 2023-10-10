@@ -66,13 +66,26 @@ const MoneyCreditTabPage = (props: IpropMoneyCredit) => {
     });
   };
 
+  const onSearch = (searchKey: string) => {
+    dispatch({
+      type: settingActions.GET_LIST_MONEY_CREDIT,
+      payload: {
+        searchKey,
+      },
+    });
+  };
+
   useEffect(() => {
     fetchMoneyCredit(page + 1, limit);
   }, []);
 
   return (
     <div>
-      <AddAndSearchTable isDisableBtnAdd={!isPermissionAdd} title="Add new" />
+      <AddAndSearchTable
+        isDisableBtnAdd={!isPermissionAdd}
+        title="Add new"
+        onSearch={(searchKey: string) => onSearch(searchKey)}
+      />
       <TableContainer>
         <Table stickyHeader aria-label="table money credit">
           <TableHead>
@@ -93,7 +106,7 @@ const MoneyCreditTabPage = (props: IpropMoneyCredit) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row?._id}>
                     <TableCell>{index + 1}</TableCell>
-                    <TableCell>{row?.name}</TableCell>
+                    <TableCell className="text-primary">{row?.name}</TableCell>
                     <TableCell>{row?.moneyPerCredit}</TableCell>
                     <TableCell>{row?.semester?.name}</TableCell>
                     <TableCell>
