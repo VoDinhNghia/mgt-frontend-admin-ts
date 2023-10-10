@@ -58,3 +58,8 @@ export interface IrowTableMoneyCredit extends IcreateMoneyCredit {
 export interface IrowTableSubjectPass extends IcreateSubjectPass {
   _id?: string;
 }
+
+export interface IpropModalSubjectPass extends IpropModalCommon {
+  subjectPassInfo?: any;
+  fetchSubjectPass?: any;
+}
