@@ -124,8 +124,8 @@ const MoneyCreditTabPage = (props: IpropMoneyCredit) => {
                   <TableRow hover role="checkbox" tabIndex={-1} key={row?._id}>
                     <TableCell>{index + 1}</TableCell>
                     <TableCell className="text-primary">{row?.name}</TableCell>
-                    <TableCell>{row?.moneyPerCredit}</TableCell>
-                    <TableCell>{row?.semester?.name}</TableCell>
+                    <TableCell>{row?.moneyPerCredit?.toLocaleString("en-US")} đ</TableCell>
+                    <TableCell>{`${row?.semester?.name} (${row?.semester?.year})`}</TableCell>
                     <TableCell>
                       <Button
                         variant="outline-primary"

@@ -23,7 +23,7 @@ import {
   registerSchemaMoneyCreditForm,
 } from "../../../../utils/setting.util";
 import { IstateRedux } from "../../../../interfaces/common.interface";
-import { semesterActions } from "../../../../store/actions";
+import { semesterActions, settingActions } from "../../../../store/actions";
 
 const ModalMoneyCreditPage = (props: IpropModalMoneyCredit) => {
   const {
@@ -32,6 +32,7 @@ const ModalMoneyCreditPage = (props: IpropModalMoneyCredit) => {
     onCloseModal,
     moneyCreditInfo = {},
     listSemesters = [],
+    fetchMoneyCredit,
     dispatch,
   } = props;
 
@@ -50,13 +51,40 @@ const ModalMoneyCreditPage = (props: IpropModalMoneyCredit) => {
   const onSubmitHandlerAdd: SubmitHandler<IregisterInputMoneyCreditForm> = (
     values
   ) => {
-    console.log("values", values);
+    const { name, moneyPerCredit, semester } = values;
+    dispatch({
+      type: settingActions.ADD_MONEY_CREDIT,
+      payload: {
+        name,
+        moneyPerCredit,
+        semester,
+      },
+    });
+    fetchAndCloseModal();
   };
 
   const onSubmitHandlerUpdate: SubmitHandler<IregisterInputMoneyCreditForm> = (
     values
   ) => {
-    console.log("values", values);
+    const { name, moneyPerCredit, semester } = values;
+    dispatch({
+      type: settingActions.UPDATE_MONEY_CREDIT,
+      id: moneyCreditInfo?._id,
+      payload: {
+        name,
+        moneyPerCredit,
+        semester,
+      },
+    });
+    fetchAndCloseModal();
+  };
+
+  const onDeleteMoneyCredit = () => {
+    dispatch({
+      type: settingActions.UPDATE_MONEY_CREDIT,
+      id: moneyCreditInfo?._id,
+    });
+    fetchAndCloseModal();
   };
 
   const fetchSemester = () => {
@@ -65,11 +93,22 @@ const ModalMoneyCreditPage = (props: IpropModalMoneyCredit) => {
     });
   };
 
+  const fetchAndCloseModal = () => {
+    setTimeout(() => {
+      fetchMoneyCredit();
+      onCloseModal();
+    }, 100);
+  };
+
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset();
     }
-    reset(moneyCreditInfo);
+    reset({
+      ...moneyCreditInfo,
+      semester: moneyCreditInfo?.semester?._id,
+      moneyPerCredit: moneyCreditInfo?.moneyPerCredit?.toString(),
+    });
     fetchSemester();
   }, [isSubmitSuccessful, moneyCreditInfo]);
 
@@ -157,7 +196,7 @@ const ModalMoneyCreditPage = (props: IpropModalMoneyCredit) => {
               type="number"
               fullWidth={true}
               defaultValue={
-                type === modalTypes.UPDATE ? moneyCreditInfo?.condition : ""
+                type === modalTypes.UPDATE ? moneyCreditInfo?.moneyPerCredit : ""
               }
               error={!!errors["moneyPerCredit"]}
               helperText={
@@ -175,7 +214,11 @@ const ModalMoneyCreditPage = (props: IpropModalMoneyCredit) => {
       </DialogContent>
       <DialogActions>
         {type === modalTypes.DELETE ? (
-          <Button variant="contained" color="error">
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => onDeleteMoneyCredit()}
+          >
             Yes
           </Button>
         ) : (
