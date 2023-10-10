@@ -123,7 +123,7 @@ const LearningRateTabPage = (props: IpropLearningRate) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row?._id}>
                     <TableCell>{index + 1}</TableCell>
-                    <TableCell>{row?.name}</TableCell>
+                    <TableCell className="text-primary">{row?.name}</TableCell>
                     <TableCell>{row?.type}</TableCell>
                     <TableCell>{row?.minimum}</TableCell>
                     <TableCell>{row?.maximum}</TableCell>

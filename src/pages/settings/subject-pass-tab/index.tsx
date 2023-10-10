@@ -66,13 +66,26 @@ const SubjectPassTabPage = (props: IpropSubjectPass) => {
     fetchSubjectPass(1, newLimit);
   };
 
+  const onSearch = (searchKey: string) => {
+    dispatch({
+      type: settingActions.GET_LIST_SUBJECT_PASS,
+      payload: {
+        searchKey,
+      },
+    });
+  };
+
   useEffect(() => {
     fetchSubjectPass(page + 1, limit);
   }, []);
 
   return (
     <div>
-      <AddAndSearchTable isDisableBtnAdd={!isPermissionAdd} title="Add new" />
+      <AddAndSearchTable
+        isDisableBtnAdd={!isPermissionAdd}
+        title="Add new"
+        onSearch={(searchKey: string) => onSearch(searchKey)}
+      />
       <TableContainer>
         <Table stickyHeader aria-label="table subject pass">
           <TableHead>
@@ -93,7 +106,7 @@ const SubjectPassTabPage = (props: IpropSubjectPass) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row?._id}>
                     <TableCell>{index + 1}</TableCell>
-                    <TableCell>{row?.name}</TableCell>
+                    <TableCell className="text-primary">{row?.name}</TableCell>
                     <TableCell>{row?.type}</TableCell>
                     <TableCell>{row?.condition}</TableCell>
                     <TableCell>
