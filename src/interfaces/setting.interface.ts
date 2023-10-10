@@ -63,3 +63,9 @@ export interface IpropModalSubjectPass extends IpropModalCommon {
   subjectPassInfo?: any;
   fetchSubjectPass?: any;
 }
+
+export interface IpropModalMoneyCredit extends IpropModalCommon {
+  moneyCreditInfo?: any;
+  fetchMoneyCredit?: any;
+  listSemesters?: any;
+}

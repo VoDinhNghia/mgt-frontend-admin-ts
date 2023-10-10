@@ -131,3 +131,15 @@ export const registerSchemaMoneyCreditForm = object({
 export type IregisterInputMoneyCreditForm = TypeOf<
   typeof registerSchemaMoneyCreditForm
 >;
+
+export const handleSemesterOptions = (listSemesters = []) => {
+  const options = listSemesters?.map(
+    (semester: { _id: string; name: string; year: string }) => {
+      return {
+        value: semester?._id,
+        label: `${semester?.name} (${semester?.year})`,
+      };
+    }
+  );
+  return options;
+};
