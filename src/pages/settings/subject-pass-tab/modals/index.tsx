@@ -24,9 +24,17 @@ import {
   IregisterInputSubjectPassForm,
   registerSchemaSubjectPassForm,
 } from "../../../../utils/setting.util";
+import { settingActions } from "../../../../store/actions";
 
 const ModalSubjectPassPage = (props: IpropModalSubjectPass) => {
-  const { type, isShowModal, onCloseModal, subjectPassInfo = {} } = props;
+  const {
+    type,
+    isShowModal,
+    onCloseModal,
+    subjectPassInfo = {},
+    dispatch,
+    fetchSubjectPass,
+  } = props;
 
   const {
     handleSubmit,
@@ -41,20 +49,57 @@ const ModalSubjectPassPage = (props: IpropModalSubjectPass) => {
   const onSubmitHandlerAdd: SubmitHandler<IregisterInputSubjectPassForm> = (
     values
   ) => {
-    console.log("values", values);
+    const { name, type, condition } = values;
+    dispatch({
+      type: settingActions.ADD_SUBJECT_PASS,
+      payload: {
+        name,
+        type,
+        condition,
+      },
+    });
+    fetchAndCloseModal();
   };
 
   const onSubmitHandlerUpdate: SubmitHandler<IregisterInputSubjectPassForm> = (
     values
   ) => {
-    console.log("values", values);
+    const { name, type, condition } = values;
+    dispatch({
+      type: settingActions.UPDATE_SUBJECT_PASS,
+      id: subjectPassInfo?._id,
+      payload: {
+        name,
+        type,
+        condition,
+      },
+    });
+    fetchAndCloseModal();
+  };
+
+  const onDelete = () => {
+    dispatch({
+      type: settingActions.DELETE_SUBJECT_PASS,
+      id: subjectPassInfo?._id,
+    });
+    fetchAndCloseModal();
+  };
+
+  const fetchAndCloseModal = () => {
+    setTimeout(() => {
+      fetchSubjectPass();
+      onCloseModal();
+    }, 100);
   };
 
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset();
     }
-    reset(subjectPassInfo);
+    reset({
+        ...subjectPassInfo,
+        condition: subjectPassInfo?.condition?.toString(),
+    });
   }, [isSubmitSuccessful, subjectPassInfo]);
 
   return (
@@ -157,7 +202,7 @@ const ModalSubjectPassPage = (props: IpropModalSubjectPass) => {
       </DialogContent>
       <DialogActions>
         {type === modalTypes.DELETE ? (
-          <Button variant="contained" color="error">
+          <Button variant="contained" color="error" onClick={() => onDelete()}>
             Yes
           </Button>
         ) : (
