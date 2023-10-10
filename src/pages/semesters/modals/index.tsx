@@ -22,9 +22,17 @@ import {
   yearSemesterOptions,
 } from "../../../utils/semester.util";
 import { modalTypes } from "../../../constants/constant";
+import { semesterActions } from "../../../store/actions";
 
 const ModalSemesterPage = (props: IpropModalSemester) => {
-  const { isShowModal, type, onCloseModal, semesterInfo = {} } = props;
+  const {
+    isShowModal,
+    type,
+    onCloseModal,
+    semesterInfo = {},
+    fetchSemesters,
+    dispatch,
+  } = props;
 
   const {
     handleSubmit,
@@ -39,13 +47,45 @@ const ModalSemesterPage = (props: IpropModalSemester) => {
   const onSubmitHandlerAdd: SubmitHandler<IregisterInputSemesterForm> = (
     values
   ) => {
-    console.log("values", values);
+    const { name, year } = values;
+    dispatch({
+      type: semesterActions.ADD_SEMESTER,
+      payload: {
+        name,
+        year,
+      },
+    });
+    fetchAndCloseModal();
   };
 
   const onSubmitHandlerUpdate: SubmitHandler<IregisterInputSemesterForm> = (
     values
   ) => {
-    console.log("values", values);
+    const { name, year } = values;
+    dispatch({
+      type: semesterActions.UPDATE_SEMESTER,
+      id: semesterInfo?._id,
+      payload: {
+        name,
+        year,
+      },
+    });
+    fetchAndCloseModal();
+  };
+
+  const onDelete = () => {
+    dispatch({
+      type: semesterActions.DELETE_SEMESTER,
+      id: semesterInfo?._id,
+    });
+    fetchAndCloseModal();
+  };
+
+  const fetchAndCloseModal = () => {
+    setTimeout(() => {
+      fetchSemesters();
+      onCloseModal();
+    }, 100);
   };
 
   useEffect(() => {
@@ -145,7 +185,7 @@ const ModalSemesterPage = (props: IpropModalSemester) => {
       </DialogContent>
       <DialogActions>
         {type === modalTypes.DELETE ? (
-          <Button variant="contained" color="error">
+          <Button variant="contained" color="error" onClick={() => onDelete()}>
             Yes
           </Button>
         ) : (
