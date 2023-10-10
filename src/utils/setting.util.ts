@@ -105,3 +105,29 @@ export const registerSchemaLearningRateForm = object({
 export type IregisterInputLearningRateForm = TypeOf<
   typeof registerSchemaLearningRateForm
 >;
+
+export const registerSchemaSubjectPassForm = object({
+  name: string().nonempty("name must is provided"),
+  type: string().nonempty("type must is provided"),
+  condition: string()
+    .nonempty("condition must is provided")
+    .transform((con) => parseFloat(con))
+    .pipe(number().max(10).min(0)),
+});
+
+export type IregisterInputSubjectPassForm = TypeOf<
+  typeof registerSchemaSubjectPassForm
+>;
+
+export const registerSchemaMoneyCreditForm = object({
+  name: string().nonempty("name must is provided"),
+  moneyPerCredit: string()
+    .nonempty("moneyPerCredit must is provided")
+    .transform((money) => parseInt(money))
+    .pipe(number().max(100000000).min(0)),
+  semester: string().nonempty("semester must is provided"),
+});
+
+export type IregisterInputMoneyCreditForm = TypeOf<
+  typeof registerSchemaMoneyCreditForm
+>;

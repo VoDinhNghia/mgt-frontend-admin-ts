@@ -7,7 +7,11 @@ import { connect } from "react-redux";
 import { IstateRedux } from "../../../interfaces/common.interface";
 import { settingActions } from "../../../store/actions";
 import { validateAction } from "../../../utils/permission.util";
-import { moduleNames, permissonTypes } from "../../../constants/constant";
+import {
+  modalTypes,
+  moduleNames,
+  permissonTypes,
+} from "../../../constants/constant";
 import { headerTableSubjectPass } from "../../../utils/setting.util";
 import {
   TableContainer,
@@ -21,12 +25,17 @@ import {
 import { Button } from "react-bootstrap";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import AddAndSearchTable from "../../commons/add-search-table";
+import ModalSubjectPassPage from "./modals";
 
 const SubjectPassTabPage = (props: IpropSubjectPass) => {
   const { dispatch, listSubjectPass = [], totalSubjectPass = 0 } = props;
   const [state, setState] = useState({
     page: 0,
     limit: 10,
+    isShowModalAdd: false,
+    isShowModalUpdate: false,
+    isShowModalDelete: false,
+    subjectPassInfo: {},
   });
   const isPermissionAdd = validateAction(
     permissonTypes.ADD,
@@ -41,7 +50,14 @@ const SubjectPassTabPage = (props: IpropSubjectPass) => {
     moduleNames.SETTINGS
   );
   const columns = headerTableSubjectPass;
-  const { page, limit } = state;
+  const {
+    page,
+    limit,
+    isShowModalAdd,
+    isShowModalDelete,
+    isShowModalUpdate,
+    subjectPassInfo,
+  } = state;
 
   const fetchSubjectPass = (page: number, limit: number) => {
     dispatch({
@@ -85,6 +101,7 @@ const SubjectPassTabPage = (props: IpropSubjectPass) => {
         isDisableBtnAdd={!isPermissionAdd}
         title="Add new"
         onSearch={(searchKey: string) => onSearch(searchKey)}
+        onShowAdd={() => setState({ ...state, isShowModalAdd: true })}
       />
       <TableContainer>
         <Table stickyHeader aria-label="table subject pass">
@@ -114,6 +131,13 @@ const SubjectPassTabPage = (props: IpropSubjectPass) => {
                         variant="outline-primary"
                         size="sm"
                         disabled={!isPermissionUpdate}
+                        onClick={() =>
+                          setState({
+                            ...state,
+                            isShowModalUpdate: true,
+                            subjectPassInfo: row,
+                          })
+                        }
                       >
                         <BsPencilSquare />
                       </Button>{" "}
@@ -121,6 +145,13 @@ const SubjectPassTabPage = (props: IpropSubjectPass) => {
                         variant="outline-danger"
                         size="sm"
                         disabled={!isPermissionDelete}
+                        onClick={() =>
+                          setState({
+                            ...state,
+                            isShowModalDelete: true,
+                            subjectPassInfo: row,
+                          })
+                        }
                       >
                         <BsTrash />
                       </Button>
@@ -140,6 +171,27 @@ const SubjectPassTabPage = (props: IpropSubjectPass) => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+      <ModalSubjectPassPage
+        isShowModal={isShowModalAdd}
+        type={modalTypes.ADD}
+        subjectPassInfo={{}}
+        onCloseModal={() => setState({ ...state, isShowModalAdd: false })}
+        fetchSubjectPass={() => fetchSubjectPass(page + 1, limit)}
+      />
+      <ModalSubjectPassPage
+        isShowModal={isShowModalUpdate}
+        type={modalTypes.UPDATE}
+        subjectPassInfo={subjectPassInfo}
+        onCloseModal={() => setState({ ...state, isShowModalUpdate: false })}
+        fetchSubjectPass={() => fetchSubjectPass(page + 1, limit)}
+      />
+      <ModalSubjectPassPage
+        isShowModal={isShowModalDelete}
+        type={modalTypes.DELETE}
+        subjectPassInfo={subjectPassInfo}
+        onCloseModal={() => setState({ ...state, isShowModalDelete: false })}
+        fetchSubjectPass={() => fetchSubjectPass(page + 1, limit)}
       />
     </div>
   );
