@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { validateAccessModule } from "../../utils/permission.util";
-import { moduleNames } from "../../constants/constant";
+import {
+  validateAccessModule,
+  validateAction,
+} from "../../utils/permission.util";
+import {
+  modalTypes,
+  moduleNames,
+  permissonTypes,
+} from "../../constants/constant";
 import MenuPage from "../commons/menu";
 import FooterPage from "../commons/footer";
 import ForbidenPage from "../commons/forbiden";
@@ -24,15 +31,40 @@ import {
 import { Button } from "react-bootstrap";
 import { headerTableSemesters } from "../../utils/semester.util";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
+import AddAndSearchTable from "../commons/add-search-table";
+import ModalSemesterPage from "./modals";
 
 const SemesterMgtPage = (props: IpropSemester) => {
   const { dispatch, listSemesters = [], totalSemester = 0 } = props;
   const isAccess = validateAccessModule(moduleNames.SEMESTERS_MANAGEMENT);
+  const isPermissionAdd = validateAction(
+    permissonTypes.ADD,
+    moduleNames.SEMESTERS_MANAGEMENT
+  );
+  const isPermissionUpdate = validateAction(
+    permissonTypes.EDIT,
+    moduleNames.SEMESTERS_MANAGEMENT
+  );
+  const isPermissionDelete = validateAction(
+    permissonTypes.DELETE,
+    moduleNames.SEMESTERS_MANAGEMENT
+  );
   const [state, setState] = useState({
     page: 0,
     limit: 10,
+    semesterInfo: {},
+    isShowModalAdd: false,
+    isShowModalUpdate: false,
+    isShowModalDelete: false,
   });
-  const { page, limit } = state;
+  const {
+    page,
+    limit,
+    isShowModalAdd,
+    isShowModalDelete,
+    isShowModalUpdate,
+    semesterInfo,
+  } = state;
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setState({ ...state, page: newPage });
@@ -45,6 +77,15 @@ const SemesterMgtPage = (props: IpropSemester) => {
     const newLimit = parseInt(event.target.value);
     setState({ ...state, limit: newLimit });
     fetchSemesters(1, newLimit);
+  };
+
+  const onSearch = (searchKey: string) => {
+    dispatch({
+      type: semesterActions.GET_LIST_SEMESTER,
+      payload: {
+        searchKey,
+      },
+    });
   };
 
   const fetchSemesters = (page: number, limit: number) => {
@@ -68,6 +109,12 @@ const SemesterMgtPage = (props: IpropSemester) => {
           <Container>
             <MenuPage />
             <Container className="p-3 fs-6">
+              <AddAndSearchTable
+                isDisableBtnAdd={!isPermissionAdd}
+                title="Add semester"
+                onSearch={(searchKey: string) => onSearch(searchKey)}
+                onShowAdd={() => setState({ ...state, isShowModalAdd: true })}
+              />
               <TableContainer>
                 <Table stickyHeader aria-label="semester table">
                   <TableHead>
@@ -99,10 +146,32 @@ const SemesterMgtPage = (props: IpropSemester) => {
                             <TableCell>{semester?.year}</TableCell>
                             <TableCell>{semester?.code}</TableCell>
                             <TableCell>
-                              <Button variant="outline-primary" size="sm">
+                              <Button
+                                variant="outline-primary"
+                                size="sm"
+                                disabled={!isPermissionUpdate}
+                                onClick={() =>
+                                  setState({
+                                    ...state,
+                                    isShowModalUpdate: true,
+                                    semesterInfo: semester,
+                                  })
+                                }
+                              >
                                 <BsPencilSquare />
                               </Button>{" "}
-                              <Button variant="outline-danger" size="sm">
+                              <Button
+                                variant="outline-danger"
+                                size="sm"
+                                disabled={!isPermissionDelete}
+                                onClick={() =>
+                                  setState({
+                                    ...state,
+                                    isShowModalDelete: true,
+                                    semesterInfo: semester,
+                                  })
+                                }
+                              >
                                 <BsTrash />
                               </Button>
                             </TableCell>
@@ -121,6 +190,33 @@ const SemesterMgtPage = (props: IpropSemester) => {
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+              <ModalSemesterPage
+                type={modalTypes.ADD}
+                isShowModal={isShowModalAdd}
+                semesterInfo={{}}
+                onCloseModal={() =>
+                  setState({ ...state, isShowModalAdd: false })
+                }
+                fetchSemesters={() => fetchSemesters(page + 1, limit)}
+              />
+              <ModalSemesterPage
+                type={modalTypes.UPDATE}
+                isShowModal={isShowModalUpdate}
+                semesterInfo={semesterInfo}
+                onCloseModal={() =>
+                  setState({ ...state, isShowModalUpdate: false })
+                }
+                fetchSemesters={() => fetchSemesters(page + 1, limit)}
+              />
+              <ModalSemesterPage
+                type={modalTypes.DELETE}
+                isShowModal={isShowModalDelete}
+                semesterInfo={semesterInfo}
+                onCloseModal={() =>
+                  setState({ ...state, isShowModalDelete: false })
+                }
+                fetchSemesters={() => fetchSemesters(page + 1, limit)}
               />
             </Container>
           </Container>
