@@ -112,6 +112,7 @@ const SemesterMgtPage = (props: IpropSemester) => {
               <AddAndSearchTable
                 isDisableBtnAdd={!isPermissionAdd}
                 title="Add semester"
+                titleSearch="Search by name and year..."
                 onSearch={(searchKey: string) => onSearch(searchKey)}
                 onShowAdd={() => setState({ ...state, isShowModalAdd: true })}
               />
