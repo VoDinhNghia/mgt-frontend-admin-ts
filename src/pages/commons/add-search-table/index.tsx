@@ -8,7 +8,7 @@ import {
 import { BsPlusCircle } from "react-icons/bs";
 
 const AddAndSearchTable = (props: IpropAddAndSearchTable) => {
-  const { title, onSearch, onShowAdd, isDisableBtnAdd } = props;
+  const { title, onSearch, onShowAdd, isDisableBtnAdd, titleSearch = "Search by name..." } = props;
 
   return (
     <div className="mb-3 fs-6">
@@ -34,7 +34,7 @@ const AddAndSearchTable = (props: IpropAddAndSearchTable) => {
             <Card.Body>
               <Form.Control
                 type="text"
-                placeholder="Search by name"
+                placeholder={titleSearch}
                 onChange={(e: IeventOnchangeInput) => onSearch(e.target.value)}
               />
             </Card.Body>
