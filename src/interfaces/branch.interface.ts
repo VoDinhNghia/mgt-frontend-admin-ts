@@ -1,3 +1,5 @@
+import { IpropModalCommon } from "./common.interface";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IcreateBranch {
   title?: string;
@@ -26,4 +28,13 @@ export interface IpropBranchPage {
 
 export interface IbranchCardItem extends IcreateBranch {
   _id?: string;
+}
+
+export interface IpropModalBranch extends IpropModalCommon {
+  branchInfo?: any;
+  fetchBranchs?: any;
+  listCountries?: any;
+  listProvinces?: any;
+  listDistricts?: any;
+  listWards?: any;
 }
