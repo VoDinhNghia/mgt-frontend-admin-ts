@@ -4,7 +4,11 @@ import {
   validateAccessModule,
   validateAction,
 } from "../../utils/permission.util";
-import { moduleNames, permissonTypes } from "../../constants/constant";
+import {
+  modalTypes,
+  moduleNames,
+  permissonTypes,
+} from "../../constants/constant";
 import MenuPage from "../commons/menu";
 import FooterPage from "../commons/footer";
 import ForbidenPage from "../commons/forbiden";
@@ -19,17 +23,38 @@ import { branchActions } from "../../store/actions";
 import AddAndSearchTable from "../commons/add-search-table";
 import { Card, Col, Row, Button } from "react-bootstrap";
 import { BsTrash, BsPencilSquare } from "react-icons/bs";
+import ModalBranchPage from "./modals";
 
 const BranchMgtPage = (props: IpropBranchPage) => {
   const { listBranchs = [], dispatch } = props;
   const [state, setState] = useState({
-    isShowModalAdd: true,
+    isShowModalAdd: false,
+    isShowModalUpdate: false,
+    isShowModalDelete: false,
+    isShowModalView: false,
+    branchInfo: {},
   });
   const isAccess = validateAccessModule(moduleNames.BRANCH_MANAGEMENT);
   const isPermissionAdd = validateAction(
     permissonTypes.ADD,
     moduleNames.BRANCH_MANAGEMENT
   );
+  const isPermissionUpdate = validateAction(
+    permissonTypes.EDIT,
+    moduleNames.BRANCH_MANAGEMENT
+  );
+  const isPermissionDelete = validateAction(
+    permissonTypes.DELETE,
+    moduleNames.BRANCH_MANAGEMENT
+  );
+  const {
+    isShowModalAdd,
+    isShowModalDelete,
+    isShowModalUpdate,
+    isShowModalView,
+    branchInfo,
+  } = state;
+
   const fetchBranchs = () => {
     dispatch({
       type: branchActions.GET_LIST_BRANCH,
@@ -48,8 +73,6 @@ const BranchMgtPage = (props: IpropBranchPage) => {
   useEffect(() => {
     fetchBranchs();
   }, []);
-
-  console.log("branchs", listBranchs, state);
 
   return (
     <div>
@@ -86,6 +109,13 @@ const BranchMgtPage = (props: IpropBranchPage) => {
                               variant="outline-primary"
                               className="border-0"
                               size="sm"
+                              onClick={() =>
+                                setState({
+                                  ...state,
+                                  isShowModalView: true,
+                                  branchInfo: branch,
+                                })
+                              }
                             >
                               View detail
                             </Button>
@@ -96,10 +126,30 @@ const BranchMgtPage = (props: IpropBranchPage) => {
                         </Card.Body>
                         <Card.Footer>
                           <span className="ActionGroupCardBranch">
-                            <Button variant="primary">
+                            <Button
+                              variant="primary"
+                              disabled={!isPermissionUpdate}
+                              onClick={() =>
+                                setState({
+                                  ...state,
+                                  isShowModalUpdate: true,
+                                  branchInfo: branch,
+                                })
+                              }
+                            >
                               <BsPencilSquare /> Update info
                             </Button>{" "}
-                            <Button variant="danger">
+                            <Button
+                              variant="danger"
+                              disabled={!isPermissionDelete}
+                              onClick={() =>
+                                setState({
+                                  ...state,
+                                  isShowModalDelete: true,
+                                  branchInfo: branch,
+                                })
+                              }
+                            >
                               <BsTrash /> Delete
                             </Button>
                           </span>
@@ -111,6 +161,38 @@ const BranchMgtPage = (props: IpropBranchPage) => {
               </Row>
             </Container>
           </Container>
+          <ModalBranchPage
+            type={modalTypes.ADD}
+            isShowModal={isShowModalAdd}
+            branchInfo={{}}
+            onCloseModal={() => setState({ ...state, isShowModalAdd: false })}
+            fetchBranchs={() => fetchBranchs()}
+          />
+          <ModalBranchPage
+            type={modalTypes.UPDATE}
+            isShowModal={isShowModalUpdate}
+            branchInfo={branchInfo}
+            onCloseModal={() =>
+              setState({ ...state, isShowModalUpdate: false })
+            }
+            fetchBranchs={() => fetchBranchs()}
+          />
+          <ModalBranchPage
+            type={modalTypes.DELETE}
+            isShowModal={isShowModalDelete}
+            branchInfo={branchInfo}
+            onCloseModal={() =>
+              setState({ ...state, isShowModalDelete: false })
+            }
+            fetchBranchs={() => fetchBranchs()}
+          />
+          <ModalBranchPage
+            type={modalTypes.VIEW}
+            isShowModal={isShowModalView}
+            branchInfo={branchInfo}
+            onCloseModal={() => setState({ ...state, isShowModalView: false })}
+            fetchBranchs={() => fetchBranchs()}
+          />
           <FooterPage />
         </div>
       ) : (
