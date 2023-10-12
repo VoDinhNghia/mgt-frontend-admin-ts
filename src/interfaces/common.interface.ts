@@ -178,6 +178,7 @@ export interface IpropReadMore {
   isReadMore?: boolean | any;
   setReadMore?: Function | any;
   lengthSlice?: number;
+  title?: string;
 }
 
 export type IallStateReadMore = any;

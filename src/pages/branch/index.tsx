@@ -17,6 +17,8 @@ import { connect } from "react-redux";
 import { IstateRedux } from "../../interfaces/common.interface";
 import {
   IbranchCardItem,
+  IbranchInfoReadMore,
+  IbranchReadMore,
   IpropBranchPage,
 } from "../../interfaces/branch.interface";
 import { branchActions } from "../../store/actions";
@@ -24,6 +26,7 @@ import AddAndSearchTable from "../commons/add-search-table";
 import { Card, Col, Row, Button } from "react-bootstrap";
 import { BsTrash, BsPencilSquare } from "react-icons/bs";
 import ModalBranchPage from "./modals";
+import ReadMoreCommon from "../commons/readmore";
 
 const BranchMgtPage = (props: IpropBranchPage) => {
   const { listBranchs = [], dispatch } = props;
@@ -33,6 +36,7 @@ const BranchMgtPage = (props: IpropBranchPage) => {
     isShowModalDelete: false,
     isShowModalView: false,
     branchInfo: {},
+    readMore: {},
   });
   const isAccess = validateAccessModule(moduleNames.BRANCH_MANAGEMENT);
   const isPermissionAdd = validateAction(
@@ -53,7 +57,10 @@ const BranchMgtPage = (props: IpropBranchPage) => {
     isShowModalUpdate,
     isShowModalView,
     branchInfo,
+    readMore,
   } = state;
+  const branchInfoReadMore: IbranchInfoReadMore = branchInfo;
+  const allStateReadMore: IbranchReadMore = readMore;
 
   const fetchBranchs = () => {
     dispatch({
@@ -67,6 +74,15 @@ const BranchMgtPage = (props: IpropBranchPage) => {
       payload: {
         searchKey,
       },
+    });
+  };
+
+  const handleReadMore = (branchInfo: IbranchReadMore) => {
+    const isReadMore = allStateReadMore[`${branchInfo?._id}`];
+    setState({
+      ...state,
+      readMore: { [`${branchInfo?._id}`]: !isReadMore },
+      branchInfo,
     });
   };
 
@@ -92,7 +108,7 @@ const BranchMgtPage = (props: IpropBranchPage) => {
                   const location = `${branch?.location?.address}, ${branch?.location?.ward?.name}, ${branch?.location?.district?.name}, ${branch?.location?.province?.name}, ${branch?.location?.country?.name}`;
                   return (
                     <Col xl={6} key={branch?._id}>
-                      <Card>
+                      <Card className="mb-3">
                         <Card.Header className="bg-primary text-white">
                           {branch?.title}
                         </Card.Header>
@@ -121,7 +137,18 @@ const BranchMgtPage = (props: IpropBranchPage) => {
                             </Button>
                           </Card.Text>
                           <Card.Text>
-                            Description: {branch?.description}
+                          <ReadMoreCommon
+                              isReadMore={
+                                branch._id === branchInfoReadMore?._id
+                                  ? allStateReadMore[`${branch._id}`]
+                                  : false
+                              }
+                              setReadMore={() => handleReadMore(branch)}
+                              lengthSlice={40}
+                              title="Description: "
+                            >
+                              {branch?.description}
+                            </ReadMoreCommon>
                           </Card.Text>
                         </Card.Body>
                         <Card.Footer>

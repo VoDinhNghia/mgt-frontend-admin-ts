@@ -224,7 +224,15 @@ const ModalBranchPage = (props: IpropModalBranch) => {
       <DialogContent>
         {type === modalTypes.VIEW ? (
           <>
-            <p>Location view</p>
+            {branchInfo?.contactInfo?.map((contact: { email: string; fax: string; mobile: string }) => {
+              return (
+                <>
+                  <p>Email: {contact?.email}</p>
+                  <p>Fax: {contact?.fax}</p>
+                  <p>Mobile: {contact?.mobile}</p>
+                </>
+              )
+            })}
           </>
         ) : null}
         {type === modalTypes.ADD || type === modalTypes.UPDATE ? (
@@ -411,7 +419,7 @@ const ModalBranchPage = (props: IpropModalBranch) => {
                 fullWidth={true}
                 defaultValue={
                   type === modalTypes.UPDATE
-                    ? branchInfo?.contactInfo[0]?.email
+                    ? (branchInfo?.contactInfo?.length > 0 ? branchInfo?.contactInfo[0]?.email : "" )
                     : ""
                 }
                 error={!!errors["email"]}
@@ -424,7 +432,7 @@ const ModalBranchPage = (props: IpropModalBranch) => {
                 type="text"
                 fullWidth={true}
                 defaultValue={
-                  type === modalTypes.UPDATE ? branchInfo?.contactInfo[0]?.fax : ""
+                  type === modalTypes.UPDATE ? (branchInfo?.contactInfo?.length > 0 ? branchInfo?.contactInfo[0]?.fax : "" ) : ""
                 }
                 error={!!errors["fax"]}
                 helperText={errors["fax"] ? errors["fax"].message : ""}
@@ -437,7 +445,7 @@ const ModalBranchPage = (props: IpropModalBranch) => {
                 fullWidth={true}
                 defaultValue={
                   type === modalTypes.UPDATE
-                    ? branchInfo?.contactInfo[0]?.mobile
+                    ? (branchInfo?.contactInfo?.length > 0 ? branchInfo?.contactInfo[0]?.mobile : "" )
                     : ""
                 }
                 error={!!errors["mobile"]}
