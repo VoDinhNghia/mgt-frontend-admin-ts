@@ -17,7 +17,7 @@ export interface IcreateBranch {
     email?: string | any;
     fax?: string | any;
     mobile?: string | any;
-  };
+  }[];
 }
 
 export interface IpropBranchPage {
@@ -38,3 +38,6 @@ export interface IpropModalBranch extends IpropModalCommon {
   listDistricts?: any;
   listWards?: any;
 }
+
+export type IbranchReadMore = any;
+export type IbranchInfoReadMore = any;

@@ -4,8 +4,8 @@ import { Button } from "react-bootstrap";
 import { IpropReadMore } from "../../../interfaces/common.interface";
 
 const ReadMoreCommon = (props: IpropReadMore) => {
-  const { children, isReadMore, setReadMore, lengthSlice = 30 } = props;
-  const text = children;
+  const { children, isReadMore, setReadMore, lengthSlice = 30, title = "" } = props;
+  const text = `${title} ${children}`;
 
   return (
     <p className="ReadMoreCommon">
