@@ -14,7 +14,7 @@ export const registerSchemaBranchForm = object({
     .nonempty("email must is provided")
     .email("this email not valid"),
   fax: string().nullable(),
-  mobile: string().nullable(),
+  mobile: string().nonempty("mobile must is provided"),
 });
 
 export type IregisterInputBranchForm = TypeOf<typeof registerSchemaBranchForm>;

@@ -14,7 +14,7 @@ import {
   FormControl,
 } from "@mui/material";
 import { modalTypes } from "../../../constants/constant";
-import { countriesActions } from "../../../store/actions";
+import { branchActions, countriesActions } from "../../../store/actions";
 import { IpropModalBranch } from "../../../interfaces/branch.interface";
 import {
   IregisterInputBranchForm,
@@ -61,16 +61,95 @@ const ModalBranchPage = (props: IpropModalBranch) => {
   const onSubmitHandlerAdd: SubmitHandler<IregisterInputBranchForm> = (
     values
   ) => {
-    console.log("values", values);
+    const {
+      name,
+      website,
+      description,
+      title,
+      province,
+      district,
+      ward,
+      country,
+      address,
+      email,
+      fax,
+      mobile,
+    } = values;
+    dispatch({
+      type: branchActions.ADD_BRANCH,
+      payload: {
+        title,
+        name,
+        description,
+        website,
+        location: {
+          province,
+          district,
+          ward,
+          country,
+          address,
+        },
+        contactInfo: [
+          {
+            email,
+            fax,
+            mobile,
+          },
+        ],
+      },
+    });
+    fetchAndCloseModal();
   };
 
   const onSubmitHandlerUpdate: SubmitHandler<IregisterInputBranchForm> = (
     values
   ) => {
-    console.log("values sdff", values);
+    const {
+      name,
+      website,
+      description,
+      title,
+      province,
+      district,
+      ward,
+      country,
+      address,
+      email,
+      fax,
+      mobile,
+    } = values;
+    dispatch({
+      type: branchActions.UPDATE_BRANCH,
+      id: branchInfo?._id,
+      payload: {
+        title,
+        name,
+        description,
+        website,
+        location: {
+          province,
+          district,
+          ward,
+          country,
+          address,
+        },
+        contactInfo: [
+          {
+            email,
+            fax,
+            mobile,
+          },
+        ],
+      },
+    });
+    fetchAndCloseModal();
   };
 
-  const deleteRoom = () => {
+  const deleteBranch = () => {
+    dispatch({
+      type: branchActions.DELETE_BRANCH,
+      id: branchInfo?._id,
+    });
     fetchAndCloseModal();
   };
 
@@ -180,6 +259,18 @@ const ModalBranchPage = (props: IpropModalBranch) => {
                 error={!!errors["title"]}
                 helperText={errors["title"] ? errors["title"].message : ""}
                 {...register("title")}
+              />
+              <p className="mt-2">Website: </p>
+              <TextField
+                size="small"
+                type="text"
+                fullWidth={true}
+                defaultValue={
+                  type === modalTypes.UPDATE ? branchInfo?.website : null
+                }
+                error={!!errors["website"]}
+                helperText={errors["website"] ? errors["website"].message : ""}
+                {...register("website")}
               />
               <p className="mt-2">Country: </p>
               <FormControl
@@ -301,6 +392,18 @@ const ModalBranchPage = (props: IpropModalBranch) => {
                   {errors["ward"] ? errors["ward"].message : ""}
                 </FormHelperText>
               </FormControl>
+              <p className="mt-2">Street: </p>
+              <TextField
+                size="small"
+                type="text"
+                fullWidth={true}
+                defaultValue={
+                  type === modalTypes.UPDATE ? branchInfo?.address : null
+                }
+                error={!!errors["address"]}
+                helperText={errors["address"] ? errors["address"].message : ""}
+                {...register("address")}
+              />
               <p className="mt-2">Email: </p>
               <TextField
                 size="small"
@@ -308,7 +411,7 @@ const ModalBranchPage = (props: IpropModalBranch) => {
                 fullWidth={true}
                 defaultValue={
                   type === modalTypes.UPDATE
-                    ? branchInfo?.contactInfo?.email
+                    ? branchInfo?.contactInfo[0]?.email
                     : ""
                 }
                 error={!!errors["email"]}
@@ -321,7 +424,7 @@ const ModalBranchPage = (props: IpropModalBranch) => {
                 type="text"
                 fullWidth={true}
                 defaultValue={
-                  type === modalTypes.UPDATE ? branchInfo?.contactInfo?.fax : ""
+                  type === modalTypes.UPDATE ? branchInfo?.contactInfo[0]?.fax : ""
                 }
                 error={!!errors["fax"]}
                 helperText={errors["fax"] ? errors["fax"].message : ""}
@@ -334,7 +437,7 @@ const ModalBranchPage = (props: IpropModalBranch) => {
                 fullWidth={true}
                 defaultValue={
                   type === modalTypes.UPDATE
-                    ? branchInfo?.contactInfo?.mobile
+                    ? branchInfo?.contactInfo[0]?.mobile
                     : ""
                 }
                 error={!!errors["mobile"]}
@@ -375,7 +478,7 @@ const ModalBranchPage = (props: IpropModalBranch) => {
             variant="outlined"
             size="small"
             color="error"
-            onClick={() => deleteRoom()}
+            onClick={() => deleteBranch()}
           >
             Yes
           </Button>
