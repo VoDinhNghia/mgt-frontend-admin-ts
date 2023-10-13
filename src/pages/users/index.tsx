@@ -24,7 +24,6 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  TablePagination,
 } from "@mui/material";
 import { Button, Card } from "react-bootstrap";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
@@ -34,6 +33,7 @@ import { TbDatabaseImport } from "react-icons/tb";
 import { AiOutlineFilter } from "react-icons/ai";
 import FilterAndImportModal from "./filter-import";
 import HeaderTableCommon from "../commons/header-table";
+import PaginationTableCommon from "../commons/pagination-table";
 
 const UserManagementPage = (props: IpropUserMgt) => {
   const { dispatch, listUsers = [], totalUser = 0 } = props;
@@ -81,19 +81,6 @@ const UserManagementPage = (props: IpropUserMgt) => {
         limit,
       },
     });
-  };
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setState({ ...state, page: newPage });
-    fetchUsers(newPage + 1, limit);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newLimit = parseInt(event.target.value);
-    setState({ ...state, limit: newLimit });
-    fetchUsers(1, newLimit);
   };
 
   const onSearch = (searchKey: string) => {
@@ -206,14 +193,15 @@ const UserManagementPage = (props: IpropUserMgt) => {
                   </TableBody>
                 </Table>
               </TableContainer>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
-                count={totalUser}
-                rowsPerPage={limit}
+              <PaginationTableCommon
+                total={totalUser}
+                limit={limit}
                 page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+                setState={setState}
+                state={state}
+                fetchList={(page: number, limit: number) =>
+                  fetchUsers(page, limit)
+                }
               />
             </Container>
           </Container>

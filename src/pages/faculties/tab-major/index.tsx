@@ -16,7 +16,6 @@ import {
   TableCell,
   TableBody,
   Table,
-  TablePagination,
 } from "@mui/material";
 import { headerTableMajor } from "../../../utils/faculty.util";
 import { validateAction } from "../../../utils/permission.util";
@@ -33,6 +32,7 @@ import MajorModalPage from "./modals";
 import AddAndSearchTable from "../../commons/add-search-table";
 import ReadMoreCommon from "../../commons/readmore";
 import HeaderTableCommon from "../../commons/header-table";
+import PaginationTableCommon from "../../commons/pagination-table";
 
 const MajorTabPage = (props: IpropMajorTab) => {
   const { dispatch, listMajors = [], totalMajor = 0 } = props;
@@ -79,19 +79,6 @@ const MajorTabPage = (props: IpropMajorTab) => {
         limit,
       },
     });
-  };
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setState({ ...state, page: newPage });
-    fetchMajors(newPage + 1, limit);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newLimit = parseInt(event.target.value);
-    setState({ ...state, limit: newLimit });
-    fetchMajors(1, newLimit);
   };
 
   const handleReadMore = (majorInfo: ImajorReadMore) => {
@@ -195,14 +182,15 @@ const MajorTabPage = (props: IpropMajorTab) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={totalMajor}
-        rowsPerPage={limit}
+      <PaginationTableCommon
+        total={totalMajor}
         page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        limit={limit}
+        setState={setState}
+        state={state}
+        fetchList={(page: number, limit: number) =>
+          fetchMajors(page, limit)
+        }
       />
       <MajorModalPage
         type={modalTypes.ADD}
