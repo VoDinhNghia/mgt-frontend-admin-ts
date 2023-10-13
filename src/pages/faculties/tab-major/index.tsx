@@ -27,12 +27,12 @@ import {
 } from "../../../constants/constant";
 import moment from "moment";
 import { Button } from "react-bootstrap";
-import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import MajorModalPage from "./modals";
 import AddAndSearchTable from "../../commons/add-search-table";
 import ReadMoreCommon from "../../commons/readmore";
 import HeaderTableCommon from "../../commons/header-table";
 import PaginationTableCommon from "../../commons/pagination-table";
+import ActionTableCommon from "../../commons/actions-table";
 
 const MajorTabPage = (props: IpropMajorTab) => {
   const { dispatch, listMajors = [], totalMajor = 0 } = props;
@@ -40,7 +40,7 @@ const MajorTabPage = (props: IpropMajorTab) => {
     isShowModalAdd: false,
     isShowModalDelete: false,
     isShowModalUpdate: false,
-    majorInfo: {},
+    rowData: {},
     page: 0,
     limit: 10,
     readMore: {},
@@ -65,11 +65,11 @@ const MajorTabPage = (props: IpropMajorTab) => {
     isShowModalUpdate,
     page,
     limit,
-    majorInfo = {},
+    rowData = {},
     readMore = {},
   } = state;
   const allStateReadMore: IallStateReadMore = readMore;
-  const majorReadMore: ImajorReadMore = majorInfo;
+  const majorReadMore: ImajorReadMore = rowData;
 
   const fetchMajors = (page: number, limit: number) => {
     dispatch({
@@ -86,7 +86,7 @@ const MajorTabPage = (props: IpropMajorTab) => {
     setState({
       ...state,
       readMore: { [`${majorInfo?._id}`]: !isReadMore },
-      majorInfo,
+      rowData,
     });
   };
 
@@ -147,34 +147,13 @@ const MajorTabPage = (props: IpropMajorTab) => {
                     </Button>
                   </TableCell>
                   <TableCell>
-                    <Button
-                      variant="outline-primary"
-                      size="sm"
-                      disabled={!isPermissionUpdate}
-                      onClick={() =>
-                        setState({
-                          ...state,
-                          isShowModalUpdate: true,
-                          majorInfo: major,
-                        })
-                      }
-                    >
-                      <BsPencilSquare />
-                    </Button>{" "}
-                    <Button
-                      variant="outline-danger"
-                      size="sm"
-                      disabled={!isPermissionDelete}
-                      onClick={() =>
-                        setState({
-                          ...state,
-                          isShowModalDelete: true,
-                          majorInfo: major,
-                        })
-                      }
-                    >
-                      <BsTrash />
-                    </Button>
+                    <ActionTableCommon
+                      state={state}
+                      setState={setState}
+                      rowData={major}
+                      isPermissionDelete={isPermissionDelete}
+                      isPermissionUpdate={isPermissionUpdate}
+                    />
                   </TableCell>
                 </TableRow>
               );
@@ -188,9 +167,7 @@ const MajorTabPage = (props: IpropMajorTab) => {
         limit={limit}
         setState={setState}
         state={state}
-        fetchList={(page: number, limit: number) =>
-          fetchMajors(page, limit)
-        }
+        fetchList={(page: number, limit: number) => fetchMajors(page, limit)}
       />
       <MajorModalPage
         type={modalTypes.ADD}
@@ -202,14 +179,14 @@ const MajorTabPage = (props: IpropMajorTab) => {
       <MajorModalPage
         type={modalTypes.UPDATE}
         isShowModal={isShowModalUpdate}
-        majorInfo={majorInfo}
+        majorInfo={rowData}
         onCloseModal={() => setState({ ...state, isShowModalUpdate: false })}
         fetchMajors={() => fetchMajors(page + 1, limit)}
       />
       <MajorModalPage
         type={modalTypes.DELETE}
         isShowModal={isShowModalDelete}
-        majorInfo={majorInfo}
+        majorInfo={rowData}
         onCloseModal={() => setState({ ...state, isShowModalDelete: false })}
         fetchMajors={() => fetchMajors(page + 1, limit)}
       />

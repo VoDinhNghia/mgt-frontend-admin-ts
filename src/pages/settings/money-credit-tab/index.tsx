@@ -20,12 +20,11 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
-import { BsPencilSquare, BsTrash } from "react-icons/bs";
-import { Button } from "react-bootstrap";
 import AddAndSearchTable from "../../commons/add-search-table";
 import ModalMoneyCreditPage from "./modals";
 import HeaderTableCommon from "../../commons/header-table";
 import PaginationTableCommon from "../../commons/pagination-table";
+import ActionTableCommon from "../../commons/actions-table";
 
 const MoneyCreditTabPage = (props: IpropMoneyCredit) => {
   const { dispatch, listMoneyCredits = [], totalMoneyCredits = 0 } = props;
@@ -35,7 +34,7 @@ const MoneyCreditTabPage = (props: IpropMoneyCredit) => {
     isShowModalAdd: false,
     isShowModalUpdate: false,
     isShowModalDelete: false,
-    moneyCreditInfo: {},
+    rowData: {},
   });
   const columns = headerTableMoneyCredit;
   const isPermissionAdd = validateAction(
@@ -56,7 +55,7 @@ const MoneyCreditTabPage = (props: IpropMoneyCredit) => {
     isShowModalAdd,
     isShowModalDelete,
     isShowModalUpdate,
-    moneyCreditInfo,
+    rowData,
   } = state;
 
   const fetchMoneyCredit = (page: number, limit: number) => {
@@ -105,34 +104,13 @@ const MoneyCreditTabPage = (props: IpropMoneyCredit) => {
                     </TableCell>
                     <TableCell>{`${row?.semester?.name} (${row?.semester?.year})`}</TableCell>
                     <TableCell>
-                      <Button
-                        variant="outline-primary"
-                        size="sm"
-                        disabled={!isPermissionUpdate}
-                        onClick={() =>
-                          setState({
-                            ...state,
-                            isShowModalUpdate: true,
-                            moneyCreditInfo: row,
-                          })
-                        }
-                      >
-                        <BsPencilSquare />
-                      </Button>{" "}
-                      <Button
-                        variant="outline-danger"
-                        size="sm"
-                        disabled={!isPermissionDelete}
-                        onClick={() =>
-                          setState({
-                            ...state,
-                            isShowModalDelete: true,
-                            moneyCreditInfo: row,
-                          })
-                        }
-                      >
-                        <BsTrash />
-                      </Button>
+                      <ActionTableCommon
+                        state={state}
+                        setState={setState}
+                        rowData={row}
+                        isPermissionDelete={isPermissionDelete}
+                        isPermissionUpdate={isPermissionUpdate}
+                      />
                     </TableCell>
                   </TableRow>
                 );
@@ -161,14 +139,14 @@ const MoneyCreditTabPage = (props: IpropMoneyCredit) => {
       <ModalMoneyCreditPage
         type={modalTypes.UPDATE}
         isShowModal={isShowModalUpdate}
-        moneyCreditInfo={moneyCreditInfo}
+        moneyCreditInfo={rowData}
         onCloseModal={() => setState({ ...state, isShowModalUpdate: false })}
         fetchMoneyCredit={() => fetchMoneyCredit(page + 1, limit)}
       />
       <ModalMoneyCreditPage
         type={modalTypes.DELETE}
         isShowModal={isShowModalDelete}
-        moneyCreditInfo={moneyCreditInfo}
+        moneyCreditInfo={rowData}
         onCloseModal={() => setState({ ...state, isShowModalDelete: false })}
         fetchMoneyCredit={() => fetchMoneyCredit(page + 1, limit)}
       />

@@ -14,8 +14,6 @@ import {
   TableCell,
   TableRow,
 } from "@mui/material";
-import { Button } from "react-bootstrap";
-import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import AddAndSearchTable from "../../commons/add-search-table";
 import { validateAction } from "../../../utils/permission.util";
 import {
@@ -26,6 +24,7 @@ import {
 import LearningRateModalPage from "./modals";
 import HeaderTableCommon from "../../commons/header-table";
 import PaginationTableCommon from "../../commons/pagination-table";
+import ActionTableCommon from "../../commons/actions-table";
 
 const LearningRateTabPage = (props: IpropLearningRate) => {
   const { listLearningRates = [], dispatch, totalLearningRate = 0 } = props;
@@ -35,7 +34,7 @@ const LearningRateTabPage = (props: IpropLearningRate) => {
     isShowModalAdd: false,
     isShowModalUpdate: false,
     isShowModalDelete: false,
-    learningRateInfo: {},
+    rowData: {},
   });
   const columns = headerTableLearningRate;
   const isPermissionAdd = validateAction(
@@ -56,7 +55,7 @@ const LearningRateTabPage = (props: IpropLearningRate) => {
     isShowModalAdd,
     isShowModalDelete,
     isShowModalUpdate,
-    learningRateInfo,
+    rowData,
   } = state;
 
   const fetchLearningRate = (page: number, limit: number) => {
@@ -104,34 +103,13 @@ const LearningRateTabPage = (props: IpropLearningRate) => {
                     <TableCell>{row?.minimum}</TableCell>
                     <TableCell>{row?.maximum}</TableCell>
                     <TableCell>
-                      <Button
-                        variant="outline-primary"
-                        size="sm"
-                        disabled={!isPermissionUpdate}
-                        onClick={() =>
-                          setState({
-                            ...state,
-                            isShowModalUpdate: true,
-                            learningRateInfo: row,
-                          })
-                        }
-                      >
-                        <BsPencilSquare />
-                      </Button>{" "}
-                      <Button
-                        variant="outline-danger"
-                        size="sm"
-                        disabled={!isPermissionDelete}
-                        onClick={() =>
-                          setState({
-                            ...state,
-                            isShowModalDelete: true,
-                            learningRateInfo: row,
-                          })
-                        }
-                      >
-                        <BsTrash />
-                      </Button>
+                      <ActionTableCommon
+                        state={state}
+                        setState={setState}
+                        rowData={row}
+                        isPermissionDelete={isPermissionDelete}
+                        isPermissionUpdate={isPermissionUpdate}
+                      />
                     </TableCell>
                   </TableRow>
                 );
@@ -161,14 +139,14 @@ const LearningRateTabPage = (props: IpropLearningRate) => {
         isShowModal={isShowModalUpdate}
         type={modalTypes.UPDATE}
         onCloseModal={() => setState({ ...state, isShowModalUpdate: false })}
-        learningRateInfo={learningRateInfo}
+        learningRateInfo={rowData}
         fetchLearningRate={() => fetchLearningRate(page + 1, limit)}
       />
       <LearningRateModalPage
         isShowModal={isShowModalDelete}
         type={modalTypes.DELETE}
         onCloseModal={() => setState({ ...state, isShowModalDelete: false })}
-        learningRateInfo={learningRateInfo}
+        learningRateInfo={rowData}
         fetchLearningRate={() => fetchLearningRate(page + 1, limit)}
       />
     </div>

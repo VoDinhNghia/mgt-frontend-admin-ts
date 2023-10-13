@@ -26,13 +26,13 @@ import {
   permissonTypes,
 } from "../../../constants/constant";
 import { Button } from "react-bootstrap";
-import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import { validateAction } from "../../../utils/permission.util";
 import AddAndSearchTable from "../../commons/add-search-table";
 import ModalFacultyPage from "./modals";
 import ReadMoreCommon from "../../commons/readmore";
 import HeaderTableCommon from "../../commons/header-table";
 import PaginationTableCommon from "../../commons/pagination-table";
+import ActionTableCommon from "../../commons/actions-table";
 
 const FacultyTabPage = (props: IpropFacultyTab) => {
   const { listFaculties = [], dispatch, totalFaculty = 0 } = props;
@@ -42,7 +42,7 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
     isShowModalUpdate: false,
     limit: 10,
     page: 0,
-    facultyInfo: {},
+    rowData: {},
     readMore: {},
   });
 
@@ -64,14 +64,14 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
     page,
     limit,
     isShowModalAdd,
-    facultyInfo,
+    rowData,
     isShowModalDelete,
     isShowModalUpdate,
     readMore,
   } = state;
 
   const allStateReadMore: IallStateReadMore = readMore;
-  const facultyReadMore: IfacultyReadMore = facultyInfo;
+  const facultyReadMore: IfacultyReadMore = rowData;
 
   const fetchFaculties = (page: number, limit: number) => {
     dispatch({
@@ -97,7 +97,7 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
     setState({
       ...state,
       readMore: { [`${facultyInfo?._id}`]: !isReadMore },
-      facultyInfo,
+      rowData: facultyInfo,
     });
   };
 
@@ -156,34 +156,13 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
                     </Button>
                   </TableCell>
                   <TableCell>
-                    <Button
-                      variant="outline-primary"
-                      size="sm"
-                      disabled={!isPermissionUpdate}
-                      onClick={() =>
-                        setState({
-                          ...state,
-                          isShowModalUpdate: true,
-                          facultyInfo: faculty,
-                        })
-                      }
-                    >
-                      <BsPencilSquare />
-                    </Button>{" "}
-                    <Button
-                      variant="outline-danger"
-                      size="sm"
-                      disabled={!isPermissionDelete}
-                      onClick={() =>
-                        setState({
-                          ...state,
-                          isShowModalDelete: true,
-                          facultyInfo: faculty,
-                        })
-                      }
-                    >
-                      <BsTrash />
-                    </Button>
+                    <ActionTableCommon
+                      state={state}
+                      setState={setState}
+                      rowData={faculty}
+                      isPermissionDelete={isPermissionDelete}
+                      isPermissionUpdate={isPermissionUpdate}
+                    />
                   </TableCell>
                 </TableRow>
               );
@@ -210,14 +189,14 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
         type={modalTypes.UPDATE}
         isShowModal={isShowModalUpdate}
         onCloseModal={() => setState({ ...state, isShowModalUpdate: false })}
-        facultyInfo={facultyInfo}
+        facultyInfo={rowData}
         fetchFaculties={() => fetchFaculties(page + 1, limit)}
       />
       <ModalFacultyPage
         type={modalTypes.DELETE}
         isShowModal={isShowModalDelete}
         onCloseModal={() => setState({ ...state, isShowModalDelete: false })}
-        facultyInfo={facultyInfo}
+        facultyInfo={rowData}
         fetchFaculties={() => fetchFaculties(page + 1, limit)}
       />
     </div>

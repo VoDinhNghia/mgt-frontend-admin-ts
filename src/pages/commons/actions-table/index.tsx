@@ -16,7 +16,7 @@ const ActionTableCommon = (props: IpropActionTableCommon) => {
           setState({
             ...state,
             isShowModalUpdate: true,
-            userInfo: rowData,
+            rowData,
           })
         }
         disabled={!isPermissionUpdate}
@@ -30,7 +30,7 @@ const ActionTableCommon = (props: IpropActionTableCommon) => {
           setState({
             ...state,
             isShowModalDelete: true,
-            userInfo: rowData,
+            rowData,
           })
         }
         disabled={!isPermissionDelete}

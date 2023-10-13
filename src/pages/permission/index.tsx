@@ -26,10 +26,10 @@ import {
   TableBody,
   TableCell,
 } from "@mui/material";
-import { Badge, Button } from "react-bootstrap";
-import { BsPencilSquare, BsTrash } from "react-icons/bs";
+import { Badge } from "react-bootstrap";
 import ModalPermissionMgtPage from "./modals";
 import HeaderTableCommon from "../commons/header-table";
+import ActionTableCommon from "../commons/actions-table";
 
 const PermissionMgtPage = (props: IpropPermission) => {
   const { listAdmins = [], dispatch } = props;
@@ -45,9 +45,9 @@ const PermissionMgtPage = (props: IpropPermission) => {
   const columns = headerPermisionTable();
   const rows = handleDataPermissionTable(listAdmins);
   const [state, setState] = useState({
-    isShowModalAdd: false,
+    isShowModalUpdate: false,
     isShowModalDelete: false,
-    adminInfo: {},
+    rowData: {},
   });
 
   const fetchAdmins = () => {
@@ -107,34 +107,13 @@ const PermissionMgtPage = (props: IpropPermission) => {
                             )}
                           </TableCell>
                           <TableCell>
-                            <Button
-                              variant="outline-primary"
-                              size="sm"
-                              onClick={() =>
-                                setState({
-                                  ...state,
-                                  isShowModalAdd: true,
-                                  adminInfo: row,
-                                })
-                              }
-                              disabled={!isPermissionAdd}
-                            >
-                              <BsPencilSquare />
-                            </Button>{" "}
-                            <Button
-                              variant="outline-danger"
-                              size="sm"
-                              onClick={() =>
-                                setState({
-                                  ...state,
-                                  isShowModalDelete: true,
-                                  adminInfo: row,
-                                })
-                              }
-                              disabled={!isPermissionDelete}
-                            >
-                              <BsTrash />
-                            </Button>
+                            <ActionTableCommon
+                              state={state}
+                              setState={setState}
+                              rowData={row}
+                              isPermissionDelete={isPermissionDelete}
+                              isPermissionUpdate={isPermissionAdd}
+                            />
                           </TableCell>
                         </TableRow>
                       );
@@ -144,11 +123,11 @@ const PermissionMgtPage = (props: IpropPermission) => {
               </TableContainer>
               <ModalPermissionMgtPage
                 type={modalTypes.ADD}
-                isShowModal={state.isShowModalAdd}
+                isShowModal={state.isShowModalUpdate}
                 onCloseModal={() =>
-                  setState({ ...state, isShowModalAdd: false })
+                  setState({ ...state, isShowModalUpdate: false })
                 }
-                adminInfo={state.adminInfo}
+                adminInfo={state.rowData}
                 fetchAdmins={() => fetchAdmins()}
               />
               <ModalPermissionMgtPage
@@ -157,7 +136,7 @@ const PermissionMgtPage = (props: IpropPermission) => {
                 onCloseModal={() =>
                   setState({ ...state, isShowModalDelete: false })
                 }
-                adminInfo={state.adminInfo}
+                adminInfo={state.rowData}
                 fetchAdmins={() => fetchAdmins()}
               />
             </Container>
