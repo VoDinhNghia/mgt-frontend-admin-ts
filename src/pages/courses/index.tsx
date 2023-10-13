@@ -21,13 +21,13 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  TablePagination,
 } from "@mui/material";
 import { headerTableCourse } from "../../utils/course.util";
 import AddAndSearchTable from "../commons/add-search-table";
 import { Button } from "react-bootstrap";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import HeaderTableCommon from "../commons/header-table";
+import PaginationTableCommon from "../commons/pagination-table";
 
 const CourseMgtPage = (props: IpropCourse) => {
   const { listCourses = [], totalCourse = 0, dispatch } = props;
@@ -60,19 +60,6 @@ const CourseMgtPage = (props: IpropCourse) => {
     });
   };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setState({ ...state, page: newPage });
-    fetchCourses(newPage + 1, limit);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newLimit = parseInt(event.target.value);
-    setState({ ...state, limit: newLimit });
-    fetchCourses(1, newLimit);
-  };
-
   const fetchCourses = (page: number, limit: number) => {
     dispatch({
       type: courseActions.GET_LIST_COURSE,
@@ -102,7 +89,7 @@ const CourseMgtPage = (props: IpropCourse) => {
               />
               <TableContainer>
                 <Table stickyHeader aria-label="course table">
-                  <HeaderTableCommon headerList={headerTableCourse}/>
+                  <HeaderTableCommon headerList={headerTableCourse} />
                   <TableBody>
                     {listCourses?.map(
                       (course: IrowTableCourse, index: number) => {
@@ -142,14 +129,15 @@ const CourseMgtPage = (props: IpropCourse) => {
                   </TableBody>
                 </Table>
               </TableContainer>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
-                count={totalCourse}
-                rowsPerPage={limit}
+              <PaginationTableCommon
+                total={totalCourse}
+                limit={limit}
                 page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+                setState={setState}
+                state={state}
+                fetchList={(page: number, limit: number) =>
+                  fetchCourses(page, limit)
+                }
               />
             </Container>
           </Container>

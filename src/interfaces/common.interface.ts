@@ -190,3 +190,12 @@ export interface IheaderTableCommon {
     minWidth?: number;
   }[];
 }
+
+export interface IpaginationTableCommon {
+  page: number;
+  limit: number;
+  total: number;
+  setState: any;
+  fetchList: any;
+  state: any;
+}
