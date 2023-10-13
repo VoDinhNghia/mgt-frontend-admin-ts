@@ -182,3 +182,11 @@ export interface IpropReadMore {
 }
 
 export type IallStateReadMore = any;
+
+export interface IheaderTableCommon {
+  headerList: {
+    id: string;
+    label: string;
+    minWidth?: number;
+  }[];
+}

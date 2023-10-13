@@ -18,7 +18,6 @@ import { courseActions } from "../../store/actions";
 import {
   TableContainer,
   Table,
-  TableHead,
   TableBody,
   TableRow,
   TableCell,
@@ -28,6 +27,7 @@ import { headerTableCourse } from "../../utils/course.util";
 import AddAndSearchTable from "../commons/add-search-table";
 import { Button } from "react-bootstrap";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
+import HeaderTableCommon from "../commons/header-table";
 
 const CourseMgtPage = (props: IpropCourse) => {
   const { listCourses = [], totalCourse = 0, dispatch } = props;
@@ -102,18 +102,7 @@ const CourseMgtPage = (props: IpropCourse) => {
               />
               <TableContainer>
                 <Table stickyHeader aria-label="course table">
-                  <TableHead>
-                    <TableRow>
-                      {headerTableCourse?.map((column, index) => (
-                        <TableCell
-                          key={`${index}-${column.id}`}
-                          className="bg-success text-white"
-                        >
-                          {column.label}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
+                  <HeaderTableCommon headerList={headerTableCourse}/>
                   <TableBody>
                     {listCourses?.map(
                       (course: IrowTableCourse, index: number) => {

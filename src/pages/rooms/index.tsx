@@ -26,7 +26,6 @@ import { roomActions } from "../../store/actions";
 import {
   TableContainer,
   Table,
-  TableHead,
   TableRow,
   TableCell,
   TableBody,
@@ -38,6 +37,7 @@ import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import ModalRomMgtPage from "./modals";
 import ReadMoreCommon from "../commons/readmore";
 import AddAndSearchTable from "../commons/add-search-table";
+import HeaderTableCommon from "../commons/header-table";
 
 const RoomMgtPage = (props: IpropRoomMgt) => {
   const { dispatch, listRooms = [], totalRoom = 0 } = props;
@@ -138,18 +138,7 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
               />
               <TableContainer>
                 <Table stickyHeader aria-label="room table">
-                  <TableHead>
-                    <TableRow className="fs-6">
-                      {columns.map((column, index) => (
-                        <TableCell
-                          key={`${index}-${column.id}`}
-                          className="bg-success text-white"
-                        >
-                          {column.label}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
+                  <HeaderTableCommon headerList={columns}/>
                   <TableBody>
                     {listRooms?.map((room: IrowTableRoom, index: number) => {
                       return (

@@ -16,7 +16,6 @@ import { headerTableSubjectPass } from "../../../utils/setting.util";
 import {
   TableContainer,
   TableBody,
-  TableHead,
   Table,
   TableRow,
   TableCell,
@@ -26,6 +25,7 @@ import { Button } from "react-bootstrap";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import AddAndSearchTable from "../../commons/add-search-table";
 import ModalSubjectPassPage from "./modals";
+import HeaderTableCommon from "../../commons/header-table";
 
 const SubjectPassTabPage = (props: IpropSubjectPass) => {
   const { dispatch, listSubjectPass = [], totalSubjectPass = 0 } = props;
@@ -105,18 +105,7 @@ const SubjectPassTabPage = (props: IpropSubjectPass) => {
       />
       <TableContainer>
         <Table stickyHeader aria-label="table subject pass">
-          <TableHead>
-            <TableRow>
-              {columns.map((column, index) => (
-                <TableCell
-                  key={`${index}-${column.label}`}
-                  className="bg-success text-white"
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
+          <HeaderTableCommon headerList={columns} />
           <TableBody>
             {listSubjectPass?.map(
               (row: IrowTableSubjectPass, index: number) => {

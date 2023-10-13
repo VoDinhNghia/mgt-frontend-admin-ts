@@ -14,7 +14,6 @@ import {
   TableContainer,
   TableRow,
   TableCell,
-  TableHead,
   TableBody,
   Table,
   TablePagination,
@@ -33,6 +32,7 @@ import { validateAction } from "../../../utils/permission.util";
 import AddAndSearchTable from "../../commons/add-search-table";
 import ModalFacultyPage from "./modals";
 import ReadMoreCommon from "../../commons/readmore";
+import HeaderTableCommon from "../../commons/header-table";
 
 const FacultyTabPage = (props: IpropFacultyTab) => {
   const { listFaculties = [], dispatch, totalFaculty = 0 } = props;
@@ -128,19 +128,7 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
       />
       <TableContainer>
         <Table stickyHeader aria-label="faculty table">
-          <TableHead>
-            <TableRow className="fs-6">
-              {columns.map((column, index) => (
-                <TableCell
-                  key={`${index}-${column.label}`}
-                  className="bg-success text-white"
-                  style={column.id === "actions" ? { width: column.minWidth } : undefined}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
+          <HeaderTableCommon headerList={columns} />
           <TableBody>
             {listFaculties?.map((faculty: IrowFacutyTable, index: number) => {
               return (
