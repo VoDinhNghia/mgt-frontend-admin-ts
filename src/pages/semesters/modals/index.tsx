@@ -11,8 +11,6 @@ import {
   TextField,
   FormControl,
   FormHelperText,
-  Select,
-  MenuItem,
 } from "@mui/material";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,6 +21,8 @@ import {
 } from "../../../utils/semester.util";
 import { modalTypes } from "../../../constants/constant";
 import { semesterActions } from "../../../store/actions";
+import Select from "react-select";
+import { IeventOnchangeSelect } from "../../../interfaces/common.interface";
 
 const ModalSemesterPage = (props: IpropModalSemester) => {
   const {
@@ -138,27 +138,20 @@ const ModalSemesterPage = (props: IpropModalSemester) => {
               error={Boolean(errors["year"])}
             >
               <Controller
-                render={() => (
+                render={({ field: { onChange } }) => (
                   <Select
-                    fullWidth={true}
-                    size="small"
+                    options={yearSemesterOptions}
                     defaultValue={
-                      type === modalTypes.UPDATE ? semesterInfo?.year : ""
+                      type === modalTypes.UPDATE
+                        ? yearSemesterOptions?.find(
+                            (year) => year.value === semesterInfo?.year
+                          )
+                        : ""
                     }
-                    error={!!errors["year"]}
-                    {...register("year")}
-                  >
-                    {yearSemesterOptions?.map((item) => {
-                      return (
-                        <MenuItem
-                          key={`${item.value}-semester`}
-                          value={item.value}
-                        >
-                          {item.label}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
+                    onChange={(val: IeventOnchangeSelect) =>
+                      onChange(val.value)
+                    }
+                  />
                 )}
                 name="year"
                 control={control}

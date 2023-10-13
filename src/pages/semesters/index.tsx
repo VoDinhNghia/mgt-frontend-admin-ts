@@ -25,14 +25,13 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  TablePagination,
 } from "@mui/material";
-import { Button } from "react-bootstrap";
 import { headerTableSemesters } from "../../utils/semester.util";
-import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import AddAndSearchTable from "../commons/add-search-table";
 import ModalSemesterPage from "./modals";
 import HeaderTableCommon from "../commons/header-table";
+import PaginationTableCommon from "../commons/pagination-table";
+import ActionTableCommon from "../commons/actions-table";
 
 const SemesterMgtPage = (props: IpropSemester) => {
   const { dispatch, listSemesters = [], totalSemester = 0 } = props;
@@ -52,7 +51,7 @@ const SemesterMgtPage = (props: IpropSemester) => {
   const [state, setState] = useState({
     page: 0,
     limit: 10,
-    semesterInfo: {},
+    rowData: {},
     isShowModalAdd: false,
     isShowModalUpdate: false,
     isShowModalDelete: false,
@@ -63,21 +62,8 @@ const SemesterMgtPage = (props: IpropSemester) => {
     isShowModalAdd,
     isShowModalDelete,
     isShowModalUpdate,
-    semesterInfo,
+    rowData,
   } = state;
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setState({ ...state, page: newPage });
-    fetchSemesters(newPage + 1, limit);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newLimit = parseInt(event.target.value);
-    setState({ ...state, limit: newLimit });
-    fetchSemesters(1, newLimit);
-  };
 
   const onSearch = (searchKey: string) => {
     dispatch({
@@ -136,34 +122,13 @@ const SemesterMgtPage = (props: IpropSemester) => {
                             <TableCell>{semester?.year}</TableCell>
                             <TableCell>{semester?.code}</TableCell>
                             <TableCell>
-                              <Button
-                                variant="outline-primary"
-                                size="sm"
-                                disabled={!isPermissionUpdate}
-                                onClick={() =>
-                                  setState({
-                                    ...state,
-                                    isShowModalUpdate: true,
-                                    semesterInfo: semester,
-                                  })
-                                }
-                              >
-                                <BsPencilSquare />
-                              </Button>{" "}
-                              <Button
-                                variant="outline-danger"
-                                size="sm"
-                                disabled={!isPermissionDelete}
-                                onClick={() =>
-                                  setState({
-                                    ...state,
-                                    isShowModalDelete: true,
-                                    semesterInfo: semester,
-                                  })
-                                }
-                              >
-                                <BsTrash />
-                              </Button>
+                              <ActionTableCommon
+                                state={state}
+                                setState={setState}
+                                isPermissionDelete={isPermissionDelete}
+                                isPermissionUpdate={isPermissionUpdate}
+                                rowData={semester}
+                              />
                             </TableCell>
                           </TableRow>
                         );
@@ -172,14 +137,15 @@ const SemesterMgtPage = (props: IpropSemester) => {
                   </TableBody>
                 </Table>
               </TableContainer>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
-                count={totalSemester}
-                rowsPerPage={limit}
+              <PaginationTableCommon
+                total={totalSemester}
+                limit={limit}
                 page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+                setState={setState}
+                state={state}
+                fetchList={(page: number, limit: number) =>
+                  fetchSemesters(page, limit)
+                }
               />
               <ModalSemesterPage
                 type={modalTypes.ADD}
@@ -193,7 +159,7 @@ const SemesterMgtPage = (props: IpropSemester) => {
               <ModalSemesterPage
                 type={modalTypes.UPDATE}
                 isShowModal={isShowModalUpdate}
-                semesterInfo={semesterInfo}
+                semesterInfo={rowData}
                 onCloseModal={() =>
                   setState({ ...state, isShowModalUpdate: false })
                 }
@@ -202,7 +168,7 @@ const SemesterMgtPage = (props: IpropSemester) => {
               <ModalSemesterPage
                 type={modalTypes.DELETE}
                 isShowModal={isShowModalDelete}
-                semesterInfo={semesterInfo}
+                semesterInfo={rowData}
                 onCloseModal={() =>
                   setState({ ...state, isShowModalDelete: false })
                 }

@@ -46,7 +46,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
     isShowModalFilter: false,
     isShowModalImport: false,
     isShowModalUpdate: false,
-    userInfo: {},
+    rowData: {},
   });
   const isAccess = validateAccessModule(moduleNames.USER_MANAGEMENT);
   const isPermissionAdd = validateAction(
@@ -71,7 +71,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
     isShowModalFilter,
     isShowModalImport,
     isShowModalUpdate,
-    userInfo,
+    rowData,
   } = state;
 
   const fetchUsers = (page: number, limit: number) => {
@@ -201,7 +201,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
               setState({ ...state, isShowModalUpdate: false })
             }
             fetchUsers={() => fetchUsers(page + 1, limit)}
-            userInfo={userInfo}
+            userInfo={rowData}
           />
           <ModalUserMgtPage
             type={modalTypes.DELETE}
@@ -210,7 +210,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
               setState({ ...state, isShowModalDelete: false })
             }
             fetchUsers={() => fetchUsers(page + 1, limit)}
-            userInfo={userInfo}
+            userInfo={rowData}
           />
           <FilterAndImportModal
             type={modalTypes.IMPORT}

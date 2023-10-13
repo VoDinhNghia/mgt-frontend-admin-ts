@@ -20,12 +20,11 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
-import { Button } from "react-bootstrap";
-import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import AddAndSearchTable from "../../commons/add-search-table";
 import ModalSubjectPassPage from "./modals";
 import HeaderTableCommon from "../../commons/header-table";
 import PaginationTableCommon from "../../commons/pagination-table";
+import ActionTableCommon from "../../commons/actions-table";
 
 const SubjectPassTabPage = (props: IpropSubjectPass) => {
   const { dispatch, listSubjectPass = [], totalSubjectPass = 0 } = props;
@@ -35,7 +34,7 @@ const SubjectPassTabPage = (props: IpropSubjectPass) => {
     isShowModalAdd: false,
     isShowModalUpdate: false,
     isShowModalDelete: false,
-    subjectPassInfo: {},
+    rowData: {},
   });
   const isPermissionAdd = validateAction(
     permissonTypes.ADD,
@@ -56,7 +55,7 @@ const SubjectPassTabPage = (props: IpropSubjectPass) => {
     isShowModalAdd,
     isShowModalDelete,
     isShowModalUpdate,
-    subjectPassInfo,
+    rowData,
   } = state;
 
   const fetchSubjectPass = (page: number, limit: number) => {
@@ -103,34 +102,13 @@ const SubjectPassTabPage = (props: IpropSubjectPass) => {
                     <TableCell>{row?.type}</TableCell>
                     <TableCell>{row?.condition}</TableCell>
                     <TableCell>
-                      <Button
-                        variant="outline-primary"
-                        size="sm"
-                        disabled={!isPermissionUpdate}
-                        onClick={() =>
-                          setState({
-                            ...state,
-                            isShowModalUpdate: true,
-                            subjectPassInfo: row,
-                          })
-                        }
-                      >
-                        <BsPencilSquare />
-                      </Button>{" "}
-                      <Button
-                        variant="outline-danger"
-                        size="sm"
-                        disabled={!isPermissionDelete}
-                        onClick={() =>
-                          setState({
-                            ...state,
-                            isShowModalDelete: true,
-                            subjectPassInfo: row,
-                          })
-                        }
-                      >
-                        <BsTrash />
-                      </Button>
+                      <ActionTableCommon
+                        state={state}
+                        setState={setState}
+                        rowData={row}
+                        isPermissionDelete={isPermissionDelete}
+                        isPermissionUpdate={isPermissionUpdate}
+                      />
                     </TableCell>
                   </TableRow>
                 );
@@ -159,14 +137,14 @@ const SubjectPassTabPage = (props: IpropSubjectPass) => {
       <ModalSubjectPassPage
         isShowModal={isShowModalUpdate}
         type={modalTypes.UPDATE}
-        subjectPassInfo={subjectPassInfo}
+        subjectPassInfo={rowData}
         onCloseModal={() => setState({ ...state, isShowModalUpdate: false })}
         fetchSubjectPass={() => fetchSubjectPass(page + 1, limit)}
       />
       <ModalSubjectPassPage
         isShowModal={isShowModalDelete}
         type={modalTypes.DELETE}
-        subjectPassInfo={subjectPassInfo}
+        subjectPassInfo={rowData}
         onCloseModal={() => setState({ ...state, isShowModalDelete: false })}
         fetchSubjectPass={() => fetchSubjectPass(page + 1, limit)}
       />
