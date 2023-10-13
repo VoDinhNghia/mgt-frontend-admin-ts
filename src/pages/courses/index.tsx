@@ -3,7 +3,11 @@ import {
   validateAccessModule,
   validateAction,
 } from "../../utils/permission.util";
-import { moduleNames, permissonTypes } from "../../constants/constant";
+import {
+  modalTypes,
+  moduleNames,
+  permissonTypes,
+} from "../../constants/constant";
 import MenuPage from "../commons/menu";
 import FooterPage from "../commons/footer";
 import ForbidenPage from "../commons/forbiden";
@@ -24,10 +28,10 @@ import {
 } from "@mui/material";
 import { headerTableCourse } from "../../utils/course.util";
 import AddAndSearchTable from "../commons/add-search-table";
-import { Button } from "react-bootstrap";
-import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import HeaderTableCommon from "../commons/header-table";
 import PaginationTableCommon from "../commons/pagination-table";
+import ActionTableCommon from "../commons/actions-table";
+import ModalCoursePage from "./modals";
 
 const CourseMgtPage = (props: IpropCourse) => {
   const { listCourses = [], totalCourse = 0, dispatch } = props;
@@ -35,6 +39,9 @@ const CourseMgtPage = (props: IpropCourse) => {
     page: 0,
     limit: 10,
     isShowModalAdd: false,
+    isShowModalUpdate: false,
+    isShowModalDelete: false,
+    rowData: {},
   });
   const isAccess = validateAccessModule(moduleNames.COURSE_MANAGEMENT);
   const isPermissionAdd = validateAction(
@@ -49,7 +56,14 @@ const CourseMgtPage = (props: IpropCourse) => {
     permissonTypes.DELETE,
     moduleNames.COURSE_MANAGEMENT
   );
-  const { page, limit } = state;
+  const {
+    page,
+    limit,
+    rowData,
+    isShowModalAdd,
+    isShowModalDelete,
+    isShowModalUpdate,
+  } = state;
 
   const onSearch = (searchKey: string) => {
     dispatch({
@@ -107,20 +121,13 @@ const CourseMgtPage = (props: IpropCourse) => {
                             <TableCell>{course?.year}</TableCell>
                             <TableCell>{course?.total}</TableCell>
                             <TableCell>
-                              <Button
-                                variant="outline-primary"
-                                size="sm"
-                                disabled={!isPermissionUpdate}
-                              >
-                                <BsPencilSquare />
-                              </Button>{" "}
-                              <Button
-                                variant="outline-danger"
-                                size="sm"
-                                disabled={!isPermissionDelete}
-                              >
-                                <BsTrash />
-                              </Button>
+                              <ActionTableCommon
+                                state={state}
+                                setState={setState}
+                                rowData={course}
+                                isPermissionDelete={isPermissionDelete}
+                                isPermissionUpdate={isPermissionUpdate}
+                              />
                             </TableCell>
                           </TableRow>
                         );
@@ -138,6 +145,33 @@ const CourseMgtPage = (props: IpropCourse) => {
                 fetchList={(page: number, limit: number) =>
                   fetchCourses(page, limit)
                 }
+              />
+              <ModalCoursePage
+                type={modalTypes.ADD}
+                courseInfo={rowData}
+                isShowModal={isShowModalAdd}
+                onCloseModal={() =>
+                  setState({ ...state, isShowModalAdd: false })
+                }
+                fetchCourses={() => fetchCourses(page + 1, limit)}
+              />
+              <ModalCoursePage
+                type={modalTypes.UPDATE}
+                courseInfo={rowData}
+                isShowModal={isShowModalUpdate}
+                onCloseModal={() =>
+                  setState({ ...state, isShowModalUpdate: false })
+                }
+                fetchCourses={() => fetchCourses(page + 1, limit)}
+              />
+              <ModalCoursePage
+                type={modalTypes.DELETE}
+                courseInfo={rowData}
+                isShowModal={isShowModalDelete}
+                onCloseModal={() =>
+                  setState({ ...state, isShowModalDelete: false })
+                }
+                fetchCourses={() => fetchCourses(page + 1, limit)}
               />
             </Container>
           </Container>
