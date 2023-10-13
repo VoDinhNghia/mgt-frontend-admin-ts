@@ -16,7 +16,6 @@ import {
   TableCell,
   TableBody,
   Table,
-  TablePagination,
 } from "@mui/material";
 import { headerTableFaculty } from "../../../utils/faculty.util";
 import moment from "moment";
@@ -33,6 +32,7 @@ import AddAndSearchTable from "../../commons/add-search-table";
 import ModalFacultyPage from "./modals";
 import ReadMoreCommon from "../../commons/readmore";
 import HeaderTableCommon from "../../commons/header-table";
+import PaginationTableCommon from "../../commons/pagination-table";
 
 const FacultyTabPage = (props: IpropFacultyTab) => {
   const { listFaculties = [], dispatch, totalFaculty = 0 } = props;
@@ -90,19 +90,6 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
         searchKey,
       },
     });
-  };
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setState({ ...state, page: newPage });
-    fetchFaculties(newPage + 1, limit);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newLimit = parseInt(event.target.value);
-    setState({ ...state, limit: newLimit });
-    fetchFaculties(1, newLimit);
   };
 
   const handleReadMore = (facultyInfo: IfacultyReadMore) => {
@@ -204,14 +191,13 @@ const FacultyTabPage = (props: IpropFacultyTab) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={totalFaculty}
-        rowsPerPage={limit}
+      <PaginationTableCommon
+        total={totalFaculty}
         page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        limit={limit}
+        setState={setState}
+        state={state}
+        fetchList={(page: number, limit: number) => fetchFaculties(page, limit)}
       />
       <ModalFacultyPage
         type={modalTypes.ADD}

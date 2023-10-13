@@ -19,13 +19,13 @@ import {
   Table,
   TableRow,
   TableCell,
-  TablePagination,
 } from "@mui/material";
 import { Button } from "react-bootstrap";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import AddAndSearchTable from "../../commons/add-search-table";
 import ModalSubjectPassPage from "./modals";
 import HeaderTableCommon from "../../commons/header-table";
+import PaginationTableCommon from "../../commons/pagination-table";
 
 const SubjectPassTabPage = (props: IpropSubjectPass) => {
   const { dispatch, listSubjectPass = [], totalSubjectPass = 0 } = props;
@@ -67,19 +67,6 @@ const SubjectPassTabPage = (props: IpropSubjectPass) => {
         limit,
       },
     });
-  };
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setState({ ...state, page: newPage });
-    fetchSubjectPass(newPage + 1, limit);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newLimit = parseInt(event.target.value);
-    setState({ ...state, limit: newLimit });
-    fetchSubjectPass(1, newLimit);
   };
 
   const onSearch = (searchKey: string) => {
@@ -152,14 +139,15 @@ const SubjectPassTabPage = (props: IpropSubjectPass) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={totalSubjectPass}
-        rowsPerPage={limit}
+      <PaginationTableCommon
+        total={totalSubjectPass}
+        limit={limit}
         page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        setState={setState}
+        state={state}
+        fetchList={(page: number, limit: number) =>
+          fetchSubjectPass(page, limit)
+        }
       />
       <ModalSubjectPassPage
         isShowModal={isShowModalAdd}

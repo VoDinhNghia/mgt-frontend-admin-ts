@@ -19,13 +19,13 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  TablePagination,
 } from "@mui/material";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import { Button } from "react-bootstrap";
 import AddAndSearchTable from "../../commons/add-search-table";
 import ModalMoneyCreditPage from "./modals";
 import HeaderTableCommon from "../../commons/header-table";
+import PaginationTableCommon from "../../commons/pagination-table";
 
 const MoneyCreditTabPage = (props: IpropMoneyCredit) => {
   const { dispatch, listMoneyCredits = [], totalMoneyCredits = 0 } = props;
@@ -58,19 +58,6 @@ const MoneyCreditTabPage = (props: IpropMoneyCredit) => {
     isShowModalUpdate,
     moneyCreditInfo,
   } = state;
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setState({ ...state, page: newPage });
-    fetchMoneyCredit(newPage + 1, limit);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newLimit = parseInt(event.target.value);
-    setState({ ...state, limit: newLimit });
-    fetchMoneyCredit(1, newLimit);
-  };
 
   const fetchMoneyCredit = (page: number, limit: number) => {
     dispatch({
@@ -105,7 +92,7 @@ const MoneyCreditTabPage = (props: IpropMoneyCredit) => {
       />
       <TableContainer>
         <Table stickyHeader aria-label="table money credit">
-          <HeaderTableCommon headerList={columns}/>
+          <HeaderTableCommon headerList={columns} />
           <TableBody>
             {listMoneyCredits?.map(
               (row: IrowTableMoneyCredit, index: number) => {
@@ -113,7 +100,9 @@ const MoneyCreditTabPage = (props: IpropMoneyCredit) => {
                   <TableRow hover role="checkbox" tabIndex={-1} key={row?._id}>
                     <TableCell>{index + 1}</TableCell>
                     <TableCell className="text-primary">{row?.name}</TableCell>
-                    <TableCell>{row?.moneyPerCredit?.toLocaleString("en-US")} đ</TableCell>
+                    <TableCell>
+                      {row?.moneyPerCredit?.toLocaleString("en-US")} đ
+                    </TableCell>
                     <TableCell>{`${row?.semester?.name} (${row?.semester?.year})`}</TableCell>
                     <TableCell>
                       <Button
@@ -152,14 +141,15 @@ const MoneyCreditTabPage = (props: IpropMoneyCredit) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={totalMoneyCredits}
-        rowsPerPage={limit}
+      <PaginationTableCommon
+        total={totalMoneyCredits}
+        limit={limit}
         page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        setState={setState}
+        state={state}
+        fetchList={(page: number, limit: number) =>
+          fetchMoneyCredit(page, limit)
+        }
       />
       <ModalMoneyCreditPage
         type={modalTypes.ADD}

@@ -13,7 +13,6 @@ import {
   TableBody,
   TableCell,
   TableRow,
-  TablePagination,
 } from "@mui/material";
 import { Button } from "react-bootstrap";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
@@ -26,6 +25,7 @@ import {
 } from "../../../constants/constant";
 import LearningRateModalPage from "./modals";
 import HeaderTableCommon from "../../commons/header-table";
+import PaginationTableCommon from "../../commons/pagination-table";
 
 const LearningRateTabPage = (props: IpropLearningRate) => {
   const { listLearningRates = [], dispatch, totalLearningRate = 0 } = props;
@@ -58,19 +58,6 @@ const LearningRateTabPage = (props: IpropLearningRate) => {
     isShowModalUpdate,
     learningRateInfo,
   } = state;
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setState({ ...state, page: newPage });
-    fetchLearningRate(newPage + 1, limit);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newLimit = parseInt(event.target.value);
-    setState({ ...state, limit: newLimit });
-    fetchLearningRate(1, newLimit);
-  };
 
   const fetchLearningRate = (page: number, limit: number) => {
     dispatch({
@@ -153,14 +140,15 @@ const LearningRateTabPage = (props: IpropLearningRate) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={totalLearningRate}
-        rowsPerPage={limit}
+      <PaginationTableCommon
+        total={totalLearningRate}
+        limit={limit}
         page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        setState={setState}
+        state={state}
+        fetchList={(page: number, limit: number) =>
+          fetchLearningRate(page, limit)
+        }
       />
       <LearningRateModalPage
         isShowModal={isShowModalAdd}

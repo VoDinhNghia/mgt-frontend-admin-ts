@@ -29,7 +29,6 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  TablePagination,
 } from "@mui/material";
 import { headerRoomTable } from "../../utils/room.util";
 import { Button } from "react-bootstrap";
@@ -38,6 +37,7 @@ import ModalRomMgtPage from "./modals";
 import ReadMoreCommon from "../commons/readmore";
 import AddAndSearchTable from "../commons/add-search-table";
 import HeaderTableCommon from "../commons/header-table";
+import PaginationTableCommon from "../commons/pagination-table";
 
 const RoomMgtPage = (props: IpropRoomMgt) => {
   const { dispatch, listRooms = [], totalRoom = 0 } = props;
@@ -86,19 +86,6 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
         page,
       },
     });
-  };
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setState({ ...state, page: newPage });
-    fetchRooms(newPage + 1, limit);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newLimit = parseInt(event.target.value);
-    setState({ ...state, limit: newLimit });
-    fetchRooms(1, newLimit);
   };
 
   const handleReadMore = (roomInfo: IroomInfoReadMore) => {
@@ -218,14 +205,15 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
                   </TableBody>
                 </Table>
               </TableContainer>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
-                count={totalRoom}
-                rowsPerPage={limit}
+              <PaginationTableCommon
+                total={totalRoom}
+                limit={limit}
                 page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+                setState={setState}
+                state={state}
+                fetchList={(page: number, limit: number) =>
+                  fetchRooms(page, limit)
+                }
               />
               <ModalRomMgtPage
                 type={modalTypes.VIEW}
