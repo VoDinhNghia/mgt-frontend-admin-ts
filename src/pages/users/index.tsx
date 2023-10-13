@@ -15,11 +15,7 @@ import FooterPage from "../commons/footer";
 import { Container } from "rsuite";
 import { connect } from "react-redux";
 import { IstateRedux } from "../../interfaces/common.interface";
-import {
-  IcolumnUserTable,
-  IpropUserMgt,
-  IrowUserTable,
-} from "../../interfaces/user.interface";
+import { IpropUserMgt, IrowUserTable } from "../../interfaces/user.interface";
 import { userActions } from "../../store/actions";
 import { handleDataUserTable, headersUserTable } from "../../utils/user.util";
 import {
@@ -27,7 +23,6 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
   TablePagination,
 } from "@mui/material";
@@ -38,6 +33,7 @@ import ModalUserMgtPage from "./modals";
 import { TbDatabaseImport } from "react-icons/tb";
 import { AiOutlineFilter } from "react-icons/ai";
 import FilterAndImportModal from "./filter-import";
+import HeaderTableCommon from "../commons/header-table";
 
 const UserManagementPage = (props: IpropUserMgt) => {
   const { dispatch, listUsers = [], totalUser = 0 } = props;
@@ -151,18 +147,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
               />
               <TableContainer>
                 <Table stickyHeader aria-label="user table">
-                  <TableHead>
-                    <TableRow className="fs-6">
-                      {columns?.map((column: IcolumnUserTable) => (
-                        <TableCell
-                          key={column.id}
-                          className="bg-success text-white"
-                        >
-                          {column.label}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
+                  <HeaderTableCommon headerList={columns} />
                   <TableBody>
                     {rows?.map((row: IrowUserTable) => {
                       return (

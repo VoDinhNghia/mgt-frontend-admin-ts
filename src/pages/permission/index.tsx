@@ -17,15 +17,11 @@ import MenuPage from "../commons/menu";
 import FooterPage from "../commons/footer";
 import { connect } from "react-redux";
 import { IstateRedux } from "../../interfaces/common.interface";
-import {
-  IcolumnPermissionTable,
-  IpropPermission,
-} from "../../interfaces/permission.interface";
+import { IpropPermission } from "../../interfaces/permission.interface";
 import { userActions } from "../../store/actions";
 import {
   TableContainer,
   Table,
-  TableHead,
   TableRow,
   TableBody,
   TableCell,
@@ -33,6 +29,7 @@ import {
 import { Badge, Button } from "react-bootstrap";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import ModalPermissionMgtPage from "./modals";
+import HeaderTableCommon from "../commons/header-table";
 
 const PermissionMgtPage = (props: IpropPermission) => {
   const { listAdmins = [], dispatch } = props;
@@ -72,18 +69,7 @@ const PermissionMgtPage = (props: IpropPermission) => {
             <Container className="p-3 fs-6">
               <TableContainer>
                 <Table stickyHeader aria-label="Permission table">
-                  <TableHead>
-                    <TableRow className="fs-6">
-                      {columns.map((column: IcolumnPermissionTable) => (
-                        <TableCell
-                          key={column.id}
-                          className="bg-success text-white"
-                        >
-                          {column.label}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
+                  <HeaderTableCommon headerList={columns} />
                   <TableBody>
                     {rows?.map((row) => {
                       return (

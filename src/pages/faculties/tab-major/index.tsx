@@ -14,7 +14,6 @@ import {
   TableContainer,
   TableRow,
   TableCell,
-  TableHead,
   TableBody,
   Table,
   TablePagination,
@@ -33,6 +32,7 @@ import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import MajorModalPage from "./modals";
 import AddAndSearchTable from "../../commons/add-search-table";
 import ReadMoreCommon from "../../commons/readmore";
+import HeaderTableCommon from "../../commons/header-table";
 
 const MajorTabPage = (props: IpropMajorTab) => {
   const { dispatch, listMajors = [], totalMajor = 0 } = props;
@@ -126,23 +126,7 @@ const MajorTabPage = (props: IpropMajorTab) => {
       />
       <TableContainer>
         <Table stickyHeader aria-lable="major table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column, index) => (
-                <TableCell
-                  key={`${index}-${column.label}`}
-                  className="bg-success text-white"
-                  style={
-                    column.id === "actions"
-                      ? { width: column.minWidth }
-                      : undefined
-                  }
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
+          <HeaderTableCommon headerList={columns} />
           <TableBody>
             {listMajors?.map((major: IrowMajorTable, index: number) => {
               return (

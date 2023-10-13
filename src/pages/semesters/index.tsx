@@ -23,7 +23,6 @@ import {
   TableContainer,
   Table,
   TableBody,
-  TableHead,
   TableRow,
   TableCell,
   TablePagination,
@@ -33,6 +32,7 @@ import { headerTableSemesters } from "../../utils/semester.util";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import AddAndSearchTable from "../commons/add-search-table";
 import ModalSemesterPage from "./modals";
+import HeaderTableCommon from "../commons/header-table";
 
 const SemesterMgtPage = (props: IpropSemester) => {
   const { dispatch, listSemesters = [], totalSemester = 0 } = props;
@@ -118,18 +118,7 @@ const SemesterMgtPage = (props: IpropSemester) => {
               />
               <TableContainer>
                 <Table stickyHeader aria-label="semester table">
-                  <TableHead>
-                    <TableRow>
-                      {headerTableSemesters?.map((column, index) => (
-                        <TableCell
-                          key={`${index}-${column.label}`}
-                          className="bg-success text-white"
-                        >
-                          {column.label}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
+                  <HeaderTableCommon headerList={headerTableSemesters} />
                   <TableBody>
                     {listSemesters?.map(
                       (semester: IrowTableSemester, index: number) => {

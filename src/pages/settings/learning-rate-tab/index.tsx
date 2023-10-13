@@ -10,7 +10,6 @@ import { headerTableLearningRate } from "../../../utils/setting.util";
 import {
   TableContainer,
   Table,
-  TableHead,
   TableBody,
   TableCell,
   TableRow,
@@ -26,6 +25,7 @@ import {
   permissonTypes,
 } from "../../../constants/constant";
 import LearningRateModalPage from "./modals";
+import HeaderTableCommon from "../../commons/header-table";
 
 const LearningRateTabPage = (props: IpropLearningRate) => {
   const { listLearningRates = [], dispatch, totalLearningRate = 0 } = props;
@@ -105,18 +105,7 @@ const LearningRateTabPage = (props: IpropLearningRate) => {
       />
       <TableContainer>
         <Table stickyHeader aria-label="learningrate table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column, index) => (
-                <TableCell
-                  key={`${index}-${column.id}`}
-                  className="bg-success text-white"
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
+          <HeaderTableCommon headerList={columns} />
           <TableBody>
             {listLearningRates?.map(
               (row: IrowTableLearningRate, index: number) => {

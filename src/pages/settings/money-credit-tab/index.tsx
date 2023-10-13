@@ -17,7 +17,6 @@ import {
   TableContainer,
   Table,
   TableBody,
-  TableHead,
   TableRow,
   TableCell,
   TablePagination,
@@ -26,6 +25,7 @@ import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import { Button } from "react-bootstrap";
 import AddAndSearchTable from "../../commons/add-search-table";
 import ModalMoneyCreditPage from "./modals";
+import HeaderTableCommon from "../../commons/header-table";
 
 const MoneyCreditTabPage = (props: IpropMoneyCredit) => {
   const { dispatch, listMoneyCredits = [], totalMoneyCredits = 0 } = props;
@@ -105,18 +105,7 @@ const MoneyCreditTabPage = (props: IpropMoneyCredit) => {
       />
       <TableContainer>
         <Table stickyHeader aria-label="table money credit">
-          <TableHead>
-            <TableRow>
-              {columns?.map((column, index) => (
-                <TableCell
-                  key={`${index}-${column.label}`}
-                  className="bg-success text-white"
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
+          <HeaderTableCommon headerList={columns}/>
           <TableBody>
             {listMoneyCredits?.map(
               (row: IrowTableMoneyCredit, index: number) => {
