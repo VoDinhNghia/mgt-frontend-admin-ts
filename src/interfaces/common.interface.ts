@@ -199,3 +199,11 @@ export interface IpaginationTableCommon {
   fetchList: any;
   state: any;
 }
+
+export interface IpropActionTableCommon {
+  state: any;
+  setState: any;
+  isPermissionUpdate?: boolean | any;
+  isPermissionDelete?: boolean | any;
+  rowData?: any;
+}

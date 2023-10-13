@@ -24,9 +24,9 @@ import {
   TableCell,
   TableContainer,
   TableRow,
+  Button,
 } from "@mui/material";
-import { Button, Card } from "react-bootstrap";
-import { BsPencilSquare, BsTrash } from "react-icons/bs";
+import { Card } from "react-bootstrap";
 import AddAndSearchTable from "../commons/add-search-table";
 import ModalUserMgtPage from "./modals";
 import { TbDatabaseImport } from "react-icons/tb";
@@ -34,6 +34,7 @@ import { AiOutlineFilter } from "react-icons/ai";
 import FilterAndImportModal from "./filter-import";
 import HeaderTableCommon from "../commons/header-table";
 import PaginationTableCommon from "../commons/pagination-table";
+import ActionTableCommon from "../commons/actions-table";
 
 const UserManagementPage = (props: IpropUserMgt) => {
   const { dispatch, listUsers = [], totalUser = 0 } = props;
@@ -107,21 +108,23 @@ const UserManagementPage = (props: IpropUserMgt) => {
                 <Card.Body>
                   <span className="MenuMgtUser">
                     <Button
-                      variant="primary"
+                      variant="contained"
                       onClick={() =>
                         setState({ ...state, isShowModalImport: true })
                       }
                       disabled={!isPermissionAdd}
+                      startIcon={<TbDatabaseImport />}
                     >
-                      <TbDatabaseImport /> Import users
+                      Import users
                     </Button>{" "}
                     <Button
-                      variant="primary"
+                      variant="contained"
                       onClick={() =>
                         setState({ ...state, isShowModalFilter: true })
                       }
+                      startIcon={<AiOutlineFilter />}
                     >
-                      <AiOutlineFilter /> Filter
+                      Filter
                     </Button>
                   </span>
                 </Card.Body>
@@ -153,39 +156,18 @@ const UserManagementPage = (props: IpropUserMgt) => {
                           <TableCell>{row.status}</TableCell>
                           <TableCell>{row.role}</TableCell>
                           <TableCell>
-                            <Button variant="outline-primary" size="sm">
-                              Detail
+                            <Button variant="outlined" size="small">
+                              View
                             </Button>
                           </TableCell>
                           <TableCell>
-                            <Button
-                              variant="outline-primary"
-                              size="sm"
-                              onClick={() =>
-                                setState({
-                                  ...state,
-                                  isShowModalUpdate: true,
-                                  userInfo: row,
-                                })
-                              }
-                              disabled={!isPermissionUpdate}
-                            >
-                              <BsPencilSquare />
-                            </Button>{" "}
-                            <Button
-                              variant="outline-danger"
-                              size="sm"
-                              onClick={() =>
-                                setState({
-                                  ...state,
-                                  isShowModalDelete: true,
-                                  userInfo: row,
-                                })
-                              }
-                              disabled={!isPermissionDelete}
-                            >
-                              <BsTrash />
-                            </Button>
+                            <ActionTableCommon
+                              setState={setState}
+                              state={state}
+                              rowData={row}
+                              isPermissionDelete={isPermissionDelete}
+                              isPermissionUpdate={isPermissionUpdate}
+                            />
                           </TableCell>
                         </TableRow>
                       );
