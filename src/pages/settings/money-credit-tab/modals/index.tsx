@@ -1,16 +1,9 @@
 import React, { useEffect } from "react";
 import { IpropModalMoneyCredit } from "../../../../interfaces/setting.interface";
 import { connect } from "react-redux";
-import {
-  Button,
-  TextField,
-  MenuItem,
-  Select,
-  FormControl,
-  FormHelperText,
-} from "@mui/material";
+import { Button } from "@mui/material";
 import { modalTypes } from "../../../../constants/constant";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   IregisterInputMoneyCreditForm,
@@ -20,6 +13,8 @@ import {
 import { IstateRedux } from "../../../../interfaces/common.interface";
 import { semesterActions, settingActions } from "../../../../store/actions";
 import ModalCommonPage from "../../../commons/modal-common";
+import TextFieldCommon from "../../../commons/textfield-input";
+import SelectMuiCommon from "../../../commons/select-mui";
 
 const ModalMoneyCreditPage = (props: IpropModalMoneyCredit) => {
   const {
@@ -122,61 +117,27 @@ const ModalMoneyCreditPage = (props: IpropModalMoneyCredit) => {
       }
     >
       <p>Name: </p>
-      <TextField
-        size="small"
-        type="text"
-        fullWidth={true}
-        defaultValue={type === modalTypes.UPDATE ? moneyCreditInfo?.name : null}
-        error={!!errors["name"]}
-        helperText={errors["name"] ? errors["name"].message : ""}
-        {...register("name")}
+      <TextFieldCommon
+        field="name"
+        defaultValue={moneyCreditInfo?.name || ""}
+        errors={errors}
+        register={register}
       />
       <p className="mt-2">Type: </p>
-      <FormControl
-        fullWidth={true}
-        size="small"
-        error={Boolean(errors["semester"])}
-      >
-        <Controller
-          render={() => (
-            <Select
-              size="small"
-              fullWidth={true}
-              defaultValue={
-                type === modalTypes.UPDATE ? moneyCreditInfo?.semester?._id : ""
-              }
-              error={!!errors["semester"]}
-              {...register("semester")}
-            >
-              {semesterOptions.map((semester) => {
-                return (
-                  <MenuItem key={semester?.value} value={semester?.value}>
-                    {semester?.label}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          )}
-          name="semester"
-          control={control}
-        />
-        <FormHelperText>
-          {errors["semester"] ? errors["semester"].message : ""}
-        </FormHelperText>
-      </FormControl>
+      <SelectMuiCommon
+        field="semester"
+        options={semesterOptions}
+        defaultValue={moneyCreditInfo?.semester?._id || ""}
+        control={control}
+        errors={errors}
+        register={register}
+      />
       <p className="mt-2">Money Per Credit: </p>
-      <TextField
-        size="small"
-        type="number"
-        fullWidth={true}
-        defaultValue={
-          type === modalTypes.UPDATE ? moneyCreditInfo?.moneyPerCredit : ""
-        }
-        error={!!errors["moneyPerCredit"]}
-        helperText={
-          errors["moneyPerCredit"] ? errors["moneyPerCredit"].message : ""
-        }
-        {...register("moneyPerCredit")}
+      <TextFieldCommon
+        field="moneyPerCredit"
+        defaultValue={moneyCreditInfo?.moneyPerCredit || ""}
+        errors={errors}
+        register={register}
       />
       <Button variant="contained" className="w-100 mt-4" type="submit">
         SAVE

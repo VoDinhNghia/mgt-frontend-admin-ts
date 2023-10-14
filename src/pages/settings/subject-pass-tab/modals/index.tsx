@@ -1,19 +1,13 @@
 import React, { useEffect } from "react";
 import { IpropModalSubjectPass } from "../../../../interfaces/setting.interface";
 import { connect } from "react-redux";
+import { Button } from "@mui/material";
 import {
-  Button,
-  TextField,
-  MenuItem,
-  Select,
-  FormControl,
-  FormHelperText,
-} from "@mui/material";
-import {
+  inputTypes,
   modalTypes,
   subjectPassSettingOptions,
 } from "../../../../constants/constant";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   IregisterInputSubjectPassForm,
@@ -21,6 +15,8 @@ import {
 } from "../../../../utils/setting.util";
 import { settingActions } from "../../../../store/actions";
 import ModalCommonPage from "../../../commons/modal-common";
+import TextFieldCommon from "../../../commons/textfield-input";
+import SelectMuiCommon from "../../../commons/select-mui";
 
 const ModalSubjectPassPage = (props: IpropModalSubjectPass) => {
   const {
@@ -112,59 +108,28 @@ const ModalSubjectPassPage = (props: IpropModalSubjectPass) => {
       }
     >
       <p>Name: </p>
-      <TextField
-        size="small"
-        type="text"
-        fullWidth={true}
-        defaultValue={type === modalTypes.UPDATE ? subjectPassInfo?.name : null}
-        error={!!errors["name"]}
-        helperText={errors["name"] ? errors["name"].message : ""}
-        {...register("name")}
+      <TextFieldCommon
+        field="name"
+        defaultValue={subjectPassInfo?.name || ""}
+        errors={errors}
+        register={register}
       />
       <p className="mt-2">Type: </p>
-      <FormControl
-        fullWidth={true}
-        size="small"
-        error={Boolean(errors["type"])}
-      >
-        <Controller
-          render={() => (
-            <Select
-              size="small"
-              fullWidth={true}
-              defaultValue={
-                type === modalTypes.UPDATE ? subjectPassInfo?.type : ""
-              }
-              error={!!errors["type"]}
-              {...register("type")}
-            >
-              {subjectPassSettingOptions.map((sub) => {
-                return (
-                  <MenuItem key={sub?.value} value={sub?.value}>
-                    {sub?.label}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          )}
-          name="type"
-          control={control}
-        />
-        <FormHelperText>
-          {errors["type"] ? errors["type"].message : ""}
-        </FormHelperText>
-      </FormControl>
+      <SelectMuiCommon
+        field="type"
+        options={subjectPassSettingOptions}
+        errors={errors}
+        register={register}
+        control={control}
+        defaultValue={subjectPassInfo?.type || ""}
+      />
       <p className="mt-2">Condition: </p>
-      <TextField
-        size="small"
-        type="number"
-        fullWidth={true}
-        defaultValue={
-          type === modalTypes.UPDATE ? subjectPassInfo?.condition : ""
-        }
-        error={!!errors["condition"]}
-        helperText={errors["condition"] ? errors["condition"].message : ""}
-        {...register("condition")}
+      <TextFieldCommon
+        field="condition"
+        type={inputTypes.NUMBER}
+        defaultValue={subjectPassInfo?.condition || ""}
+        errors={errors}
+        register={register}
       />
       <Button variant="contained" className="w-100 mt-4" type="submit">
         SAVE
