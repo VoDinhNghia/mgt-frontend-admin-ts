@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { IpropModalSemester } from "../../../interfaces/semester.interface";
 import { connect } from "react-redux";
-import { Button, TextField, FormControl, FormHelperText } from "@mui/material";
+import { Button, FormControl, FormHelperText } from "@mui/material";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -14,6 +14,7 @@ import { semesterActions } from "../../../store/actions";
 import Select from "react-select";
 import { IeventOnchangeSelect } from "../../../interfaces/common.interface";
 import ModalCommonPage from "../../commons/modal-common";
+import TextFieldCommon from "../../commons/textfield-input";
 
 const ModalSemesterPage = (props: IpropModalSemester) => {
   const {
@@ -95,14 +96,11 @@ const ModalSemesterPage = (props: IpropModalSemester) => {
       }
     >
       <p>Name: </p>
-      <TextField
-        fullWidth={true}
-        size="small"
-        type="text"
+      <TextFieldCommon
+        errors={errors}
+        register={register}
         defaultValue={type === modalTypes.UPDATE ? semesterInfo?.name : ""}
-        error={!!errors["name"]}
-        helperText={errors["name"] ? errors["name"].message : ""}
-        {...register("name")}
+        field="name"
       />
       <p className="mt-2">Year: </p>
       <FormControl
