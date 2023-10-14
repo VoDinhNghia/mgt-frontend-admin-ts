@@ -219,7 +219,7 @@ export interface IpropTextFieldForm {
   defaultValue?: string;
   register: any;
   errors: any;
-  type: string;
+  type?: string;
   rows?: number;
 }
 

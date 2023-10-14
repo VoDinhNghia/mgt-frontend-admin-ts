@@ -2,9 +2,13 @@ import React, { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { connect } from "react-redux";
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 import { IpropModalRoom } from "../../../interfaces/room.interface";
-import { modalTypes, roomOptions } from "../../../constants/constant";
+import {
+  inputTypes,
+  modalTypes,
+  roomOptions,
+} from "../../../constants/constant";
 import { roomActions } from "../../../store/actions";
 import {
   registerSchemaRoomForm,
@@ -12,6 +16,7 @@ import {
 } from "../../../utils/room.util";
 import ModalCommonPage from "../../commons/modal-common";
 import SelectMuiCommon from "../../commons/select-mui";
+import TextFieldCommon from "../../commons/textfield-input";
 
 const ModalRoomMgtPage = (props: IpropModalRoom) => {
   const {
@@ -131,14 +136,11 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
       }
     >
       <p>Name: </p>
-      <TextField
-        size="small"
-        type="text"
-        fullWidth={true}
-        defaultValue={type === modalTypes.UPDATE ? roomInfo?.name : null}
-        error={!!errors["name"]}
-        helperText={errors["name"] ? errors["name"].message : ""}
-        {...register("name")}
+      <TextFieldCommon
+        field="name"
+        defaultValue={type === modalTypes.UPDATE ? roomInfo?.name : ""}
+        errors={errors}
+        register={register}
       />
       <p className="mt-2">Type: </p>
       <SelectMuiCommon
@@ -150,64 +152,47 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
         defaultValue={type === modalTypes.UPDATE ? roomInfo?.type : ""}
       />
       <p className="mt-2">Capacity: </p>
-      <TextField
-        size="small"
-        type="number"
-        fullWidth={true}
+      <TextFieldCommon
+        field="capacity"
+        type={inputTypes.NUMBER}
         defaultValue={type === modalTypes.UPDATE ? roomInfo?.capacity : ""}
-        error={!!errors["capacity"]}
-        helperText={errors["capacity"] ? errors["capacity"].message : ""}
-        {...register("capacity")}
+        register={register}
+        errors={errors}
       />
       <p className="mt-2">Description: </p>
-      <TextField
-        size="small"
-        type="textarea"
-        multiline={true}
-        rows={4}
-        fullWidth={true}
+      <TextFieldCommon
+        field="description"
+        type={inputTypes.TEXT_AREA}
         defaultValue={type === modalTypes.UPDATE ? roomInfo?.description : ""}
-        error={!!errors["description"]}
-        helperText={errors["description"] ? errors["description"].message : ""}
-        {...register("description")}
+        errors={errors}
+        register={register}
       />
       <p className="mt-2">Air Conditioner: </p>
-      <TextField
-        size="small"
-        type="text"
-        fullWidth={true}
+      <TextFieldCommon
+        field="airConditioner"
         defaultValue={
           type === modalTypes.UPDATE ? roomInfo?.divice?.airConditioner : ""
         }
-        error={!!errors["airConditioner"]}
-        helperText={
-          errors["airConditioner"] ? errors["airConditioner"].message : ""
-        }
-        {...register("airConditioner")}
+        errors={errors}
+        register={register}
       />
       <p className="mt-2">Projector: </p>
-      <TextField
-        size="small"
-        type="text"
-        fullWidth={true}
+      <TextFieldCommon
+        field="projector"
         defaultValue={
           type === modalTypes.UPDATE ? roomInfo?.divice?.projector : ""
         }
-        error={!!errors["projector"]}
-        helperText={errors["projector"] ? errors["projector"].message : ""}
-        {...register("projector")}
+        errors={errors}
+        register={register}
       />
       <p className="mt-2">Status: </p>
-      <TextField
-        size="small"
-        type="text"
-        fullWidth={true}
+      <TextFieldCommon
+        field="status"
         defaultValue={
           type === modalTypes.UPDATE ? roomInfo?.divice?.status : ""
         }
-        error={!!errors["status"]}
-        helperText={errors["status"] ? errors["status"].message : ""}
-        {...register("status")}
+        errors={errors}
+        register={register}
       />
       <Button type="submit" variant="contained" className="mt-4 w-100">
         SAVE
