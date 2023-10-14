@@ -1,10 +1,5 @@
 import React, { useEffect } from "react";
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  IconButton,
   Button,
   TextField,
   FormControl,
@@ -29,6 +24,7 @@ import {
 import { IstateRedux } from "../../../../interfaces/common.interface";
 import { facultyActions, userActions } from "../../../../store/actions";
 import moment from "moment";
+import ModalCommonPage from "../../../commons/modal-common";
 
 const ModalFacultyPage = (props: IpropModalFaculty) => {
   const {
@@ -98,7 +94,7 @@ const ModalFacultyPage = (props: IpropModalFaculty) => {
     fetchAndCloseModal();
   };
 
-  const onDeleteFaculty = () => {
+  const onDelete = () => {
     dispatch({
       type: facultyActions.DELETE_FACULTY,
       id: facultyInfo?._id,
@@ -120,190 +116,156 @@ const ModalFacultyPage = (props: IpropModalFaculty) => {
     fetchUsers();
     reset({
       ...facultyInfo,
-      foundYear: facultyInfo?.foundYear ? moment(facultyInfo?.foundYear).format(formatDate) : "",
+      foundYear: facultyInfo?.foundYear
+        ? moment(facultyInfo?.foundYear).format(formatDate)
+        : "",
       headOfSection: facultyInfo?.headOfSection?._id,
       eputeHead: facultyInfo?.eputeHead?._id,
     });
   }, [isSubmitSuccessful, facultyInfo]);
 
-  return (
-    <Dialog
-      open={isShowModal}
-      onClose={() => onCloseModal()}
-      fullWidth={true}
-      maxWidth="xs"
+  const deleteContent = (
+    <p>
+      Are you want to delete this faculty <b>{facultyInfo?.name}</b>?
+    </p>
+  );
+
+  const addUpdateContent = (
+    <form
+      onSubmit={
+        type === modalTypes.ADD
+          ? handleSubmit(onSubmitHandlerAdd)
+          : handleSubmit(onSubmitHandlerUpdate)
+      }
     >
-      <DialogTitle>
-        {type === modalTypes.ADD ? "Add new faculty" : ""}
-        {type === modalTypes.DELETE ? "Delete faculty" : ""}
-        {type === modalTypes.UPDATE ? "Update faculty" : ""}
-        <IconButton className="DialogTitleClose" onClick={() => onCloseModal()}>
-          X
-        </IconButton>
-      </DialogTitle>
-      <DialogContent>
-        {type === modalTypes.ADD || type === modalTypes.UPDATE ? (
-          <form
-            onSubmit={
-              type === modalTypes.ADD
-                ? handleSubmit(onSubmitHandlerAdd)
-                : handleSubmit(onSubmitHandlerUpdate)
-            }
-          >
-            <p>Name: </p>
-            <TextField
+      <p>Name: </p>
+      <TextField
+        fullWidth={true}
+        size="small"
+        type="text"
+        defaultValue={type === modalTypes.UPDATE ? facultyInfo?.name : ""}
+        error={!!errors["name"]}
+        helperText={errors["name"] ? errors["name"].message : ""}
+        {...register("name")}
+      />
+      <p className="mt-2">Found year:</p>
+      <TextField
+        fullWidth={true}
+        size="small"
+        type="date"
+        defaultValue={
+          type === modalTypes.UPDATE
+            ? moment(facultyInfo?.foundYear).format(formatDate)
+            : ""
+        }
+        error={!!errors["foundYear"]}
+        helperText={errors["foundYear"] ? errors["foundYear"].message : ""}
+        {...register("foundYear")}
+      />
+      <p className="mt-2">HeadOfSection: </p>
+      <FormControl
+        fullWidth={true}
+        size="small"
+        error={Boolean(errors["headOfSection"])}
+      >
+        <Controller
+          render={() => (
+            <Select
               fullWidth={true}
               size="small"
-              type="text"
-              defaultValue={type === modalTypes.UPDATE ? facultyInfo?.name : ""}
-              error={!!errors["name"]}
-              helperText={errors["name"] ? errors["name"].message : ""}
-              {...register("name")}
-            />
-            <p className="mt-2">Found year:</p>
-            <TextField
-              fullWidth={true}
-              size="small"
-              type="date"
               defaultValue={
                 type === modalTypes.UPDATE
-                  ? moment(facultyInfo?.foundYear).format(formatDate)
+                  ? facultyInfo?.headOfSection?._id
                   : ""
               }
-              error={!!errors["foundYear"]}
-              helperText={
-                errors["foundYear"] ? errors["foundYear"].message : ""
-              }
-              {...register("foundYear")}
-            />
-            <p className="mt-2">HeadOfSection: </p>
-            <FormControl
-              fullWidth={true}
-              size="small"
-              error={Boolean(errors["headOfSection"])}
+              error={!!errors["headOfSection"]}
+              {...register("headOfSection")}
             >
-              <Controller
-                render={() => (
-                  <Select
-                    fullWidth={true}
-                    size="small"
-                    defaultValue={
-                      type === modalTypes.UPDATE
-                        ? facultyInfo?.headOfSection?._id
-                        : ""
-                    }
-                    error={!!errors["headOfSection"]}
-                    {...register("headOfSection")}
+              {userOptions?.map((item: { value: string; label: string }) => {
+                return (
+                  <MenuItem
+                    key={`${item.value}-headofSection`}
+                    value={item.value}
                   >
-                    {userOptions?.map(
-                      (item: { value: string; label: string }) => {
-                        return (
-                          <MenuItem
-                            key={`${item.value}-headofSection`}
-                            value={item.value}
-                          >
-                            {item.label}
-                          </MenuItem>
-                        );
-                      }
-                    )}
-                  </Select>
-                )}
-                name="headOfSection"
-                control={control}
-              />
-              <FormHelperText>
-                {errors["headOfSection"] ? errors["headOfSection"].message : ""}
-              </FormHelperText>
-            </FormControl>
-            <p className="mt-2">eputeHead: </p>
-            <FormControl
+                    {item.label}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          )}
+          name="headOfSection"
+          control={control}
+        />
+        <FormHelperText>
+          {errors["headOfSection"] ? errors["headOfSection"].message : ""}
+        </FormHelperText>
+      </FormControl>
+      <p className="mt-2">eputeHead: </p>
+      <FormControl
+        fullWidth={true}
+        size="small"
+        error={Boolean(errors["eputeHead"])}
+      >
+        <Controller
+          render={() => (
+            <Select
               fullWidth={true}
               size="small"
-              error={Boolean(errors["eputeHead"])}
-            >
-              <Controller
-                render={() => (
-                  <Select
-                    fullWidth={true}
-                    size="small"
-                    defaultValue={
-                      type === modalTypes.UPDATE
-                        ? facultyInfo?.eputeHead?._id
-                        : ""
-                    }
-                    error={!!errors["eputeHead"]}
-                    {...register("eputeHead")}
-                  >
-                    {userOptions?.map(
-                      (
-                        item: { value: string; label: string },
-                        index: number
-                      ) => {
-                        return (
-                          <MenuItem
-                            key={`${item.value}-${index}`}
-                            value={item.value}
-                          >
-                            {item.label}
-                          </MenuItem>
-                        );
-                      }
-                    )}
-                  </Select>
-                )}
-                name="eputeHead"
-                control={control}
-              />
-              <FormHelperText>
-                {errors["eputeHead"] ? errors["eputeHead"].message : ""}
-              </FormHelperText>
-            </FormControl>
-            <p className="mt-2">Introduction: </p>
-            <TextField
-              fullWidth={true}
-              size="small"
-              type="textarea"
-              multiline={true}
-              rows={4}
               defaultValue={
-                type === modalTypes.UPDATE ? facultyInfo?.introduction : ""
+                type === modalTypes.UPDATE ? facultyInfo?.eputeHead?._id : ""
               }
-              error={!!errors["introduction"]}
-              helperText={
-                errors["introduction"] ? errors["introduction"].message : ""
-              }
-              {...register("introduction")}
-            />
-            <Button variant="contained" className="mt-4 w-100" type="submit">
-              Save
-            </Button>
-          </form>
-        ) : (
-          ""
-        )}
-        {type === modalTypes.DELETE ? (
-          <p>
-            Are you want to delete this faculty <b>{facultyInfo?.name}</b>?
-          </p>
-        ) : (
-          ""
-        )}
-      </DialogContent>
-      <DialogActions>
-        {type === modalTypes.DELETE ? (
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => onDeleteFaculty()}
-          >
-            Yes
-          </Button>
-        ) : (
-          ""
-        )}
-      </DialogActions>
-    </Dialog>
+              error={!!errors["eputeHead"]}
+              {...register("eputeHead")}
+            >
+              {userOptions?.map(
+                (item: { value: string; label: string }, index: number) => {
+                  return (
+                    <MenuItem key={`${item.value}-${index}`} value={item.value}>
+                      {item.label}
+                    </MenuItem>
+                  );
+                }
+              )}
+            </Select>
+          )}
+          name="eputeHead"
+          control={control}
+        />
+        <FormHelperText>
+          {errors["eputeHead"] ? errors["eputeHead"].message : ""}
+        </FormHelperText>
+      </FormControl>
+      <p className="mt-2">Introduction: </p>
+      <TextField
+        fullWidth={true}
+        size="small"
+        type="textarea"
+        multiline={true}
+        rows={4}
+        defaultValue={
+          type === modalTypes.UPDATE ? facultyInfo?.introduction : ""
+        }
+        error={!!errors["introduction"]}
+        helperText={
+          errors["introduction"] ? errors["introduction"].message : ""
+        }
+        {...register("introduction")}
+      />
+      <Button variant="contained" className="mt-4 w-100" type="submit">
+        Save
+      </Button>
+    </form>
+  );
+
+  return (
+    <ModalCommonPage
+      type={type}
+      isShowModal={isShowModal}
+      onCloseModal={() => onCloseModal()}
+      nameTitle="faculty"
+      content={type === modalTypes.DELETE ? deleteContent : addUpdateContent}
+      onDelete={() => onDelete()}
+    />
   );
 };
 
