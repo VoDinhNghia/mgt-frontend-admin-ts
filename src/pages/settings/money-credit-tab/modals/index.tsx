@@ -2,11 +2,6 @@ import React, { useEffect } from "react";
 import { IpropModalMoneyCredit } from "../../../../interfaces/setting.interface";
 import { connect } from "react-redux";
 import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogActions,
-  IconButton,
   Button,
   TextField,
   MenuItem,
@@ -24,6 +19,7 @@ import {
 } from "../../../../utils/setting.util";
 import { IstateRedux } from "../../../../interfaces/common.interface";
 import { semesterActions, settingActions } from "../../../../store/actions";
+import ModalCommonPage from "../../../commons/modal-common";
 
 const ModalMoneyCreditPage = (props: IpropModalMoneyCredit) => {
   const {
@@ -79,7 +75,7 @@ const ModalMoneyCreditPage = (props: IpropModalMoneyCredit) => {
     fetchAndCloseModal();
   };
 
-  const onDeleteMoneyCredit = () => {
+  const onDelete = () => {
     dispatch({
       type: settingActions.UPDATE_MONEY_CREDIT,
       id: moneyCreditInfo?._id,
@@ -112,120 +108,91 @@ const ModalMoneyCreditPage = (props: IpropModalMoneyCredit) => {
     fetchSemester();
   }, [isSubmitSuccessful, moneyCreditInfo]);
 
-  return (
-    <Dialog
-      open={isShowModal}
-      onClose={() => onCloseModal()}
-      fullWidth={true}
-      maxWidth="xs"
+  const deleteContent = (
+    <p>
+      Are you want to delete this <b>{moneyCreditInfo?.name}</b>?
+    </p>
+  );
+  const addUpdateContent = (
+    <form
+      onSubmit={
+        type === modalTypes.ADD
+          ? handleSubmit(onSubmitHandlerAdd)
+          : handleSubmit(onSubmitHandlerUpdate)
+      }
     >
-      <DialogTitle>
-        {type === modalTypes.ADD ? "Add new money credit" : ""}
-        {type === modalTypes.UPDATE ? "Update money credit" : ""}
-        {type === modalTypes.DELETE ? "Delete money credit" : ""}
-        <IconButton className="DialogTitleClose" onClick={() => onCloseModal()}>
-          X
-        </IconButton>
-      </DialogTitle>
-      <DialogContent>
-        {type === modalTypes.DELETE ? (
-          <p>
-            Are you want to delete this <b>{moneyCreditInfo?.name}</b>?
-          </p>
-        ) : (
-          ""
-        )}
-        {type === modalTypes.ADD || type === modalTypes.UPDATE ? (
-          <form
-            onSubmit={
-              type === modalTypes.ADD
-                ? handleSubmit(onSubmitHandlerAdd)
-                : handleSubmit(onSubmitHandlerUpdate)
-            }
-          >
-            <p>Name: </p>
-            <TextField
+      <p>Name: </p>
+      <TextField
+        size="small"
+        type="text"
+        fullWidth={true}
+        defaultValue={type === modalTypes.UPDATE ? moneyCreditInfo?.name : null}
+        error={!!errors["name"]}
+        helperText={errors["name"] ? errors["name"].message : ""}
+        {...register("name")}
+      />
+      <p className="mt-2">Type: </p>
+      <FormControl
+        fullWidth={true}
+        size="small"
+        error={Boolean(errors["semester"])}
+      >
+        <Controller
+          render={() => (
+            <Select
               size="small"
-              type="text"
               fullWidth={true}
               defaultValue={
-                type === modalTypes.UPDATE ? moneyCreditInfo?.name : null
+                type === modalTypes.UPDATE ? moneyCreditInfo?.semester?._id : ""
               }
-              error={!!errors["name"]}
-              helperText={errors["name"] ? errors["name"].message : ""}
-              {...register("name")}
-            />
-            <p className="mt-2">Type: </p>
-            <FormControl
-              fullWidth={true}
-              size="small"
-              error={Boolean(errors["semester"])}
+              error={!!errors["semester"]}
+              {...register("semester")}
             >
-              <Controller
-                render={() => (
-                  <Select
-                    size="small"
-                    fullWidth={true}
-                    defaultValue={
-                      type === modalTypes.UPDATE
-                        ? moneyCreditInfo?.semester?._id
-                        : ""
-                    }
-                    error={!!errors["semester"]}
-                    {...register("semester")}
-                  >
-                    {semesterOptions.map((semester) => {
-                      return (
-                        <MenuItem key={semester?.value} value={semester?.value}>
-                          {semester?.label}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                )}
-                name="semester"
-                control={control}
-              />
-              <FormHelperText>
-                {errors["semester"] ? errors["semester"].message : ""}
-              </FormHelperText>
-            </FormControl>
-            <p className="mt-2">Money Per Credit: </p>
-            <TextField
-              size="small"
-              type="number"
-              fullWidth={true}
-              defaultValue={
-                type === modalTypes.UPDATE ? moneyCreditInfo?.moneyPerCredit : ""
-              }
-              error={!!errors["moneyPerCredit"]}
-              helperText={
-                errors["moneyPerCredit"] ? errors["moneyPerCredit"].message : ""
-              }
-              {...register("moneyPerCredit")}
-            />
-            <Button variant="contained" className="w-100 mt-4" type="submit">
-              SAVE
-            </Button>
-          </form>
-        ) : (
-          ""
-        )}
-      </DialogContent>
-      <DialogActions>
-        {type === modalTypes.DELETE ? (
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => onDeleteMoneyCredit()}
-          >
-            Yes
-          </Button>
-        ) : (
-          ""
-        )}
-      </DialogActions>
-    </Dialog>
+              {semesterOptions.map((semester) => {
+                return (
+                  <MenuItem key={semester?.value} value={semester?.value}>
+                    {semester?.label}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          )}
+          name="semester"
+          control={control}
+        />
+        <FormHelperText>
+          {errors["semester"] ? errors["semester"].message : ""}
+        </FormHelperText>
+      </FormControl>
+      <p className="mt-2">Money Per Credit: </p>
+      <TextField
+        size="small"
+        type="number"
+        fullWidth={true}
+        defaultValue={
+          type === modalTypes.UPDATE ? moneyCreditInfo?.moneyPerCredit : ""
+        }
+        error={!!errors["moneyPerCredit"]}
+        helperText={
+          errors["moneyPerCredit"] ? errors["moneyPerCredit"].message : ""
+        }
+        {...register("moneyPerCredit")}
+      />
+      <Button variant="contained" className="w-100 mt-4" type="submit">
+        SAVE
+      </Button>
+    </form>
+  );
+
+  return (
+    <ModalCommonPage
+      type={type}
+      isShowModal={isShowModal}
+      onCloseModal={() => onCloseModal()}
+      onDelete={() => onDelete()}
+      content={type === modalTypes.DELETE ? deleteContent : addUpdateContent}
+      nameTitle="money credit"
+    />
   );
 };
 
