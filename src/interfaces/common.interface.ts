@@ -213,3 +213,10 @@ export interface ImodalCommon extends IpropModalCommon {
   nameTitle?: string;
   content?: any;
 }
+
+export interface IpropTextFieldInput {
+  field: string;
+  defaultValue?: string;
+  register: any;
+  errors: any;
+}
