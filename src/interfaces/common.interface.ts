@@ -207,3 +207,9 @@ export interface IpropActionTableCommon {
   isPermissionDelete?: boolean | any;
   rowData?: any;
 }
+
+export interface ImodalCommon extends IpropModalCommon {
+  onDelete?: any;
+  nameTitle?: string;
+  content?: any;
+}
