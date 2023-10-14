@@ -98,7 +98,7 @@ const ModalSemesterPage = (props: IpropModalSemester) => {
       <TextFieldCommon
         errors={errors}
         register={register}
-        defaultValue={type === modalTypes.UPDATE ? semesterInfo?.name : ""}
+        defaultValue={semesterInfo?.name || ""}
         field="name"
         type={inputTypes.TEXT}
       />
@@ -109,11 +109,9 @@ const ModalSemesterPage = (props: IpropModalSemester) => {
         field="year"
         options={yearSemesterOptions}
         defaultValue={
-          type === modalTypes.UPDATE
-            ? yearSemesterOptions?.find(
-                (year) => year.value === semesterInfo?.year
-              )
-            : ""
+          yearSemesterOptions?.find(
+            (year) => year.value === semesterInfo?.year
+          ) || ""
         }
       />
       <Button type="submit" variant="contained" className="mt-4 w-100">

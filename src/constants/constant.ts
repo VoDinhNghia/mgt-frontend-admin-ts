@@ -358,4 +358,5 @@ export const inputTypes = {
   NUMBER: "number",
   EMAIL: "email",
   PASSWORD: "password",
+  DATE: "date",
 };
