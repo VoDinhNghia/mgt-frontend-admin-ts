@@ -1,17 +1,7 @@
 import React, { useEffect } from "react";
 import { IpropModalSemester } from "../../../interfaces/semester.interface";
 import { connect } from "react-redux";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  Button,
-  TextField,
-  FormControl,
-  FormHelperText,
-} from "@mui/material";
+import { Button, TextField, FormControl, FormHelperText } from "@mui/material";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -23,6 +13,7 @@ import { modalTypes } from "../../../constants/constant";
 import { semesterActions } from "../../../store/actions";
 import Select from "react-select";
 import { IeventOnchangeSelect } from "../../../interfaces/common.interface";
+import ModalCommonPage from "../../commons/modal-common";
 
 const ModalSemesterPage = (props: IpropModalSemester) => {
   const {
@@ -95,97 +86,73 @@ const ModalSemesterPage = (props: IpropModalSemester) => {
     reset(semesterInfo);
   }, [isSubmitSuccessful, semesterInfo]);
 
-  return (
-    <Dialog
-      open={isShowModal}
-      fullWidth={true}
-      maxWidth="xs"
-      onClose={() => onCloseModal()}
+  const addUpdateContent = (
+    <form
+      onSubmit={
+        type === modalTypes.ADD
+          ? handleSubmit(onSubmitHandlerAdd)
+          : handleSubmit(onSubmitHandlerUpdate)
+      }
     >
-      <DialogTitle>
-        {type === modalTypes.ADD ? "Add new major" : ""}
-        {type === modalTypes.UPDATE ? "Update major" : ""}
-        {type === modalTypes.DELETE ? "Delete major" : ""}
-        <IconButton className="DialogTitleClose" onClick={() => onCloseModal()}>
-          X
-        </IconButton>
-      </DialogTitle>
-      <DialogContent>
-        {type === modalTypes.ADD || type === modalTypes.UPDATE ? (
-          <form
-            onSubmit={
-              type === modalTypes.ADD
-                ? handleSubmit(onSubmitHandlerAdd)
-                : handleSubmit(onSubmitHandlerUpdate)
-            }
-          >
-            <p>Name: </p>
-            <TextField
-              fullWidth={true}
-              size="small"
-              type="text"
+      <p>Name: </p>
+      <TextField
+        fullWidth={true}
+        size="small"
+        type="text"
+        defaultValue={type === modalTypes.UPDATE ? semesterInfo?.name : ""}
+        error={!!errors["name"]}
+        helperText={errors["name"] ? errors["name"].message : ""}
+        {...register("name")}
+      />
+      <p className="mt-2">Year: </p>
+      <FormControl
+        fullWidth={true}
+        size="small"
+        error={Boolean(errors["year"])}
+      >
+        <Controller
+          render={({ field: { onChange } }) => (
+            <Select
+              options={yearSemesterOptions}
               defaultValue={
-                type === modalTypes.UPDATE ? semesterInfo?.name : ""
+                type === modalTypes.UPDATE
+                  ? yearSemesterOptions?.find(
+                      (year) => year.value === semesterInfo?.year
+                    )
+                  : ""
               }
-              error={!!errors["name"]}
-              helperText={errors["name"] ? errors["name"].message : ""}
-              {...register("name")}
+              onChange={(val: IeventOnchangeSelect) => onChange(val.value)}
             />
-            <p className="mt-2">Year: </p>
-            <FormControl
-              fullWidth={true}
-              size="small"
-              error={Boolean(errors["year"])}
-            >
-              <Controller
-                render={({ field: { onChange } }) => (
-                  <Select
-                    options={yearSemesterOptions}
-                    defaultValue={
-                      type === modalTypes.UPDATE
-                        ? yearSemesterOptions?.find(
-                            (year) => year.value === semesterInfo?.year
-                          )
-                        : ""
-                    }
-                    onChange={(val: IeventOnchangeSelect) =>
-                      onChange(val.value)
-                    }
-                  />
-                )}
-                name="year"
-                control={control}
-              />
-              <FormHelperText>
-                {errors["year"] ? errors["year"].message : ""}
-              </FormHelperText>
-            </FormControl>
-            <Button type="submit" variant="contained" className="mt-4 w-100">
-              Save
-            </Button>
-          </form>
-        ) : (
-          ""
-        )}
-        {type === modalTypes.DELETE ? (
-          <p>
-            Are you want to delete this semester{" "}
-            <b>{`${semesterInfo?.name} (${semesterInfo?.year})`}</b>
-          </p>
-        ) : (
-          ""
-        )}
-      </DialogContent>
-      <DialogActions>
-        {type === modalTypes.DELETE ? (
-          <Button variant="contained" color="error" onClick={() => onDelete()}>
-            Yes
-          </Button>
-        ) : (
-          ""
-        )}
-      </DialogActions>
-    </Dialog>
+          )}
+          name="year"
+          control={control}
+        />
+        <FormHelperText>
+          {errors["year"] ? errors["year"].message : ""}
+        </FormHelperText>
+      </FormControl>
+      <Button type="submit" variant="contained" className="mt-4 w-100">
+        Save
+      </Button>
+    </form>
+  );
+
+  const deleteContent = (
+    <p>
+      Are you want to delete this semester{" "}
+      <b>{`${semesterInfo?.name} (${semesterInfo?.year})`}</b>
+    </p>
+  );
+
+  return (
+    <ModalCommonPage
+      type={type}
+      isShowModal={isShowModal}
+      onCloseModal={() => onCloseModal()}
+      nameTitle="semester"
+      content={type === modalTypes.DELETE ? deleteContent : addUpdateContent}
+      onDelete={() => onDelete()}
+    />
   );
 };
 
