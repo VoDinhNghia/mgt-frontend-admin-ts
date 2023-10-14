@@ -138,7 +138,7 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
       <p>Name: </p>
       <TextFieldCommon
         field="name"
-        defaultValue={type === modalTypes.UPDATE ? roomInfo?.name : ""}
+        defaultValue={roomInfo?.name || ""}
         errors={errors}
         register={register}
       />
@@ -149,13 +149,13 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
         options={roomOptions}
         errors={errors}
         control={control}
-        defaultValue={type === modalTypes.UPDATE ? roomInfo?.type : ""}
+        defaultValue={roomInfo?.type || ""}
       />
       <p className="mt-2">Capacity: </p>
       <TextFieldCommon
         field="capacity"
         type={inputTypes.NUMBER}
-        defaultValue={type === modalTypes.UPDATE ? roomInfo?.capacity : ""}
+        defaultValue={roomInfo?.capacity || ""}
         register={register}
         errors={errors}
       />
@@ -163,34 +163,28 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
       <TextFieldCommon
         field="description"
         type={inputTypes.TEXT_AREA}
-        defaultValue={type === modalTypes.UPDATE ? roomInfo?.description : ""}
+        defaultValue={roomInfo?.description || ""}
         errors={errors}
         register={register}
       />
       <p className="mt-2">Air Conditioner: </p>
       <TextFieldCommon
         field="airConditioner"
-        defaultValue={
-          type === modalTypes.UPDATE ? roomInfo?.divice?.airConditioner : ""
-        }
+        defaultValue={roomInfo?.divice?.airConditioner || ""}
         errors={errors}
         register={register}
       />
       <p className="mt-2">Projector: </p>
       <TextFieldCommon
         field="projector"
-        defaultValue={
-          type === modalTypes.UPDATE ? roomInfo?.divice?.projector : ""
-        }
+        defaultValue={roomInfo?.divice?.projector || ""}
         errors={errors}
         register={register}
       />
       <p className="mt-2">Status: </p>
       <TextFieldCommon
         field="status"
-        defaultValue={
-          type === modalTypes.UPDATE ? roomInfo?.divice?.status : ""
-        }
+        defaultValue={roomInfo?.divice?.status || ""}
         errors={errors}
         register={register}
       />

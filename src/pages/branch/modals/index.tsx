@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { connect } from "react-redux";
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 import { inputTypes, modalTypes } from "../../../constants/constant";
 import { branchActions, countriesActions } from "../../../store/actions";
 import { IpropModalBranch } from "../../../interfaces/branch.interface";
@@ -210,21 +210,21 @@ const ModalBranchPage = (props: IpropModalBranch) => {
       <p>Name: </p>
       <TextFieldCommon
         field="name"
-        defaultValue={type === modalTypes.UPDATE ? branchInfo?.name : ""}
+        defaultValue={branchInfo?.name || ""}
         errors={errors}
         register={register}
       />
       <p className="mt-2">Title: </p>
       <TextFieldCommon
         field="title"
-        defaultValue={type === modalTypes.UPDATE ? branchInfo?.title : ""}
+        defaultValue={branchInfo?.title || ""}
         errors={errors}
         register={register}
       />
       <p className="mt-2">Website: </p>
       <TextFieldCommon
         field="website"
-        defaultValue={type === modalTypes.UPDATE ? branchInfo?.website : ""}
+        defaultValue={branchInfo?.website || ""}
         errors={errors}
         register={register}
       />
@@ -233,11 +233,9 @@ const ModalBranchPage = (props: IpropModalBranch) => {
         field="country"
         control={control}
         defaultValue={
-          type === modalTypes.UPDATE
-            ? countryOptions?.find(
-                (c) => c?.value === branchInfo?.location?.country?._id
-              )
-            : ""
+          countryOptions?.find(
+            (c) => c?.value === branchInfo?.location?.country?._id
+          ) || ""
         }
         errors={errors}
         options={countryOptions}
@@ -247,11 +245,9 @@ const ModalBranchPage = (props: IpropModalBranch) => {
         field="province"
         control={control}
         defaultValue={
-          type === modalTypes.UPDATE
-            ? provinceOptions?.find(
-                (c) => c?.value === branchInfo?.location?.province?._id
-              )
-            : ""
+          provinceOptions?.find(
+            (c) => c?.value === branchInfo?.location?.province?._id
+          ) || ""
         }
         errors={errors}
         options={provinceOptions}
@@ -261,11 +257,9 @@ const ModalBranchPage = (props: IpropModalBranch) => {
         field="district"
         control={control}
         defaultValue={
-          type === modalTypes.UPDATE
-            ? districtOptions?.find(
-                (c) => c?.value === branchInfo?.location?.district?._id
-              )
-            : ""
+          districtOptions?.find(
+            (c) => c?.value === branchInfo?.location?.district?._id
+          ) || ""
         }
         errors={errors}
         options={districtOptions}
@@ -275,11 +269,9 @@ const ModalBranchPage = (props: IpropModalBranch) => {
         field="ward"
         control={control}
         defaultValue={
-          type === modalTypes.UPDATE
-            ? wardOptions?.find(
-                (c) => c?.value === branchInfo?.location?.ward?._id
-              )
-            : ""
+          wardOptions?.find(
+            (c) => c?.value === branchInfo?.location?.ward?._id
+          ) || ""
         }
         errors={errors}
         options={wardOptions}
@@ -287,7 +279,7 @@ const ModalBranchPage = (props: IpropModalBranch) => {
       <p className="mt-2">Street: </p>
       <TextFieldCommon
         field="address"
-        defaultValue={type === modalTypes.UPDATE ? branchInfo?.address : ""}
+        defaultValue={branchInfo?.address || ""}
         errors={errors}
         register={register}
       />
@@ -295,10 +287,8 @@ const ModalBranchPage = (props: IpropModalBranch) => {
       <TextFieldCommon
         field="email"
         defaultValue={
-          type === modalTypes.UPDATE
-            ? branchInfo?.contactInfo?.length > 0
-              ? branchInfo?.contactInfo[0]?.email
-              : ""
+          branchInfo?.contactInfo?.length > 0
+            ? branchInfo?.contactInfo[0]?.email
             : ""
         }
         errors={errors}
@@ -308,38 +298,19 @@ const ModalBranchPage = (props: IpropModalBranch) => {
       <TextFieldCommon
         field="fax"
         defaultValue={
-          type === modalTypes.UPDATE
-            ? branchInfo?.contactInfo?.length > 0
-              ? branchInfo?.contactInfo[0]?.fax
-              : ""
+          branchInfo?.contactInfo?.length > 0
+            ? branchInfo?.contactInfo[0]?.fax
             : ""
         }
         errors={errors}
         register={register}
       />
       <p className="mt-2">Mobile: </p>
-      <TextField
-        size="small"
-        type="text"
-        fullWidth={true}
-        defaultValue={
-          type === modalTypes.UPDATE
-            ? branchInfo?.contactInfo?.length > 0
-              ? branchInfo?.contactInfo[0]?.mobile
-              : ""
-            : ""
-        }
-        error={!!errors["mobile"]}
-        helperText={errors["mobile"] ? errors["mobile"].message : ""}
-        {...register("mobile")}
-      />
       <TextFieldCommon
         field="mobile"
         defaultValue={
-          type === modalTypes.UPDATE
-            ? branchInfo?.contactInfo?.length > 0
-              ? branchInfo?.contactInfo[0]?.mobile
-              : ""
+          branchInfo?.contactInfo?.length > 0
+            ? branchInfo?.contactInfo[0]?.mobile
             : ""
         }
         errors={errors}
@@ -349,7 +320,7 @@ const ModalBranchPage = (props: IpropModalBranch) => {
       <TextFieldCommon
         field="description"
         type={inputTypes.TEXT_AREA}
-        defaultValue={type === modalTypes.UPDATE ? branchInfo?.description : ""}
+        defaultValue={branchInfo?.description || ""}
         errors={errors}
         register={register}
       />
