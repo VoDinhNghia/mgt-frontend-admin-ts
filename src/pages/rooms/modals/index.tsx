@@ -1,15 +1,8 @@
 import React, { useEffect } from "react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { connect } from "react-redux";
-import {
-  Button,
-  TextField,
-  Select,
-  MenuItem,
-  FormHelperText,
-  FormControl,
-} from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { IpropModalRoom } from "../../../interfaces/room.interface";
 import { modalTypes, roomOptions } from "../../../constants/constant";
 import { roomActions } from "../../../store/actions";
@@ -18,6 +11,7 @@ import {
   IregisterInputRoomForm,
 } from "../../../utils/room.util";
 import ModalCommonPage from "../../commons/modal-common";
+import SelectMuiCommon from "../../commons/select-mui";
 
 const ModalRoomMgtPage = (props: IpropModalRoom) => {
   const {
@@ -147,36 +141,14 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
         {...register("name")}
       />
       <p className="mt-2">Type: </p>
-      <FormControl
-        fullWidth={true}
-        size="small"
-        error={Boolean(errors["roomType"])}
-      >
-        <Controller
-          render={() => (
-            <Select
-              size="small"
-              fullWidth={true}
-              defaultValue={type === modalTypes.UPDATE ? roomInfo?.type : ""}
-              error={!!errors["roomType"]}
-              {...register("roomType")}
-            >
-              {roomOptions.map((room) => {
-                return (
-                  <MenuItem key={room?.value} value={room?.value}>
-                    {room?.label}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          )}
-          name="roomType"
-          control={control}
-        />
-        <FormHelperText>
-          {errors["roomType"] ? errors["roomType"].message : ""}
-        </FormHelperText>
-      </FormControl>
+      <SelectMuiCommon
+        field="roomType"
+        register={register}
+        options={roomOptions}
+        errors={errors}
+        control={control}
+        defaultValue={type === modalTypes.UPDATE ? roomInfo?.type : ""}
+      />
       <p className="mt-2">Capacity: </p>
       <TextField
         size="small"
