@@ -13,7 +13,11 @@ import {
   MenuItem,
   IconButton,
 } from "@mui/material";
-import { modalTypes, userGenderOptions } from "../../../constants/constant";
+import {
+  inputTypes,
+  modalTypes,
+  userGenderOptions,
+} from "../../../constants/constant";
 import { connect } from "react-redux";
 import { userActions } from "../../../store/actions";
 import { IeventOnchangeInput } from "../../../interfaces/common.interface";
@@ -21,6 +25,7 @@ import {
   IregisterInputUpdatePassordForm,
   registerSchemaUpdatePasswordForm,
 } from "../../../utils/user.util";
+import TextFieldCommon from "../../commons/textfield-input";
 
 const DashboardModalPage = (props: IpropModal) => {
   const { type, isShowModal, onCloseModal, userInfo = {}, dispatch } = props;
@@ -134,44 +139,25 @@ const DashboardModalPage = (props: IpropModal) => {
         {type === modalTypes.UPDATE_PASSWORD ? (
           <form onSubmit={handleSubmit(onHandleSubmitUpdatePassword)}>
             <p className="mb-1">Current password: </p>
-            <TextField
-              size="small"
-              type="password"
-              fullWidth={true}
-              variant="outlined"
-              error={!!errors["currentPassword"]}
-              helperText={
-                errors["currentPassword"]
-                  ? errors["currentPassword"].message
-                  : ""
-              }
-              {...register("currentPassword")}
+            <TextFieldCommon
+              field="currentPassword"
+              type={inputTypes.PASSWORD}
+              errors={errors}
+              register={register}
             />
             <p className="mt-2 mb-1">New password: </p>
-            <TextField
-              size="small"
-              type="password"
-              fullWidth={true}
-              variant="outlined"
-              error={!!errors["newPassword"]}
-              helperText={
-                errors["newPassword"] ? errors["newPassword"].message : null
-              }
-              {...register("newPassword")}
+            <TextFieldCommon
+              field="newPassword"
+              type={inputTypes.PASSWORD}
+              errors={errors}
+              register={register}
             />
             <p className="mt-2 mb-1">Enter new password: </p>
-            <TextField
-              size="small"
-              type="password"
-              fullWidth={true}
-              variant="outlined"
-              error={!!errors["confirmPassword"]}
-              helperText={
-                errors["confirmPassword"]
-                  ? errors["confirmPassword"].message
-                  : ""
-              }
-              {...register("confirmPassword")}
+            <TextFieldCommon
+              field="confirmPassword"
+              type={inputTypes.PASSWORD}
+              errors={errors}
+              register={register}
             />
             <Button type="submit" variant="contained" className="mt-4 w-100">
               Change password
@@ -246,12 +232,20 @@ const DashboardModalPage = (props: IpropModal) => {
       </DialogContent>
       <DialogActions>
         {type === modalTypes.UPDATE ? (
-          <Button variant="contained" className="w-100" onClick={() => updateInfo()}>
+          <Button
+            variant="contained"
+            className="w-100"
+            onClick={() => updateInfo()}
+          >
             Save Info
           </Button>
         ) : null}
         {type === modalTypes.UPDATE_PROFILE ? (
-          <Button variant="contained" className="w-100" onClick={() => updateProfile()}>
+          <Button
+            variant="contained"
+            className="w-100"
+            onClick={() => updateProfile()}
+          >
             Save Profile
           </Button>
         ) : null}

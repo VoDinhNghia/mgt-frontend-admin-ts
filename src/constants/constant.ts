@@ -357,4 +357,5 @@ export const inputTypes = {
   TEXT_AREA: "textarea",
   NUMBER: "number",
   EMAIL: "email",
+  PASSWORD: "password",
 };

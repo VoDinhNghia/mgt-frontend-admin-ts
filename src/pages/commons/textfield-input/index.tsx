@@ -4,7 +4,7 @@ import { IpropTextFieldForm } from "../../../interfaces/common.interface";
 import { inputTypes } from "../../../constants/constant";
 
 const TextFieldCommon = (props: IpropTextFieldForm) => {
-  const { errors, register, field, defaultValue, type = inputTypes.TEXT, rows = 4 } = props;
+  const { errors, register, field, defaultValue = "", type = inputTypes.TEXT, rows = 4 } = props;
 
   return (
     <TextField
