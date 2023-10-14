@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { connect } from "react-redux";
-import { Button, TextField, FormHelperText, FormControl } from "@mui/material";
-import { modalTypes } from "../../../constants/constant";
+import { Button, TextField } from "@mui/material";
+import { inputTypes, modalTypes } from "../../../constants/constant";
 import { branchActions, countriesActions } from "../../../store/actions";
 import { IpropModalBranch } from "../../../interfaces/branch.interface";
 import {
@@ -14,12 +14,10 @@ import {
   handleWardOptions,
   registerSchemaBranchForm,
 } from "../../../utils/branch.util";
-import {
-  IeventOnchangeSelect,
-  IstateRedux,
-} from "../../../interfaces/common.interface";
-import Select from "react-select";
+import { IstateRedux } from "../../../interfaces/common.interface";
 import ModalCommonPage from "../../commons/modal-common";
+import TextFieldCommon from "../../commons/textfield-input";
+import SelectReactCommon from "../../commons/select-react";
 
 const ModalBranchPage = (props: IpropModalBranch) => {
   const {
@@ -210,158 +208,92 @@ const ModalBranchPage = (props: IpropModalBranch) => {
       }
     >
       <p>Name: </p>
-      <TextField
-        size="small"
-        type="text"
-        fullWidth={true}
-        defaultValue={type === modalTypes.UPDATE ? branchInfo?.name : null}
-        error={!!errors["name"]}
-        helperText={errors["name"] ? errors["name"].message : ""}
-        {...register("name")}
+      <TextFieldCommon
+        field="name"
+        defaultValue={type === modalTypes.UPDATE ? branchInfo?.name : ""}
+        errors={errors}
+        register={register}
       />
       <p className="mt-2">Title: </p>
-      <TextField
-        size="small"
-        type="text"
-        fullWidth={true}
-        defaultValue={type === modalTypes.UPDATE ? branchInfo?.title : null}
-        error={!!errors["title"]}
-        helperText={errors["title"] ? errors["title"].message : ""}
-        {...register("title")}
+      <TextFieldCommon
+        field="title"
+        defaultValue={type === modalTypes.UPDATE ? branchInfo?.title : ""}
+        errors={errors}
+        register={register}
       />
       <p className="mt-2">Website: </p>
-      <TextField
-        size="small"
-        type="text"
-        fullWidth={true}
-        defaultValue={type === modalTypes.UPDATE ? branchInfo?.website : null}
-        error={!!errors["website"]}
-        helperText={errors["website"] ? errors["website"].message : ""}
-        {...register("website")}
+      <TextFieldCommon
+        field="website"
+        defaultValue={type === modalTypes.UPDATE ? branchInfo?.website : ""}
+        errors={errors}
+        register={register}
       />
       <p className="mt-2">Country: </p>
-      <FormControl
-        fullWidth={true}
-        size="small"
-        error={Boolean(errors["country"])}
-      >
-        <Controller
-          render={({ field: { onChange } }) => (
-            <Select
-              options={countryOptions}
-              onChange={(val: IeventOnchangeSelect) => onChange(val.value)}
-              defaultValue={
-                type === modalTypes.UPDATE
-                  ? countryOptions?.find(
-                      (c) => c?.value === branchInfo?.location?.country?._id
-                    )
-                  : ""
-              }
-            />
-          )}
-          name="country"
-          control={control}
-        />
-        <FormHelperText>
-          {errors["country"] ? errors["country"].message : ""}
-        </FormHelperText>
-      </FormControl>
+      <SelectReactCommon
+        field="country"
+        control={control}
+        defaultValue={
+          type === modalTypes.UPDATE
+            ? countryOptions?.find(
+                (c) => c?.value === branchInfo?.location?.country?._id
+              )
+            : ""
+        }
+        errors={errors}
+        options={countryOptions}
+      />
       <p className="mt-2">Province: </p>
-      <FormControl
-        fullWidth={true}
-        size="small"
-        error={Boolean(errors["province"])}
-      >
-        <Controller
-          render={({ field: { onChange } }) => (
-            <Select
-              options={provinceOptions}
-              onChange={(val: IeventOnchangeSelect) => onChange(val.value)}
-              defaultValue={
-                type === modalTypes.UPDATE
-                  ? provinceOptions?.find(
-                      (c) => c?.value === branchInfo?.location?.province?._id
-                    )
-                  : ""
-              }
-            />
-          )}
-          name="province"
-          control={control}
-        />
-        <FormHelperText>
-          {errors["province"] ? errors["province"].message : ""}
-        </FormHelperText>
-      </FormControl>
+      <SelectReactCommon
+        field="province"
+        control={control}
+        defaultValue={
+          type === modalTypes.UPDATE
+            ? provinceOptions?.find(
+                (c) => c?.value === branchInfo?.location?.province?._id
+              )
+            : ""
+        }
+        errors={errors}
+        options={provinceOptions}
+      />
       <p className="mt-2">District: </p>
-      <FormControl
-        fullWidth={true}
-        size="small"
-        error={Boolean(errors["district"])}
-      >
-        <Controller
-          render={({ field: { onChange } }) => (
-            <Select
-              options={districtOptions}
-              onChange={(val: IeventOnchangeSelect) => onChange(val.value)}
-              defaultValue={
-                type === modalTypes.UPDATE
-                  ? districtOptions?.find(
-                      (c) => c?.value === branchInfo?.location?.district?._id
-                    )
-                  : ""
-              }
-            />
-          )}
-          name="district"
-          control={control}
-        />
-        <FormHelperText>
-          {errors["district"] ? errors["district"].message : ""}
-        </FormHelperText>
-      </FormControl>
+      <SelectReactCommon
+        field="district"
+        control={control}
+        defaultValue={
+          type === modalTypes.UPDATE
+            ? districtOptions?.find(
+                (c) => c?.value === branchInfo?.location?.district?._id
+              )
+            : ""
+        }
+        errors={errors}
+        options={districtOptions}
+      />
       <p className="mt-2">Ward: </p>
-      <FormControl
-        fullWidth={true}
-        size="small"
-        error={Boolean(errors["ward"])}
-      >
-        <Controller
-          render={({ field: { onChange } }) => (
-            <Select
-              options={wardOptions}
-              onChange={(val: IeventOnchangeSelect) => onChange(val.value)}
-              defaultValue={
-                type === modalTypes.UPDATE
-                  ? wardOptions?.find(
-                      (c) => c?.value === branchInfo?.location?.ward?._id
-                    )
-                  : ""
-              }
-            />
-          )}
-          name="ward"
-          control={control}
-        />
-        <FormHelperText>
-          {errors["ward"] ? errors["ward"].message : ""}
-        </FormHelperText>
-      </FormControl>
+      <SelectReactCommon
+        field="ward"
+        control={control}
+        defaultValue={
+          type === modalTypes.UPDATE
+            ? wardOptions?.find(
+                (c) => c?.value === branchInfo?.location?.ward?._id
+              )
+            : ""
+        }
+        errors={errors}
+        options={wardOptions}
+      />
       <p className="mt-2">Street: </p>
-      <TextField
-        size="small"
-        type="text"
-        fullWidth={true}
-        defaultValue={type === modalTypes.UPDATE ? branchInfo?.address : null}
-        error={!!errors["address"]}
-        helperText={errors["address"] ? errors["address"].message : ""}
-        {...register("address")}
+      <TextFieldCommon
+        field="address"
+        defaultValue={type === modalTypes.UPDATE ? branchInfo?.address : ""}
+        errors={errors}
+        register={register}
       />
       <p className="mt-2">Email: </p>
-      <TextField
-        size="small"
-        type="text"
-        fullWidth={true}
+      <TextFieldCommon
+        field="email"
         defaultValue={
           type === modalTypes.UPDATE
             ? branchInfo?.contactInfo?.length > 0
@@ -369,15 +301,12 @@ const ModalBranchPage = (props: IpropModalBranch) => {
               : ""
             : ""
         }
-        error={!!errors["email"]}
-        helperText={errors["email"] ? errors["email"].message : ""}
-        {...register("email")}
+        errors={errors}
+        register={register}
       />
       <p className="mt-2">Fax: </p>
-      <TextField
-        size="small"
-        type="text"
-        fullWidth={true}
+      <TextFieldCommon
+        field="fax"
         defaultValue={
           type === modalTypes.UPDATE
             ? branchInfo?.contactInfo?.length > 0
@@ -385,9 +314,8 @@ const ModalBranchPage = (props: IpropModalBranch) => {
               : ""
             : ""
         }
-        error={!!errors["fax"]}
-        helperText={errors["fax"] ? errors["fax"].message : ""}
-        {...register("fax")}
+        errors={errors}
+        register={register}
       />
       <p className="mt-2">Mobile: </p>
       <TextField
@@ -405,17 +333,25 @@ const ModalBranchPage = (props: IpropModalBranch) => {
         helperText={errors["mobile"] ? errors["mobile"].message : ""}
         {...register("mobile")}
       />
+      <TextFieldCommon
+        field="mobile"
+        defaultValue={
+          type === modalTypes.UPDATE
+            ? branchInfo?.contactInfo?.length > 0
+              ? branchInfo?.contactInfo[0]?.mobile
+              : ""
+            : ""
+        }
+        errors={errors}
+        register={register}
+      />
       <p className="mt-2">Description: </p>
-      <TextField
-        size="small"
-        type="textarea"
-        multiline={true}
-        rows={4}
-        fullWidth={true}
+      <TextFieldCommon
+        field="description"
+        type={inputTypes.TEXT_AREA}
         defaultValue={type === modalTypes.UPDATE ? branchInfo?.description : ""}
-        error={!!errors["description"]}
-        helperText={errors["description"] ? errors["description"].message : ""}
-        {...register("description")}
+        errors={errors}
+        register={register}
       />
       <Button type="submit" variant="contained" className="mt-4 w-100">
         SAVE
