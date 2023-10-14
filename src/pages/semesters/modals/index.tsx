@@ -9,7 +9,7 @@ import {
   registerSchemaSemesterForm,
   yearSemesterOptions,
 } from "../../../utils/semester.util";
-import { modalTypes } from "../../../constants/constant";
+import { inputTypes, modalTypes } from "../../../constants/constant";
 import { semesterActions } from "../../../store/actions";
 import ModalCommonPage from "../../commons/modal-common";
 import TextFieldCommon from "../../commons/textfield-input";
@@ -100,6 +100,7 @@ const ModalSemesterPage = (props: IpropModalSemester) => {
         register={register}
         defaultValue={type === modalTypes.UPDATE ? semesterInfo?.name : ""}
         field="name"
+        type={inputTypes.TEXT}
       />
       <p className="mt-2">Year: </p>
       <SelectReactCommon
