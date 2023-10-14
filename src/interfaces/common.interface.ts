@@ -214,9 +214,17 @@ export interface ImodalCommon extends IpropModalCommon {
   content?: any;
 }
 
-export interface IpropTextFieldInput {
+export interface IpropTextFieldForm {
   field: string;
   defaultValue?: string;
   register: any;
   errors: any;
+}
+
+export interface IpropSelectReactForm {
+  field: string;
+  defaultValue?: string | any;
+  errors: any;
+  control: any;
+  options: any;
 }
