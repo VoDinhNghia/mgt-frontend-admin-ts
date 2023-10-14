@@ -197,9 +197,9 @@ const ModalBranchPage = (props: IpropModalBranch) => {
   }, [isSubmitSuccessful, branchInfo]);
 
   const deleteContent = (
-    <span>
+    <p>
       Are you want to delete this <b>{branchInfo?.name}</b>?
-    </span>
+    </p>
   );
   const addUpdateContent = (
     <form
@@ -423,19 +423,19 @@ const ModalBranchPage = (props: IpropModalBranch) => {
     </form>
   );
   const viewContent = (
-    <p>
+    <div>
       {branchInfo?.contactInfo?.map(
         (contact: { email: string; fax: string; mobile: string }) => {
           return (
-            <>
+            <div key={contact?.email}>
               <p>Email: {contact?.email}</p>
               <p>Fax: {contact?.fax}</p>
               <p>Mobile: {contact?.mobile}</p>
-            </>
+            </div>
           );
         }
       )}
-    </p>
+    </div>
   );
 
   return (

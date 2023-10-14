@@ -136,8 +136,8 @@ const BranchMgtPage = (props: IpropBranchPage) => {
                               View detail
                             </Button>
                           </Card.Text>
-                          <Card.Text>
-                          <ReadMoreCommon
+                          <div>
+                            <ReadMoreCommon
                               isReadMore={
                                 branch._id === branchInfoReadMore?._id
                                   ? allStateReadMore[`${branch._id}`]
@@ -149,7 +149,7 @@ const BranchMgtPage = (props: IpropBranchPage) => {
                             >
                               {branch?.description}
                             </ReadMoreCommon>
-                          </Card.Text>
+                          </div>
                         </Card.Body>
                         <Card.Footer>
                           <span className="ActionGroupCardBranch">

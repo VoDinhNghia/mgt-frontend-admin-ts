@@ -31,7 +31,7 @@ const ModalCommonPage = (props: ImodalCommon) => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        {content}
+        <div>{content}</div>
       </DialogContent>
       <DialogActions>
         {type === modalTypes.DELETE ? (
