@@ -1,8 +1,8 @@
 import React from "react";
 import { TextField } from "@mui/material";
-import { IpropTextFieldInput } from "../../../interfaces/common.interface";
+import { IpropTextFieldForm } from "../../../interfaces/common.interface";
 
-const TextFieldCommon = (props: IpropTextFieldInput) => {
+const TextFieldCommon = (props: IpropTextFieldForm) => {
   const { errors, register, field, defaultValue } = props;
 
   return (

@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { IpropModalSemester } from "../../../interfaces/semester.interface";
 import { connect } from "react-redux";
-import { Button, FormControl, FormHelperText } from "@mui/material";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { Button } from "@mui/material";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   IregisterInputSemesterForm,
@@ -11,10 +11,9 @@ import {
 } from "../../../utils/semester.util";
 import { modalTypes } from "../../../constants/constant";
 import { semesterActions } from "../../../store/actions";
-import Select from "react-select";
-import { IeventOnchangeSelect } from "../../../interfaces/common.interface";
 import ModalCommonPage from "../../commons/modal-common";
 import TextFieldCommon from "../../commons/textfield-input";
+import SelectReactCommon from "../../commons/select-react";
 
 const ModalSemesterPage = (props: IpropModalSemester) => {
   const {
@@ -103,32 +102,19 @@ const ModalSemesterPage = (props: IpropModalSemester) => {
         field="name"
       />
       <p className="mt-2">Year: </p>
-      <FormControl
-        fullWidth={true}
-        size="small"
-        error={Boolean(errors["year"])}
-      >
-        <Controller
-          render={({ field: { onChange } }) => (
-            <Select
-              options={yearSemesterOptions}
-              defaultValue={
-                type === modalTypes.UPDATE
-                  ? yearSemesterOptions?.find(
-                      (year) => year.value === semesterInfo?.year
-                    )
-                  : ""
-              }
-              onChange={(val: IeventOnchangeSelect) => onChange(val.value)}
-            />
-          )}
-          name="year"
-          control={control}
-        />
-        <FormHelperText>
-          {errors["year"] ? errors["year"].message : ""}
-        </FormHelperText>
-      </FormControl>
+      <SelectReactCommon
+        errors={errors}
+        control={control}
+        field="year"
+        options={yearSemesterOptions}
+        defaultValue={
+          type === modalTypes.UPDATE
+            ? yearSemesterOptions?.find(
+                (year) => year.value === semesterInfo?.year
+              )
+            : ""
+        }
+      />
       <Button type="submit" variant="contained" className="mt-4 w-100">
         Save
       </Button>
