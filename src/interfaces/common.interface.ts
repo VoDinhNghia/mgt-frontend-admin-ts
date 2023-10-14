@@ -219,6 +219,8 @@ export interface IpropTextFieldForm {
   defaultValue?: string;
   register: any;
   errors: any;
+  type: string;
+  rows?: number;
 }
 
 export interface IpropSelectReactForm {

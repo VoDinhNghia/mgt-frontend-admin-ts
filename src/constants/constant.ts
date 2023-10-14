@@ -351,3 +351,10 @@ export const awardOptions = [
     label: "UNIVERSITY",
   },
 ];
+
+export const inputTypes = {
+  TEXT: "text",
+  TEXT_AREA: "textarea",
+  NUMBER: "number",
+  EMAIL: "email",
+};
