@@ -14,7 +14,7 @@ import {
   registerSchemaRoomForm,
   IregisterInputRoomForm,
 } from "../../../utils/room.util";
-import ModalCommonPage from "../../commons/modal-common";
+import DialogCommonPage from "../../commons/dialog-common";
 import SelectMuiCommon from "../../commons/select-mui";
 import TextFieldCommon from "../../commons/textfield-input";
 
@@ -203,7 +203,7 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
   );
 
   return (
-    <ModalCommonPage
+    <DialogCommonPage
       type={type}
       isShowModal={isShowModal}
       onCloseModal={() => onCloseModal()}

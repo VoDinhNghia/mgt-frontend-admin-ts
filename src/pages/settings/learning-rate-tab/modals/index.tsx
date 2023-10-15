@@ -10,7 +10,7 @@ import {
   registerSchemaLearningRateForm,
 } from "../../../../utils/setting.util";
 import { settingActions } from "../../../../store/actions";
-import ModalCommonPage from "../../../commons/modal-common";
+import DialogCommonPage from "../../../commons/dialog-common";
 import TextFieldCommon from "../../../commons/textfield-input";
 import SelectMuiCommon from "../../../commons/select-mui";
 
@@ -143,7 +143,7 @@ const LearningRateModalPage = (props: IpropModalLearningRate) => {
   );
 
   return (
-    <ModalCommonPage
+    <DialogCommonPage
       type={type}
       isShowModal={isShowModal}
       onCloseModal={() => onCloseModal()}

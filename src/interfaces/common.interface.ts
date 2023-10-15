@@ -212,6 +212,9 @@ export interface ImodalCommon extends IpropModalCommon {
   onDelete?: any;
   nameTitle?: string;
   content?: any;
+  onFilter?: any;
+  isShowButtonUpdate?: boolean | any;
+  onUpdate?: any;
 }
 
 export interface IpropTextFieldForm {

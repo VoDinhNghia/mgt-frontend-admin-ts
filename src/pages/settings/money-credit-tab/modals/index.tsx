@@ -12,7 +12,7 @@ import {
 } from "../../../../utils/setting.util";
 import { IstateRedux } from "../../../../interfaces/common.interface";
 import { semesterActions, settingActions } from "../../../../store/actions";
-import ModalCommonPage from "../../../commons/modal-common";
+import DialogCommonPage from "../../../commons/dialog-common";
 import TextFieldCommon from "../../../commons/textfield-input";
 import SelectMuiCommon from "../../../commons/select-mui";
 
@@ -146,7 +146,7 @@ const ModalMoneyCreditPage = (props: IpropModalMoneyCredit) => {
   );
 
   return (
-    <ModalCommonPage
+    <DialogCommonPage
       type={type}
       isShowModal={isShowModal}
       onCloseModal={() => onCloseModal()}

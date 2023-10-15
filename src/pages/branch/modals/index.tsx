@@ -15,7 +15,7 @@ import {
   registerSchemaBranchForm,
 } from "../../../utils/branch.util";
 import { IstateRedux } from "../../../interfaces/common.interface";
-import ModalCommonPage from "../../commons/modal-common";
+import DialogCommonPage from "../../commons/dialog-common";
 import TextFieldCommon from "../../commons/textfield-input";
 import SelectReactCommon from "../../commons/select-react";
 
@@ -346,7 +346,7 @@ const ModalBranchPage = (props: IpropModalBranch) => {
   );
 
   return (
-    <ModalCommonPage
+    <DialogCommonPage
       type={type}
       isShowModal={isShowModal}
       onCloseModal={() => onCloseModal()}
