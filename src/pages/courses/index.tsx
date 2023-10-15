@@ -148,7 +148,7 @@ const CourseMgtPage = (props: IpropCourse) => {
               />
               <ModalCoursePage
                 type={modalTypes.ADD}
-                courseInfo={rowData}
+                courseInfo={{}}
                 isShowModal={isShowModalAdd}
                 onCloseModal={() =>
                   setState({ ...state, isShowModalAdd: false })
