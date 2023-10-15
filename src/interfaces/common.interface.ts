@@ -244,3 +244,11 @@ export interface IpropSelectMuiForm {
   type?: string;
   onChangeSelect?: any;
 }
+
+export interface ImodalBootstrapCommon extends IpropModalCommon {
+  onAdd?: any;
+  onUpdate?: any;
+  onDelete?: any;
+  body: any;
+  nameTitle: string;
+}

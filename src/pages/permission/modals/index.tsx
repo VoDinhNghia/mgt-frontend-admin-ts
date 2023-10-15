@@ -6,10 +6,11 @@ import {
   moduleOptions,
   permissionOptions,
 } from "../../../constants/constant";
-import { Form, Modal, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import Select from "react-select";
 import { IeventOnchangeSelect } from "../../../interfaces/common.interface";
 import { permissionActions } from "../../../store/actions";
+import ModalBootstrapCommon from "../../commons/modal-bootstrap";
 
 const ModalPermissionMgtPage = (props: IpropModalPermission) => {
   const { type, isShowModal, onCloseModal, adminInfo, dispatch, fetchAdmins } =
@@ -30,7 +31,7 @@ const ModalPermissionMgtPage = (props: IpropModalPermission) => {
 
   const { moduleName, permission, permissionId } = state;
 
-  const addPermisson = () => {
+  const onAdd = () => {
     dispatch({
       type: permissionActions.ADD_PERMISSION,
       payload: {
@@ -44,7 +45,7 @@ const ModalPermissionMgtPage = (props: IpropModalPermission) => {
     fetchAndCloseModal();
   };
 
-  const deletePermission = () => {
+  const onDelete = () => {
     dispatch({
       type: permissionActions.DELETE_PERMISSION,
       id: permissionId,
@@ -59,76 +60,51 @@ const ModalPermissionMgtPage = (props: IpropModalPermission) => {
     }, 100);
   };
 
+  const addContent = (
+    <>
+      <Form.Label>Select module name</Form.Label>
+      <Select
+        options={moduleOptions}
+        onChange={(e: IeventOnchangeSelect) =>
+          setState({ ...state, moduleName: e.value })
+        }
+      />
+      {moduleName ? (
+        <>
+          <Form.Label className="mt-2">Selete permission</Form.Label>
+          <Select
+            isMulti
+            options={permissionOptions}
+            onChange={(values: IeventOnchangeSelect) =>
+              setState({ ...state, permission: values })
+            }
+          />
+        </>
+      ) : null}
+    </>
+  );
+  const deleteContent = (
+    <>
+      <Form.Label>Select module name</Form.Label>
+      <Select
+        options={permissions}
+        onChange={(e: IeventOnchangeSelect) =>
+          setState({ ...state, permissionId: e.value })
+        }
+      />
+    </>
+  );
+
   return (
-    <Modal show={isShowModal}>
-      <Modal.Header closeButton={true} onHide={() => onCloseModal()}>
-        {type === modalTypes.ADD ? <h4>Add permisson for admin</h4> : null}
-        {type === modalTypes.DELETE ? <h4>Delete permission</h4> : null}
-      </Modal.Header>
-      <Modal.Body>
-        {type === modalTypes.ADD ? (
-          <>
-            <Form.Label>Select module name</Form.Label>
-            <Select
-              options={moduleOptions}
-              onChange={(e: IeventOnchangeSelect) =>
-                setState({ ...state, moduleName: e.value })
-              }
-            />
-            {moduleName ? (
-              <>
-                <Form.Label className="mt-2">Selete permission</Form.Label>
-                <Select
-                  isMulti
-                  options={permissionOptions}
-                  onChange={(values: IeventOnchangeSelect) =>
-                    setState({ ...state, permission: values })
-                  }
-                />
-              </>
-            ) : null}
-          </>
-        ) : null}
-        {type === modalTypes.DELETE ? (
-          <>
-            <Form.Label>Select module name</Form.Label>
-            <Select
-              options={permissions}
-              onChange={(e: IeventOnchangeSelect) =>
-                setState({ ...state, permissionId: e.value })
-              }
-            />
-          </>
-        ) : null}
-      </Modal.Body>
-      <Modal.Footer>
-        {type === modalTypes.ADD ? (
-          <Button
-            variant="outline-primary"
-            size="sm"
-            onClick={() => addPermisson()}
-          >
-            Add
-          </Button>
-        ) : null}
-        {type === modalTypes.DELETE ? (
-          <Button
-            variant="outline-danger"
-            size="sm"
-            onClick={() => deletePermission()}
-          >
-            Yes
-          </Button>
-        ) : null}
-        <Button
-          variant="outline-danger"
-          size="sm"
-          onClick={() => onCloseModal()}
-        >
-          Close
-        </Button>
-      </Modal.Footer>
-    </Modal>
+    <ModalBootstrapCommon
+      isShowModal={isShowModal}
+      type={type}
+      onCloseModal={() => onCloseModal()}
+      nameTitle="permission"
+      onAdd={() => onAdd()}
+      onDelete={() => onDelete()}
+      body={type === modalTypes.ADD ? addContent : deleteContent}
+    />
   );
 };
 
