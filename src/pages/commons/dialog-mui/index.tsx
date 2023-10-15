@@ -11,8 +11,18 @@ import {
 import { modalTypes } from "../../../constants/constant";
 import { ImodalCommon } from "../../../interfaces/common.interface";
 
-const ModalCommonPage = (props: ImodalCommon) => {
-  const { type, isShowModal, onCloseModal, nameTitle, content, onDelete } = props;
+const DialogModalCommonPage = (props: ImodalCommon) => {
+  const {
+    type,
+    isShowModal,
+    onCloseModal,
+    nameTitle,
+    content,
+    onDelete,
+    onFilter,
+    isShowButtonUpdate = false,
+    onUpdate,
+  } = props;
 
   return (
     <Dialog
@@ -26,6 +36,8 @@ const ModalCommonPage = (props: ImodalCommon) => {
         {type === modalTypes.UPDATE ? `Update ${nameTitle}` : ""}
         {type === modalTypes.DELETE ? `Delete ${nameTitle}` : ""}
         {type === modalTypes.VIEW ? `View Detail ${nameTitle}` : ""}
+        {type === modalTypes.IMPORT ? `Import multi ${nameTitle}` : ""}
+        {type === modalTypes.FILTER ? `Filter ${nameTitle}` : ""}
         <IconButton className="DialogTitleClose" onClick={() => onCloseModal()}>
           X
         </IconButton>
@@ -34,9 +46,29 @@ const ModalCommonPage = (props: ImodalCommon) => {
         <div>{content}</div>
       </DialogContent>
       <DialogActions>
+        {type === modalTypes.UPDATE && isShowButtonUpdate ? (
+          <Button
+            variant="contained"
+            className="w-100"
+            onClick={() => onUpdate()}
+          >
+            Save
+          </Button>
+        ) : null}
         {type === modalTypes.DELETE ? (
           <Button variant="contained" color="error" onClick={() => onDelete()}>
             Yes
+          </Button>
+        ) : (
+          ""
+        )}
+        {type === modalTypes.FILTER ? (
+          <Button
+            variant="contained"
+            className="w-100"
+            onClick={() => onFilter()}
+          >
+            Filter
           </Button>
         ) : (
           ""
@@ -46,4 +78,4 @@ const ModalCommonPage = (props: ImodalCommon) => {
   );
 };
 
-export default ModalCommonPage;
+export default DialogModalCommonPage;

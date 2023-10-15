@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { IpropUserMgtModal } from "../../../interfaces/user.interface";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-  IconButton,
-} from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import {
   inputTypes,
   modalTypes,
@@ -28,6 +20,7 @@ import {
 import { IeventOnchangeInput } from "../../../interfaces/common.interface";
 import TextFieldCommon from "../../commons/textfield-input";
 import SelectMuiCommon from "../../commons/select-mui";
+import DialogModalCommonPage from "../../commons/dialog-mui";
 
 const ModalUserMgtPage = (props: IpropUserMgtModal) => {
   const { isShowModal, onCloseModal, type, dispatch, fetchUsers, userInfo } =
@@ -84,7 +77,7 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
     fetchAndCloseModal();
   };
 
-  const updateUser = () => {
+  const onUpdate = () => {
     const { email, status, role } = state;
     dispatch({
       type: userActions.UPDATE_USER_INFO,
@@ -98,7 +91,7 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
     fetchAndCloseModal();
   };
 
-  const deleteUser = () => {
+  const onDelete = () => {
     dispatch({
       type: userActions.DELETE_USER,
       id: userInfo?._id,
@@ -113,142 +106,106 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
     }, 100);
   };
 
+  const deleteContent = (
+    <p>
+      Are you want to delete user{" "}
+      <b>
+        {userInfo?.name}-{userInfo?.code}
+      </b>
+      ?
+    </p>
+  );
+  const addContent = (
+    <form onSubmit={handleSubmit(onSubmitHandlerAdd)}>
+      <p>Email</p>
+      <TextFieldCommon
+        field="email"
+        type={inputTypes.EMAIL}
+        errors={errors}
+        register={register}
+      />
+      <p className="mt-2">Password</p>
+      <TextFieldCommon
+        field="passWord"
+        type={inputTypes.PASSWORD}
+        errors={errors}
+        register={register}
+      />
+      <p className="mt-2">Role</p>
+      <SelectMuiCommon
+        field="role"
+        options={userRoleOptions}
+        errors={errors}
+        register={register}
+        control={control}
+      />
+      <p className="mt-2">FirstName</p>
+      <TextFieldCommon field="firstName" errors={errors} register={register} />
+      <p className="mt-2">LastName</p>
+      <TextFieldCommon field="lastName" errors={errors} register={register} />
+      <p className="mt-2">MiddleName</p>
+      <TextFieldCommon field="middleName" errors={errors} register={register} />
+      <p className="mt-2">Mobile</p>
+      <TextFieldCommon field="mobile" errors={errors} register={register} />
+      <p className="mt-2">Gender</p>
+      <SelectMuiCommon
+        field="gender"
+        options={userGenderOptions}
+        errors={errors}
+        register={register}
+        control={control}
+      />
+      <Button type="submit" variant="contained" className="mt-4 w-100">
+        Save
+      </Button>
+    </form>
+  );
+  const updateContent = (
+    <>
+      <p>Email: </p>
+      <TextField
+        variant="outlined"
+        size="small"
+        fullWidth={true}
+        defaultValue={userInfo?.email}
+        onChange={(e: IeventOnchangeInput) =>
+          setState({ ...state, email: e.target.value })
+        }
+      />
+      <p className="mt-2">Role: </p>
+      <SelectMuiCommon
+        type={selectMuiTypes.NORMAL}
+        options={userRoleOptions}
+        defaultValue={userInfo?.role}
+        onChangeSelect={(value: string) => setState({ ...state, role: value })}
+      />
+      <p className="mt-2">Status: </p>
+      <SelectMuiCommon
+        type={selectMuiTypes.NORMAL}
+        options={userStatusOptions}
+        defaultValue={userInfo?.status}
+        onChangeSelect={(value: string) => setState({ ...state, role: value })}
+      />
+    </>
+  );
+
   return (
-    <Dialog
-      open={isShowModal}
-      onClose={() => onCloseModal()}
-      fullWidth={true}
-      maxWidth="xs"
-    >
-      <DialogTitle>
-        {type === modalTypes.ADD ? "Add new user" : null}
-        {type === modalTypes.UPDATE ? "Update user info" : null}
-        {type === modalTypes.DELETE ? "Delete user" : null}
-        <IconButton className="DialogTitleClose" onClick={() => onCloseModal()}>
-          X
-        </IconButton>
-      </DialogTitle>
-      <DialogContent>
-        {type === modalTypes.ADD ? (
-          <form onSubmit={handleSubmit(onSubmitHandlerAdd)}>
-            <p>Email</p>
-            <TextFieldCommon
-              field="email"
-              type={inputTypes.EMAIL}
-              errors={errors}
-              register={register}
-            />
-            <p className="mt-2">Password</p>
-            <TextFieldCommon
-              field="passWord"
-              type={inputTypes.PASSWORD}
-              errors={errors}
-              register={register}
-            />
-            <p className="mt-2">Role</p>
-            <SelectMuiCommon
-              field="role"
-              options={userRoleOptions}
-              errors={errors}
-              register={register}
-              control={control}
-            />
-            <p className="mt-2">FirstName</p>
-            <TextFieldCommon
-              field="firstName"
-              errors={errors}
-              register={register}
-            />
-            <p className="mt-2">LastName</p>
-            <TextFieldCommon
-              field="lastName"
-              errors={errors}
-              register={register}
-            />
-            <p className="mt-2">MiddleName</p>
-            <TextFieldCommon
-              field="middleName"
-              errors={errors}
-              register={register}
-            />
-            <p className="mt-2">Mobile</p>
-            <TextFieldCommon
-              field="mobile"
-              errors={errors}
-              register={register}
-            />
-            <p className="mt-2">Gender</p>
-            <SelectMuiCommon
-              field="gender"
-              options={userGenderOptions}
-              errors={errors}
-              register={register}
-              control={control}
-            />
-            <Button type="submit" variant="contained" className="mt-4 w-100">
-              Save
-            </Button>
-          </form>
-        ) : null}
-        {type === modalTypes.UPDATE ? (
-          <>
-            <p>Email: </p>
-            <TextField
-              variant="outlined"
-              size="small"
-              fullWidth={true}
-              defaultValue={userInfo?.email}
-              onChange={(e: IeventOnchangeInput) =>
-                setState({ ...state, email: e.target.value })
-              }
-            />
-            <p className="mt-2">Role: </p>
-            <SelectMuiCommon
-              type={selectMuiTypes.NORMAL}
-              options={userRoleOptions}
-              defaultValue={userInfo?.role}
-              onChangeSelect={(value: string) => setState({ ...state, role: value })}
-            />
-            <p className="mt-2">Status: </p>
-            <SelectMuiCommon
-              type={selectMuiTypes.NORMAL}
-              options={userStatusOptions}
-              defaultValue={userInfo?.status}
-              onChangeSelect={(value: string) => setState({ ...state, role: value })}
-            />
-          </>
-        ) : null}
-        {type === modalTypes.DELETE ? (
-          <span>
-            Are you want to delete user{" "}
-            <b>
-              {userInfo?.name}-{userInfo?.code}
-            </b>
-            ?
-          </span>
-        ) : null}
-      </DialogContent>
-      <DialogActions>
-        {type === modalTypes.UPDATE ? (
-          <Button
-            variant="contained"
-            className="w-100"
-            onClick={() => updateUser()}
-          >
-            Save
-          </Button>
-        ) : null}
-        {type === modalTypes.DELETE ? (
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => deleteUser()}
-          >
-            Yes
-          </Button>
-        ) : null}
-      </DialogActions>
-    </Dialog>
+    <DialogModalCommonPage
+      type={type}
+      isShowModal={isShowModal}
+      onCloseModal={() => onCloseModal()}
+      onDelete={() => onDelete()}
+      onUpdate={() => onUpdate()}
+      isShowButtonUpdate={true}
+      content={
+        type === modalTypes.DELETE
+          ? deleteContent
+          : type === modalTypes.ADD
+          ? addContent
+          : updateContent
+      }
+      nameTitle="user"
+    />
   );
 };
 
