@@ -360,3 +360,8 @@ export const inputTypes = {
   PASSWORD: "password",
   DATE: "date",
 };
+
+export const selectMuiTypes = {
+  USE_FORM: "USE_FORM",
+  NORMAL: "NORMAL",
+};

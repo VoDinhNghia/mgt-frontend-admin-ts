@@ -35,6 +35,7 @@ import FilterAndImportModal from "./filter-import";
 import HeaderTableCommon from "../commons/header-table";
 import PaginationTableCommon from "../commons/pagination-table";
 import ActionTableCommon from "../commons/actions-table";
+import { FcViewDetails } from "react-icons/fc";
 
 const UserManagementPage = (props: IpropUserMgt) => {
   const { dispatch, listUsers = [], totalUser = 0 } = props;
@@ -156,7 +157,12 @@ const UserManagementPage = (props: IpropUserMgt) => {
                           <TableCell>{row.status}</TableCell>
                           <TableCell>{row.role}</TableCell>
                           <TableCell>
-                            <Button variant="outlined" size="small">
+                            <Button
+                              variant="outlined"
+                              className="border-0"
+                              size="small"
+                              startIcon={<FcViewDetails />}
+                            >
                               View
                             </Button>
                           </TableCell>

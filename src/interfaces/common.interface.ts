@@ -232,10 +232,12 @@ export interface IpropSelectReactForm {
 }
 
 export interface IpropSelectMuiForm {
-  field: string;
+  field?: string;
   defaultValue?: string | any;
-  errors: any;
-  control: any;
+  errors?: any;
+  control?: any;
   options: any;
-  register: any;
+  register?: any;
+  type?: string;
+  onChangeSelect?: any;
 }
