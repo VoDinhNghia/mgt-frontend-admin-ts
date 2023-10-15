@@ -7,9 +7,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   IregisterInputSemesterForm,
   registerSchemaSemesterForm,
-  yearSemesterOptions,
 } from "../../../utils/semester.util";
-import { inputTypes, modalTypes } from "../../../constants/constant";
+import {
+  inputTypes,
+  modalTypes,
+  yearSemesterOptions,
+} from "../../../constants/constant";
 import { semesterActions } from "../../../store/actions";
 import DialogModalCommonPage from "../../commons/dialog-mui";
 import TextFieldCommon from "../../commons/textfield-input";
