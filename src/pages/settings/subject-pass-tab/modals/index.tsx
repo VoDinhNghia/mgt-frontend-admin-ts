@@ -14,7 +14,7 @@ import {
   registerSchemaSubjectPassForm,
 } from "../../../../utils/setting.util";
 import { settingActions } from "../../../../store/actions";
-import DialogCommonPage from "../../../commons/dialog-common";
+import DialogModalCommonPage from "../../../commons/dialog-mui";
 import TextFieldCommon from "../../../commons/textfield-input";
 import SelectMuiCommon from "../../../commons/select-mui";
 
@@ -138,7 +138,7 @@ const ModalSubjectPassPage = (props: IpropModalSubjectPass) => {
   );
 
   return (
-    <DialogCommonPage
+    <DialogModalCommonPage
       type={type}
       isShowModal={isShowModal}
       onCloseModal={() => onCloseModal()}

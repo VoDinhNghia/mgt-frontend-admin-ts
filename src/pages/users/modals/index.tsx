@@ -20,7 +20,7 @@ import {
 import { IeventOnchangeInput } from "../../../interfaces/common.interface";
 import TextFieldCommon from "../../commons/textfield-input";
 import SelectMuiCommon from "../../commons/select-mui";
-import DialogCommonPage from "../../commons/dialog-common";
+import DialogModalCommonPage from "../../commons/dialog-mui";
 
 const ModalUserMgtPage = (props: IpropUserMgtModal) => {
   const { isShowModal, onCloseModal, type, dispatch, fetchUsers, userInfo } =
@@ -190,7 +190,7 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
   );
 
   return (
-    <DialogCommonPage
+    <DialogModalCommonPage
       type={type}
       isShowModal={isShowModal}
       onCloseModal={() => onCloseModal()}

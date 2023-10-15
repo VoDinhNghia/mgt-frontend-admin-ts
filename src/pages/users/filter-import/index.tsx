@@ -12,7 +12,7 @@ import { Form } from "react-bootstrap";
 import { IeventOnchangeFile } from "../../../interfaces/common.interface";
 import { userActions } from "../../../store/actions";
 import SelectMuiCommon from "../../commons/select-mui";
-import DialogCommonPage from "../../commons/dialog-common";
+import DialogModalCommonPage from "../../commons/dialog-mui";
 
 const FilterAndImportModal = (props: IpropImportFilterUser) => {
   const { type, isShowModal, onCloseModal, dispatch, fetchUsers } = props;
@@ -87,7 +87,7 @@ const FilterAndImportModal = (props: IpropImportFilterUser) => {
   );
 
   return (
-    <DialogCommonPage
+    <DialogModalCommonPage
       type={type}
       isShowModal={isShowModal}
       onCloseModal={() => onCloseModal()}

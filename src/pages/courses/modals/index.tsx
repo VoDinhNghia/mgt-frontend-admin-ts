@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { IpropModalCourse } from "../../../interfaces/course.interface";
 import { modalTypes } from "../../../constants/constant";
-import DialogCommonPage from "../../commons/dialog-common";
+import DialogModalCommonPage from "../../commons/dialog-mui";
 
 const ModalCoursePage = (props: IpropModalCourse) => {
   const { type, isShowModal, onCloseModal, courseInfo = {} } = props;
@@ -20,7 +20,7 @@ const ModalCoursePage = (props: IpropModalCourse) => {
   );
 
   return (
-    <DialogCommonPage
+    <DialogModalCommonPage
       type={type}
       isShowModal={isShowModal}
       onCloseModal={() => onCloseModal()}

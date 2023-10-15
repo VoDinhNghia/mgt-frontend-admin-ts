@@ -11,7 +11,7 @@ import {
 import { modalTypes } from "../../../constants/constant";
 import { ImodalCommon } from "../../../interfaces/common.interface";
 
-const DialogCommonPage = (props: ImodalCommon) => {
+const DialogModalCommonPage = (props: ImodalCommon) => {
   const {
     type,
     isShowModal,
@@ -78,4 +78,4 @@ const DialogCommonPage = (props: ImodalCommon) => {
   );
 };
 
-export default DialogCommonPage;
+export default DialogModalCommonPage;

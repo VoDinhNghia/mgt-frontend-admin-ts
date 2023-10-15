@@ -11,7 +11,7 @@ import {
 } from "../../../utils/semester.util";
 import { inputTypes, modalTypes } from "../../../constants/constant";
 import { semesterActions } from "../../../store/actions";
-import DialogCommonPage from "../../commons/dialog-common";
+import DialogModalCommonPage from "../../commons/dialog-mui";
 import TextFieldCommon from "../../commons/textfield-input";
 import SelectReactCommon from "../../commons/select-react";
 
@@ -128,7 +128,7 @@ const ModalSemesterPage = (props: IpropModalSemester) => {
   );
 
   return (
-    <DialogCommonPage
+    <DialogModalCommonPage
       type={type}
       isShowModal={isShowModal}
       onCloseModal={() => onCloseModal()}
