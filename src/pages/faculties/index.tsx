@@ -9,6 +9,7 @@ import { Box, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import FacultyTabPage from "./tab-faculty";
 import MajorTabPage from "./tab-major";
+import TitleHeaderPage from "../commons/title-header";
 
 const FacultyMgtPage = () => {
   const facultyTab = "Faculty";
@@ -27,6 +28,7 @@ const FacultyMgtPage = () => {
           <Container>
             <MenuPage />
             <Container className="p-3 fs-6">
+              <TitleHeaderPage title="Faculty management page"/>
               <Box>
                 <TabContext value={tabIndex}>
                   <Box>

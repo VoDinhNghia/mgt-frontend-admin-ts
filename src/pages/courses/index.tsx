@@ -32,6 +32,7 @@ import HeaderTableCommon from "../commons/header-table";
 import PaginationTableCommon from "../commons/pagination-table";
 import ActionTableCommon from "../commons/actions-table";
 import ModalCoursePage from "./modals";
+import TitleHeaderPage from "../commons/title-header";
 
 const CourseMgtPage = (props: IpropCourse) => {
   const { listCourses = [], totalCourse = 0, dispatch } = props;
@@ -95,6 +96,7 @@ const CourseMgtPage = (props: IpropCourse) => {
           <Container>
             <MenuPage />
             <Container className="p-3 fs-6">
+              <TitleHeaderPage title="Course management page"/>
               <AddAndSearchTable
                 isDisableBtnAdd={!isPermissionAdd}
                 title="Add course"

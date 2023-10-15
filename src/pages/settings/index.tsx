@@ -10,6 +10,7 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import SubjectPassTabPage from "./subject-pass-tab";
 import LearningRateTabPage from "./learning-rate-tab";
 import MoneyCreditTabPage from "./money-credit-tab";
+import TitleHeaderPage from "../commons/title-header";
 
 const SettingMgtPage = () => {
   const learningRate = "Learning Rate";
@@ -19,7 +20,7 @@ const SettingMgtPage = () => {
   const [tabIndex, setTabIndex] = useState(learningRate);
   const onChangeTab = (e: SyntheticEvent, newTab: string) => {
     setTabIndex(newTab);
-  }
+  };
 
   return (
     <div>
@@ -28,7 +29,8 @@ const SettingMgtPage = () => {
           <Container>
             <MenuPage />
             <Container className="p-3 fs-6">
-            <Box>
+              <TitleHeaderPage title="Settings management page" />
+              <Box>
                 <TabContext value={tabIndex}>
                   <Box>
                     <TabList

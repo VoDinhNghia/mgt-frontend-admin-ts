@@ -27,6 +27,7 @@ import { Card, Col, Row, Button } from "react-bootstrap";
 import { BsTrash, BsPencilSquare } from "react-icons/bs";
 import ModalBranchPage from "./modals";
 import ReadMoreCommon from "../commons/readmore";
+import TitleHeaderPage from "../commons/title-header";
 
 const BranchMgtPage = (props: IpropBranchPage) => {
   const { listBranchs = [], dispatch } = props;
@@ -97,6 +98,7 @@ const BranchMgtPage = (props: IpropBranchPage) => {
           <Container>
             <MenuPage />
             <Container className="p-3 fs-6">
+              <TitleHeaderPage title="Branch management page" />
               <AddAndSearchTable
                 isDisableBtnAdd={!isPermissionAdd}
                 title="Add branch"

@@ -38,6 +38,7 @@ import AddAndSearchTable from "../commons/add-search-table";
 import HeaderTableCommon from "../commons/header-table";
 import PaginationTableCommon from "../commons/pagination-table";
 import ActionTableCommon from "../commons/actions-table";
+import TitleHeaderPage from "../commons/title-header";
 
 const RoomMgtPage = (props: IpropRoomMgt) => {
   const { dispatch, listRooms = [], totalRoom = 0 } = props;
@@ -117,6 +118,7 @@ const RoomMgtPage = (props: IpropRoomMgt) => {
           <Container>
             <MenuPage />
             <Container className="p-3 fs-6">
+              <TitleHeaderPage title="Rooms management page"/>
               <AddAndSearchTable
                 isDisableBtnAdd={!isPermissionAdd}
                 title="Add new room"

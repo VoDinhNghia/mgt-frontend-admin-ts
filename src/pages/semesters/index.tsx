@@ -32,6 +32,7 @@ import ModalSemesterPage from "./modals";
 import HeaderTableCommon from "../commons/header-table";
 import PaginationTableCommon from "../commons/pagination-table";
 import ActionTableCommon from "../commons/actions-table";
+import TitleHeaderPage from "../commons/title-header";
 
 const SemesterMgtPage = (props: IpropSemester) => {
   const { dispatch, listSemesters = [], totalSemester = 0 } = props;
@@ -95,6 +96,7 @@ const SemesterMgtPage = (props: IpropSemester) => {
           <Container>
             <MenuPage />
             <Container className="p-3 fs-6">
+              <TitleHeaderPage title="Semesters management page" />
               <AddAndSearchTable
                 isDisableBtnAdd={!isPermissionAdd}
                 title="Add semester"
