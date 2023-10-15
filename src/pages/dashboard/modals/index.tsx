@@ -9,13 +9,12 @@ import {
   DialogTitle,
   DialogContent,
   TextField,
-  Select,
-  MenuItem,
   IconButton,
 } from "@mui/material";
 import {
   inputTypes,
   modalTypes,
+  selectMuiTypes,
   userGenderOptions,
 } from "../../../constants/constant";
 import { connect } from "react-redux";
@@ -26,6 +25,7 @@ import {
   registerSchemaUpdatePasswordForm,
 } from "../../../utils/user.util";
 import TextFieldCommon from "../../commons/textfield-input";
+import SelectMuiCommon from "../../commons/select-mui";
 
 const DashboardModalPage = (props: IpropModal) => {
   const { type, isShowModal, onCloseModal, userInfo = {}, dispatch } = props;
@@ -197,26 +197,14 @@ const DashboardModalPage = (props: IpropModal) => {
               }
             />
             <p className="mt-2 mb-1">Gender: </p>
-            <Select
-              size="small"
-              variant="outlined"
+            <SelectMuiCommon
+              type={selectMuiTypes.NORMAL}
+              options={userGenderOptions}
               defaultValue={userInfo?.profile?.gender}
-              fullWidth={true}
-              onChange={(e: IeventOnchangeInput) =>
-                setState({ ...state, gender: e.target.value })
+              onChangeSelect={(value: string) =>
+                setState({ ...state, gender: value })
               }
-            >
-              {userGenderOptions.map((gender, index) => {
-                return (
-                  <MenuItem
-                    value={gender?.value}
-                    key={`${index}-${gender.value}`}
-                  >
-                    {gender.value}
-                  </MenuItem>
-                );
-              })}
-            </Select>
+            />
             <p className="mt-2 mb-1">Mobile: </p>
             <TextField
               size="small"

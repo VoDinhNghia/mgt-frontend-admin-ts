@@ -6,28 +6,28 @@ import {
   DialogContent,
   DialogTitle,
   Button,
-  Select,
   TextField,
-  MenuItem,
   IconButton,
-  FormControl,
-  FormHelperText,
 } from "@mui/material";
 import {
+  inputTypes,
   modalTypes,
+  selectMuiTypes,
   userGenderOptions,
   userRoleOptions,
   userStatusOptions,
 } from "../../../constants/constant";
 import { connect } from "react-redux";
 import { userActions } from "../../../store/actions";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   IregisterInputUserAddForm,
   registerSchemaUserAddForm,
 } from "../../../utils/user.util";
 import { IeventOnchangeInput } from "../../../interfaces/common.interface";
+import TextFieldCommon from "../../commons/textfield-input";
+import SelectMuiCommon from "../../commons/select-mui";
 
 const ModalUserMgtPage = (props: IpropUserMgtModal) => {
   const { isShowModal, onCloseModal, type, dispatch, fetchUsers, userInfo } =
@@ -132,132 +132,59 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
         {type === modalTypes.ADD ? (
           <form onSubmit={handleSubmit(onSubmitHandlerAdd)}>
             <p>Email</p>
-            <TextField
-              size="small"
-              fullWidth={true}
-              variant="outlined"
-              error={!!errors["email"]}
-              helperText={errors["email"] ? errors["email"].message : ""}
-              {...register("email")}
+            <TextFieldCommon
+              field="email"
+              type={inputTypes.EMAIL}
+              errors={errors}
+              register={register}
             />
             <p className="mt-2">Password</p>
-            <TextField
-              size="small"
-              fullWidth={true}
-              variant="outlined"
-              type="password"
-              error={!!errors["passWord"]}
-              helperText={errors["passWord"] ? errors["passWord"].message : ""}
-              {...register("passWord")}
+            <TextFieldCommon
+              field="passWord"
+              type={inputTypes.PASSWORD}
+              errors={errors}
+              register={register}
             />
             <p className="mt-2">Role</p>
-            <FormControl
-              fullWidth={true}
-              size="small"
-              error={Boolean(errors["role"])}
-            >
-              <Controller
-                render={() => (
-                  <Select
-                    size="small"
-                    fullWidth={true}
-                    variant="outlined"
-                    error={!!errors["role"]}
-                    {...register("role")}
-                  >
-                    {userRoleOptions.map((role, index) => {
-                      return (
-                        <MenuItem
-                          value={role.value}
-                          key={`${index}-${role.value}`}
-                        >
-                          {role.value}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                )}
-                name="role"
-                control={control}
-              />
-              <FormHelperText>
-                {errors["role"] ? errors["role"].message : ""}
-              </FormHelperText>
-            </FormControl>
+            <SelectMuiCommon
+              field="role"
+              options={userRoleOptions}
+              errors={errors}
+              register={register}
+              control={control}
+            />
             <p className="mt-2">FirstName</p>
-            <TextField
-              size="small"
-              fullWidth={true}
-              variant="outlined"
-              error={!!errors["firstName"]}
-              helperText={
-                errors["firstName"] ? errors["firstName"].message : ""
-              }
-              {...register("firstName")}
+            <TextFieldCommon
+              field="firstName"
+              errors={errors}
+              register={register}
             />
             <p className="mt-2">LastName</p>
-            <TextField
-              size="small"
-              fullWidth={true}
-              variant="outlined"
-              error={!!errors["lastName"]}
-              helperText={errors["lastName"] ? errors["lastName"].message : ""}
-              {...register("lastName")}
+            <TextFieldCommon
+              field="lastName"
+              errors={errors}
+              register={register}
             />
             <p className="mt-2">MiddleName</p>
-            <TextField
-              size="small"
-              fullWidth={true}
-              variant="outlined"
-              error={!!errors["middleName"]}
-              helperText={
-                errors["middleName"] ? errors["middleName"].message : ""
-              }
-              {...register("middleName")}
+            <TextFieldCommon
+              field="middleName"
+              errors={errors}
+              register={register}
             />
             <p className="mt-2">Mobile</p>
-            <TextField
-              size="small"
-              fullWidth={true}
-              variant="outlined"
-              error={!!errors["mobile"]}
-              helperText={errors["mobile"] ? errors["mobile"].message : ""}
-              {...register("mobile")}
+            <TextFieldCommon
+              field="mobile"
+              errors={errors}
+              register={register}
             />
             <p className="mt-2">Gender</p>
-            <FormControl
-              fullWidth={true}
-              size="small"
-              error={Boolean(errors["gender"])}
-            >
-              <Controller
-                render={() => (
-                  <Select
-                    size="small"
-                    fullWidth={true}
-                    variant="outlined"
-                    error={!!errors["gender"]}
-                    {...register("gender")}
-                  >
-                    {userGenderOptions.map((gender, index) => {
-                      return (
-                        <MenuItem
-                          value={gender.value}
-                          key={`${index}-${gender.value}`}
-                        >
-                          {gender.value}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                )}
-                name="gender"
-                control={control}
-              />
-              <FormHelperText>
-                {errors["gender"] ? errors["gender"].message : ""}
-              </FormHelperText>
-            </FormControl>
+            <SelectMuiCommon
+              field="gender"
+              options={userGenderOptions}
+              errors={errors}
+              register={register}
+              control={control}
+            />
             <Button type="submit" variant="contained" className="mt-4 w-100">
               Save
             </Button>
@@ -276,44 +203,19 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
               }
             />
             <p className="mt-2">Role: </p>
-            <Select
-              variant="outlined"
-              size="small"
-              fullWidth={true}
+            <SelectMuiCommon
+              type={selectMuiTypes.NORMAL}
+              options={userRoleOptions}
               defaultValue={userInfo?.role}
-              onChange={(e: IeventOnchangeInput) =>
-                setState({ ...state, role: e.target.value })
-              }
-            >
-              {userRoleOptions.map((role, index) => {
-                return (
-                  <MenuItem value={role.value} key={`${index}-${role.value}`}>
-                    {role.value}
-                  </MenuItem>
-                );
-              })}
-            </Select>
+              onChangeSelect={(value: string) => setState({ ...state, role: value })}
+            />
             <p className="mt-2">Status: </p>
-            <Select
-              variant="outlined"
-              size="small"
-              fullWidth={true}
-              defaultValue={userInfo.status}
-              onChange={(e: IeventOnchangeInput) =>
-                setState({ ...state, status: e.target.value })
-              }
-            >
-              {userStatusOptions.map((status, index) => {
-                return (
-                  <MenuItem
-                    key={`${index}-${status.value}`}
-                    value={status.value}
-                  >
-                    {status.value}
-                  </MenuItem>
-                );
-              })}
-            </Select>
+            <SelectMuiCommon
+              type={selectMuiTypes.NORMAL}
+              options={userStatusOptions}
+              defaultValue={userInfo?.status}
+              onChangeSelect={(value: string) => setState({ ...state, role: value })}
+            />
           </>
         ) : null}
         {type === modalTypes.DELETE ? (
@@ -328,7 +230,11 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
       </DialogContent>
       <DialogActions>
         {type === modalTypes.UPDATE ? (
-          <Button variant="contained" className="w-100" onClick={() => updateUser()}>
+          <Button
+            variant="contained"
+            className="w-100"
+            onClick={() => updateUser()}
+          >
             Save
           </Button>
         ) : null}

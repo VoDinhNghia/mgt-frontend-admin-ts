@@ -7,21 +7,18 @@ import {
   DialogContent,
   DialogTitle,
   Button,
-  Select,
-  MenuItem,
   IconButton,
 } from "@mui/material";
 import {
   modalTypes,
+  selectMuiTypes,
   userRoleOptions,
   userStatusOptions,
 } from "../../../constants/constant";
 import { Form } from "react-bootstrap";
-import {
-  IeventOnchangeFile,
-  IeventOnchangeInput,
-} from "../../../interfaces/common.interface";
+import { IeventOnchangeFile } from "../../../interfaces/common.interface";
 import { userActions } from "../../../store/actions";
+import SelectMuiCommon from "../../commons/select-mui";
 
 const FilterAndImportModal = (props: IpropImportFilterUser) => {
   const { type, isShowModal, onCloseModal, dispatch, fetchUsers } = props;
@@ -94,42 +91,21 @@ const FilterAndImportModal = (props: IpropImportFilterUser) => {
         {type === modalTypes.FILTER ? (
           <>
             <p>Role:</p>
-            <Select
-              size="small"
-              variant="outlined"
-              fullWidth={true}
-              onChange={(e: IeventOnchangeInput) =>
-                setState({ ...state, role: e.target.value })
+            <SelectMuiCommon
+              type={selectMuiTypes.NORMAL}
+              options={userRoleOptions}
+              onChangeSelect={(value: string) =>
+                setState({ ...state, role: value })
               }
-            >
-              {userRoleOptions.map((role, index) => {
-                return (
-                  <MenuItem key={`${index}-${role.value}`} value={role.value}>
-                    {role.value}
-                  </MenuItem>
-                );
-              })}
-            </Select>
+            />
             <p className="mt-2">Status:</p>
-            <Select
-              size="small"
-              variant="outlined"
-              fullWidth={true}
-              onChange={(e: IeventOnchangeInput) =>
-                setState({ ...state, status: e.target.value })
+            <SelectMuiCommon
+              type={selectMuiTypes.NORMAL}
+              options={userStatusOptions}
+              onChangeSelect={(value: string) =>
+                setState({ ...state, status: value })
               }
-            >
-              {userStatusOptions.map((status, index) => {
-                return (
-                  <MenuItem
-                    key={`${index}-${status.value}`}
-                    value={status.value}
-                  >
-                    {status.value}
-                  </MenuItem>
-                );
-              })}
-            </Select>
+            />
           </>
         ) : null}
       </DialogContent>
