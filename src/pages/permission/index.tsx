@@ -30,6 +30,7 @@ import { Badge } from "react-bootstrap";
 import ModalPermissionMgtPage from "./modals";
 import HeaderTableCommon from "../commons/header-table";
 import ActionTableCommon from "../commons/actions-table";
+import TitleHeaderPage from "../commons/title-header";
 
 const PermissionMgtPage = (props: IpropPermission) => {
   const { listAdmins = [], dispatch } = props;
@@ -67,6 +68,7 @@ const PermissionMgtPage = (props: IpropPermission) => {
           <Container>
             <MenuPage />
             <Container className="p-3 fs-6">
+              <TitleHeaderPage title="Permission management page"/>
               <TableContainer>
                 <Table stickyHeader aria-label="Permission table">
                   <HeaderTableCommon headerList={columns} />

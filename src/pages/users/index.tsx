@@ -36,6 +36,7 @@ import HeaderTableCommon from "../commons/header-table";
 import PaginationTableCommon from "../commons/pagination-table";
 import ActionTableCommon from "../commons/actions-table";
 import { FcViewDetails } from "react-icons/fc";
+import TitleHeaderPage from "../commons/title-header";
 
 const UserManagementPage = (props: IpropUserMgt) => {
   const { dispatch, listUsers = [], totalUser = 0 } = props;
@@ -105,6 +106,7 @@ const UserManagementPage = (props: IpropUserMgt) => {
           <Container>
             <MenuPage />
             <Container className="p-3">
+              <TitleHeaderPage title="User management page"/>
               <Card className="mb-2 border-0">
                 <Card.Body>
                   <span className="MenuMgtUser">

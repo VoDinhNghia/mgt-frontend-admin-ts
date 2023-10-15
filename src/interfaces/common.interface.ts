@@ -252,3 +252,7 @@ export interface ImodalBootstrapCommon extends IpropModalCommon {
   body: any;
   nameTitle: string;
 }
+
+export interface IpropTitleHeader {
+  title: string;
+}

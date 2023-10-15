@@ -15,6 +15,7 @@ import { IpropProfile } from "../../../interfaces/dashboard.interface";
 import { BsPencilSquare } from "react-icons/bs";
 import DashboardModalPage from "../modals";
 import { modalTypes } from "../../../constants/constant";
+import TitleHeaderPage from "../../commons/title-header";
 
 const ProfileDashboardPage = (props: IpropProfile) => {
   const generalTab = "generalInfo";
@@ -39,6 +40,7 @@ const ProfileDashboardPage = (props: IpropProfile) => {
 
   return (
     <Container className="p-3 fs-6">
+      <TitleHeaderPage title="User infomation management" />
       <Box>
         <TabContext value={tabIndex}>
           <Box>
