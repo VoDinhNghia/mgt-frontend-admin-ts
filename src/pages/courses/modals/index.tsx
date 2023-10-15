@@ -16,9 +16,17 @@ import {
 import { Button } from "@mui/material";
 import TextFieldCommon from "../../commons/textfield-input";
 import SelectReactCommon from "../../commons/select-react";
+import { courseActions } from "../../../store/actions";
 
 const ModalCoursePage = (props: IpropModalCourse) => {
-  const { type, isShowModal, onCloseModal, courseInfo = {} } = props;
+  const {
+    type,
+    isShowModal,
+    onCloseModal,
+    courseInfo = {},
+    dispatch,
+    fetchCourses,
+  } = props;
 
   const {
     handleSubmit,
@@ -31,19 +39,45 @@ const ModalCoursePage = (props: IpropModalCourse) => {
   });
 
   const onDelete = () => {
-    alert("Delete");
+    dispatch({
+      type: courseActions.DELETE_COURSE,
+      id: courseInfo?._id,
+    });
+    fetchAndCloseModal();
   };
 
-  const onHandleSubmitAdd: SubmitHandler<IregisterInputCourseForm> = (
-    values
-  ) => {
-    console.log("values", values);
+  const onSubmitAdd: SubmitHandler<IregisterInputCourseForm> = (values) => {
+    const { name, year, total } = values;
+    dispatch({
+      type: courseActions.ADD_COURSE,
+      payload: {
+        name,
+        year,
+        total,
+      },
+    });
+    fetchAndCloseModal();
   };
 
-  const onHandleSubmitUpdate: SubmitHandler<IregisterInputCourseForm> = (
-    values
-  ) => {
-    console.log("values update", values);
+  const onSubmitUpdate: SubmitHandler<IregisterInputCourseForm> = (values) => {
+    const { name, year, total } = values;
+    dispatch({
+      type: courseActions.UPDATE_COURSE,
+      id: courseInfo?._id,
+      payload: {
+        name,
+        year,
+        total,
+      },
+    });
+    fetchAndCloseModal();
+  };
+
+  const fetchAndCloseModal = () => {
+    setTimeout(() => {
+      fetchCourses();
+      onCloseModal();
+    }, 70);
   };
 
   useEffect(() => {
@@ -60,8 +94,8 @@ const ModalCoursePage = (props: IpropModalCourse) => {
     <form
       onSubmit={
         type === modalTypes.ADD
-          ? handleSubmit(onHandleSubmitAdd)
-          : handleSubmit(onHandleSubmitUpdate)
+          ? handleSubmit(onSubmitAdd)
+          : handleSubmit(onSubmitUpdate)
       }
     >
       <p>Name: </p>
@@ -90,7 +124,12 @@ const ModalCoursePage = (props: IpropModalCourse) => {
         errors={errors}
         register={register}
       />
-      <Button variant="contained" size="small" className="mt-4 w-100" type="submit">
+      <Button
+        variant="contained"
+        size="small"
+        className="mt-4 w-100"
+        type="submit"
+      >
         Save
       </Button>
     </form>

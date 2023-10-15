@@ -37,7 +37,7 @@ const CourseMgtPage = (props: IpropCourse) => {
   const { listCourses = [], totalCourse = 0, dispatch } = props;
   const [state, setState] = useState({
     page: 0,
-    limit: 10,
+    limit: 5,
     isShowModalAdd: false,
     isShowModalUpdate: false,
     isShowModalDelete: false,
