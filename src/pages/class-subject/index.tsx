@@ -8,6 +8,8 @@ import { Container } from "rsuite";
 import { Tab, Box } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import TitleHeaderPage from "../commons/title-header";
+import ClassTabMgtPage from "./class-tab";
+import SubjectTabMgtPage from "./subject-tab";
 
 const ClassSubjectMgtPage = () => {
   const classTab = "Class Tab";
@@ -40,10 +42,10 @@ const ClassSubjectMgtPage = () => {
                     </TabList>
                   </Box>
                   <TabPanel value={classTab}>
-                    <p>Class tab</p>
+                    <ClassTabMgtPage />
                   </TabPanel>
                   <TabPanel value={subjectTab}>
-                    <p>Subject tab</p>
+                    <SubjectTabMgtPage />
                   </TabPanel>
                 </TabContext>
               </Box>

@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IparamsFetchList } from "./common.interface";
 
 export interface IcreateClass {
-  course?: string;
+  course?: string | any;
   name?: string;
-  degreeLevel?: string;
+  degreeLevel?: string | any;
   classSize?: number;
-  major?: string;
-  homeroomteacher?: string;
+  major?: string | any;
+  homeroomteacher?: string | any;
 }
 
 export interface IcreateSubject {
@@ -51,4 +52,16 @@ export interface IparmasFetchSubject extends IparamsFetchList {
   course?: string;
   degreeLevel?: string;
   homeroomteacher?: string;
+}
+
+export interface IpropsClassTab {
+  dispatch?: any;
+  listClasses?: any;
+  totalClass?: number;
+}
+
+export interface IrowClassTable extends IcreateClass {
+  _id?: string;
+  createdBy?: string | any;
+  createdAt?: Date | string;
 }
