@@ -116,12 +116,8 @@ const ClassTabMgtPage = (props: IpropsClassTab) => {
                   <TableCell className="text-primary">
                     {classes?.major?.name}
                   </TableCell>
-                  <TableCell className="text-primary">
-                    {classes?.degreeLevel?.name}
-                  </TableCell>
-                  <TableCell className="text-primary">
-                    {classes?.course?.name}
-                  </TableCell>
+                  <TableCell>{classes?.degreeLevel?.name}</TableCell>
+                  <TableCell>{classes?.course?.name}</TableCell>
                   <TableCell className="text-primary">{`${classes?.homeroomteacher?.lastName} ${classes?.homeroomteacher?.middleName} ${classes?.homeroomteacher?.firstName}`}</TableCell>
                   <TableCell>
                     <ActionTableCommon

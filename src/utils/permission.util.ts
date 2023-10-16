@@ -13,22 +13,24 @@ export const findModuleName = (moduleName: string) => {
   const existPermission = permissionList?.find(
     (per: Ipermissions) => per?.moduleName === moduleName
   );
-  return existPermission || [];
+  return existPermission;
 };
 
 export const validateAccessModule = (moduleName: string) => {
   const isRoleSa = validateRoleSa();
   const result = findModuleName(moduleName);
-  const isAccess = result || isRoleSa ? true : false;
+  const isAccess = result || isRoleSa;
   return isAccess;
 };
 
 export const validateAction = (action: string, moduleName: string) => {
   const isRoleSa = validateRoleSa();
   const permissionModule = findModuleName(moduleName);
-  const { permission = [] } = permissionModule;
-  const isPermissonAction = permission?.includes(action);
-  const isPermisson = isRoleSa || isPermissonAction ? true : false;
+  const isPermissonAction =
+    permissionModule?.length > 0
+      ? permissionModule?.permission?.includes(action)
+      : false;
+  const isPermisson = isRoleSa || isPermissonAction;
   return isPermisson;
 };
 
