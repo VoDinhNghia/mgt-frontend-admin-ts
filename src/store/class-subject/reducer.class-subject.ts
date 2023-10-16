@@ -18,7 +18,7 @@ const ClassSubjectReducer = (state = initState, actions: IactionRedux) => {
     case classSubjectActions.GET_LIST_CLASS_SUCCESS:
       return {
         ...state,
-        listClases: actions?.payload?.results,
+        listClasses: actions?.payload?.results,
         totalClass: actions?.payload?.total,
         loading: false,
       };
