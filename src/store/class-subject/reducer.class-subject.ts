@@ -26,7 +26,7 @@ const ClassSubjectReducer = (state = initState, actions: IactionRedux) => {
       return {
         ...state,
         listSubjects: actions?.payload?.results,
-        totalSubjec: actions?.payload?.total,
+        totalSubject: actions?.payload?.total,
         loading: false,
       };
     default:
