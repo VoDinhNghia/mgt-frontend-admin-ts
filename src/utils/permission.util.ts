@@ -25,11 +25,9 @@ export const validateAccessModule = (moduleName: string) => {
 
 export const validateAction = (action: string, moduleName: string) => {
   const isRoleSa = validateRoleSa();
-  const permissionModule = findModuleName(moduleName);
-  const isPermissonAction =
-    permissionModule.permission
-      ? permissionModule?.permission?.includes(action)
-      : false;
+  const permissionModule = findModuleName(moduleName) || {};
+  const { permission = [] } = permissionModule;
+  const isPermissonAction = permission?.includes(action);
   const isPermisson = isRoleSa || isPermissonAction;
   return isPermisson;
 };
