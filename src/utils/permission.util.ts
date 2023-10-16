@@ -27,7 +27,7 @@ export const validateAction = (action: string, moduleName: string) => {
   const isRoleSa = validateRoleSa();
   const permissionModule = findModuleName(moduleName);
   const isPermissonAction =
-    permissionModule?.length > 0
+    permissionModule.permission
       ? permissionModule?.permission?.includes(action)
       : false;
   const isPermisson = isRoleSa || isPermissonAction;
