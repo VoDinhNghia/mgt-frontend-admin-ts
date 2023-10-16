@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IparamsFetchList } from "./common.interface";
+import { Ioptions, IparamsFetchList, IpropModalCommon } from "./common.interface";
 
 export interface IcreateClass {
   course?: string | any;
@@ -54,7 +54,13 @@ export interface IparmasFetchSubject extends IparamsFetchList {
   homeroomteacher?: string;
 }
 
-export interface IpropsClassTab {
+export interface IoptionsClass {
+  userOptions?: Ioptions[];
+  courseOptions?: Ioptions[];
+  majorOptions?: Ioptions[];
+  degreeLevelOptions?: Ioptions[];
+}
+export interface IpropsClassTab extends IoptionsClass {
   dispatch?: any;
   listClasses?: any;
   totalClass?: number;
@@ -66,7 +72,7 @@ export interface IrowClassTable extends IcreateClass {
   createdAt?: Date | string;
 }
 
-export interface IpropsSubjectTab {
+export interface IpropsSubjectTab extends IoptionsClass {
   dispatch?: any;
   listSubjects?: any;
   totalSubject?: number;
@@ -113,26 +119,25 @@ export interface IrowSubjectTable {
     time?: string;
     startDate?: Date | string;
     endDate?: Date | string;
-    midTermTest?: {
-      week?: number;
-      time?: number;
-      output?: string;
-      percent?: number;
-      examDate?: Date | string;
-    };
-    finalExam: {
-      week?: number;
-      time?: number;
-      output?: string;
-      percent?: number;
-      examDate?: Date | string;
-    };
-    studentEssay: {
-      week?: number;
-      time?: number;
-      output?: string;
-      percent?: number;
-      examDate?: Date | string;
-    };
+    midTermTest?: Iexam;
+    finalExam: Iexam;
+    studentEssay: Iexam;
   };
+}
+
+export interface IpropsModalClassPage extends IpropModalCommon {
+  fetchClasses?: any;
+  classInfo?: any;
+  userOptions?: Ioptions[];
+  courseOptions?: Ioptions[];
+  majorOptions?: Ioptions[];
+  degreeLevelOptions?: Ioptions[];
+}
+
+export interface IpropsClassMgtPage {
+  dispatch?: any;
+  listMajors?: any;
+  listDegreelevels?: any;
+  listCourses?: any;
+  listUsers?: any;
 }

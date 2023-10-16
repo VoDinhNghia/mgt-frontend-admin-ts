@@ -148,6 +148,10 @@ export interface IstateRedux {
     listStudyStudents: any;
     totalStudyStudent: number;
   };
+  DegreelevelReducer: {
+    listDegreelevels: any;
+    totalDegreelevel: number;
+  };
 }
 
 export interface IpropsNavToggle {
@@ -255,4 +259,9 @@ export interface ImodalBootstrapCommon extends IpropModalCommon {
 
 export interface IpropTitleHeader {
   title: string;
+}
+
+export interface Ioptions {
+  label?: string;
+  value?: string;
 }

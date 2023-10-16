@@ -18,16 +18,31 @@ import {
 } from "@mui/material";
 import { headerTableClass } from "../../../utils/class-subject.util";
 import { validateAction } from "../../../utils/permission.util";
-import { moduleNames, permissonTypes } from "../../../constants/constant";
+import {
+  modalTypes,
+  moduleNames,
+  permissonTypes,
+} from "../../../constants/constant";
 import AddAndSearchTable from "../../commons/add-search-table";
+import ModalClassPage from "./modals";
 
 const ClassTabMgtPage = (props: IpropsClassTab) => {
-  const { listClasses = [], totalClass = 0, dispatch } = props;
+  const {
+    listClasses = [],
+    totalClass = 0,
+    dispatch,
+    userOptions = [],
+    majorOptions = [],
+    degreeLevelOptions = [],
+    courseOptions = [],
+  } = props;
   const [state, setState] = useState({
     page: 0,
     limit: 5,
     rowData: {},
     isShowModalAdd: false,
+    isShowModalUpdate: false,
+    isShowModalDelete: false,
   });
   const isPermissionAdd = validateAction(
     permissonTypes.ADD,
@@ -41,7 +56,14 @@ const ClassTabMgtPage = (props: IpropsClassTab) => {
     permissonTypes.DELETE,
     moduleNames.CLASS_SUBJECT_MANAGEMENT
   );
-  const { page, limit } = state;
+  const {
+    page,
+    limit,
+    isShowModalAdd,
+    isShowModalDelete,
+    isShowModalUpdate,
+    rowData,
+  } = state;
 
   const fetchClasses = (page: number, limit: number) => {
     dispatch({
@@ -123,6 +145,35 @@ const ClassTabMgtPage = (props: IpropsClassTab) => {
         setState={setState}
         state={state}
         fetchList={(page: number, limit: number) => fetchClasses(page, limit)}
+      />
+      <ModalClassPage
+        isShowModal={isShowModalAdd}
+        type={modalTypes.ADD}
+        classInfo={{}}
+        onCloseModal={() => setState({ ...state, isShowModalAdd: false })}
+        fetchClasses={() => fetchClasses(page + 1, limit)}
+        userOptions={userOptions}
+        courseOptions={courseOptions}
+        degreeLevelOptions={degreeLevelOptions}
+        majorOptions={majorOptions}
+      />
+      <ModalClassPage
+        isShowModal={isShowModalUpdate}
+        type={modalTypes.UPDATE}
+        classInfo={rowData}
+        onCloseModal={() => setState({ ...state, isShowModalUpdate: false })}
+        fetchClasses={() => fetchClasses(page + 1, limit)}
+        userOptions={userOptions}
+        courseOptions={courseOptions}
+        degreeLevelOptions={degreeLevelOptions}
+        majorOptions={majorOptions}
+      />
+      <ModalClassPage
+        isShowModal={isShowModalDelete}
+        type={modalTypes.DELETE}
+        classInfo={rowData}
+        onCloseModal={() => setState({ ...state, isShowModalDelete: false })}
+        fetchClasses={() => fetchClasses(page + 1, limit)}
       />
     </div>
   );
