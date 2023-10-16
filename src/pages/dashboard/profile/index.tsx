@@ -1,14 +1,13 @@
-import React, { useState, SyntheticEvent } from "react";
+import React, { useState } from "react";
+import "./index.css";
 import { Container } from "rsuite";
 import {
-  Tab,
-  Box,
   Card,
   CardContent,
   CardActions,
   Button,
+  CardHeader,
 } from "@mui/material";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { connect } from "react-redux";
 import { IstateRedux } from "../../../interfaces/common.interface";
 import { IpropProfile } from "../../../interfaces/dashboard.interface";
@@ -18,108 +17,95 @@ import { modalTypes } from "../../../constants/constant";
 import TitleHeaderPage from "../../commons/title-header";
 
 const ProfileDashboardPage = (props: IpropProfile) => {
-  const generalTab = "generalInfo";
-  const profileTab = "profile";
-  const [tabIndex, setTabIndex] = useState(generalTab);
-  const [isShowModalUpdate, setShowModalUpdate] = useState(false);
-  const [isShowModalUpdatePassword, setShowModalUpdatePassword] =
-    useState(false);
-  const [isShowModalUpdateProfile, setShowModalUpdateProfile] = useState(false);
+  const [state, setState] = useState({
+    isShowModalUpdate: false,
+    isShowModalUpdatePassword: false,
+    isShowModalUpdateProfile: false,
+  });
+  const {
+    isShowModalUpdate,
+    isShowModalUpdatePassword,
+    isShowModalUpdateProfile,
+  } = state;
   const { userInfo = {} } = props;
   const { profile = {} } = userInfo;
-
-  const onChangeTab = (e: SyntheticEvent, newValue: string) => {
-    setTabIndex(newValue);
-  };
-
-  const onCloseModal = () => {
-    setShowModalUpdate(false);
-    setShowModalUpdatePassword(false);
-    setShowModalUpdateProfile(false);
-  };
 
   return (
     <Container className="p-3 fs-6">
       <TitleHeaderPage title="User infomation management" />
-      <Box>
-        <TabContext value={tabIndex}>
-          <Box>
-            <TabList
-              onChange={onChangeTab}
-              textColor="primary"
-              indicatorColor="primary"
-              aria-label="lab tabs"
-            >
-              <Tab value={generalTab} label="General Info" />
-              <Tab value={profileTab} label="Profile" />
-            </TabList>
-          </Box>
-          <TabPanel value={generalTab}>
-            <Card>
-              <CardContent>
-                <p>Email: {userInfo?.email}</p>
-                <p>Role: {userInfo?.role}</p>
-              </CardContent>
-              <CardActions>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<BsPencilSquare />}
-                  onClick={() => setShowModalUpdate(true)}
-                >
-                  Update Info
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<BsPencilSquare />}
-                  onClick={() => setShowModalUpdatePassword(true)}
-                >
-                  Update password
-                </Button>
-              </CardActions>
-            </Card>
-          </TabPanel>
-          <TabPanel value={profileTab}>
-            <Card>
-              <CardContent>
-                <p>LastName: {profile?.lastName}</p>
-                <p>MiddleName: {profile?.middleName}</p>
-                <p>FirstName: {profile?.firstName}</p>
-                <p>Code: {profile?.code}</p>
-                <p>Gender: {profile?.gender}</p>
-                <p>Mobile: {profile?.mobile}</p>
-              </CardContent>
-              <CardActions>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<BsPencilSquare />}
-                  onClick={() => setShowModalUpdateProfile(true)}
-                >
-                  Update profile
-                </Button>
-              </CardActions>
-            </Card>
-          </TabPanel>
-        </TabContext>
-      </Box>
+      <Card variant="outlined" className="border border-primary">
+        <CardHeader title="General Info" />
+        <CardContent>
+          <p>Email: {userInfo?.email}</p>
+          <p>Role: {userInfo?.role}</p>
+        </CardContent>
+        <CardActions className="ProfileActions">
+          <Button
+            variant="outlined"
+            color="success"
+            startIcon={<BsPencilSquare />}
+            onClick={() => setState({ ...state, isShowModalUpdate: true })}
+            size="small"
+          >
+            Update Info
+          </Button>
+          <Button
+            variant="outlined"
+            color="success"
+            startIcon={<BsPencilSquare />}
+            onClick={() =>
+              setState({ ...state, isShowModalUpdatePassword: true })
+            }
+            size="small"
+          >
+            Update password
+          </Button>
+        </CardActions>
+      </Card>
+      <Card variant="outlined" className="border border-primary mt-2">
+        <CardHeader title="Profile" className="bg-success text-white" />
+        <CardContent>
+          <p>LastName: {profile?.lastName}</p>
+          <p>MiddleName: {profile?.middleName}</p>
+          <p>FirstName: {profile?.firstName}</p>
+          <p>Code: {profile?.code}</p>
+          <p>Gender: {profile?.gender}</p>
+          <p>Mobile: {profile?.mobile}</p>
+        </CardContent>
+        <CardActions className="ProfileActions">
+          <Button
+            variant="outlined"
+            color="success"
+            startIcon={<BsPencilSquare />}
+            onClick={() =>
+              setState({ ...state, isShowModalUpdateProfile: true })
+            }
+            size="small"
+          >
+            Update profile
+          </Button>
+        </CardActions>
+      </Card>
       <DashboardModalPage
         type={modalTypes.UPDATE}
         isShowModal={isShowModalUpdate}
-        onCloseModal={onCloseModal}
+        onCloseModal={() => setState({ ...state, isShowModalUpdate: false })}
         userInfo={userInfo}
       />
       <DashboardModalPage
         type={modalTypes.UPDATE_PASSWORD}
         isShowModal={isShowModalUpdatePassword}
-        onCloseModal={onCloseModal}
+        onCloseModal={() =>
+          setState({ ...state, isShowModalUpdatePassword: false })
+        }
         userInfo={userInfo}
       />
       <DashboardModalPage
         type={modalTypes.UPDATE_PROFILE}
         isShowModal={isShowModalUpdateProfile}
-        onCloseModal={onCloseModal}
+        onCloseModal={() =>
+          setState({ ...state, isShowModalUpdateProfile: false })
+        }
         userInfo={userInfo}
       />
     </Container>
