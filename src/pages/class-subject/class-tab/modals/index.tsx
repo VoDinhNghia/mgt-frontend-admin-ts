@@ -12,6 +12,7 @@ import {
   registerSchemaClassForm,
 } from "../../../../utils/class-subject.util";
 import SelectReactCommon from "../../../commons/select-react";
+import { classSubjectActions } from "../../../../store/actions";
 
 const ModalClassPage = (props: IpropsModalClassPage) => {
   const {
@@ -23,6 +24,8 @@ const ModalClassPage = (props: IpropsModalClassPage) => {
     majorOptions = [],
     degreeLevelOptions = [],
     courseOptions = [],
+    dispatch,
+    fetchClasses,
   } = props;
   const {
     handleSubmit,
@@ -35,15 +38,53 @@ const ModalClassPage = (props: IpropsModalClassPage) => {
   });
 
   const handleAdd: SubmitHandler<IregisterInputClassForm> = (values) => {
-    console.log("values", values);
+    const { name, course, major, homeroomteacher, degreeLevel, classSize } =
+      values;
+    dispatch({
+      type: classSubjectActions.ADD_CLASS,
+      payload: {
+        name,
+        course,
+        major,
+        homeroomteacher,
+        degreeLevel,
+        classSize,
+      },
+    });
+    fetchAndCloseModal();
   };
 
   const handleUpdate: SubmitHandler<IregisterInputClassForm> = (values) => {
-    console.log("values", values);
+    const { name, course, major, homeroomteacher, degreeLevel, classSize } =
+      values;
+    dispatch({
+      type: classSubjectActions.UPDATE_CLASS,
+      id: classInfo?._id,
+      payload: {
+        name,
+        course,
+        major,
+        homeroomteacher,
+        degreeLevel,
+        classSize,
+      },
+    });
+    fetchAndCloseModal();
   };
 
   const onDelete = () => {
-    alert("delete");
+    dispatch({
+      type: classSubjectActions.DELETE_CLASS,
+      id: classInfo?._id,
+    });
+    fetchAndCloseModal();
+  };
+
+  const fetchAndCloseModal = () => {
+    setTimeout(() => {
+      fetchClasses();
+      onCloseModal();
+    }, 100);
   };
 
   useEffect(() => {
@@ -103,7 +144,7 @@ const ModalClassPage = (props: IpropsModalClassPage) => {
           ""
         }
       />
-      <p className="mt-2">Major: </p>
+      <p className="mt-2">DegreeLevel: </p>
       <SelectReactCommon
         options={degreeLevelOptions}
         field="degreeLevel"
