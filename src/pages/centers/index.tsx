@@ -8,7 +8,7 @@ import { Container } from "rsuite";
 
 const CentersMgtPage = () => {
   const isAccess = validateAccessModule(moduleNames.CENTER_MANAGEMENT);
-
+  console.log("isAccess", isAccess)
   return (
     <div>
       {isAccess ? (

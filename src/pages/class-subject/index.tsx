@@ -98,7 +98,12 @@ const ClassSubjectMgtPage = (props: IpropsClassMgtPage) => {
                     />
                   </TabPanel>
                   <TabPanel value={subjectTab}>
-                    <SubjectTabMgtPage />
+                    <SubjectTabMgtPage 
+                      userOptions={userOptions}
+                      courseOptions={courseOptions}
+                      degreeLevelOptions={degreeLevelOptions}
+                      majorOptions={majorOptions}
+                    />
                   </TabPanel>
                 </TabContext>
               </Box>
