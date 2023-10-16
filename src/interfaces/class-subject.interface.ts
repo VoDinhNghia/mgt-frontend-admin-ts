@@ -65,3 +65,74 @@ export interface IrowClassTable extends IcreateClass {
   createdBy?: string | any;
   createdAt?: Date | string;
 }
+
+export interface IpropsSubjectTab {
+  dispatch?: any;
+  listSubjects?: any;
+  totalSubject?: number;
+}
+
+export interface IrowSubjectTable {
+  _id?: string;
+  name?: string;
+  lecturer?: {
+    _id?: string;
+    firstName?: string;
+    lastName?: string;
+    middleName?: string;
+  };
+  major?: {
+    _id?: string;
+    name?: string;
+  };
+  course?: {
+    _id?: string;
+    name?: string;
+  };
+  degreeLevel?: {
+    _id?: string;
+    name?: string;
+  };
+  semester?: {
+    _id?: string;
+    name?: string;
+    year?: string;
+  };
+  openTime?: Date | string;
+  closeTime?: Date | string;
+  size?: number;
+  numberCredits?: number;
+  elective?: boolean | any;
+  calculateCumulativePoint?: boolean | any;
+  numberOfFailed?: number;
+  numberOfPass?: number;
+  status?: boolean | any;
+  process?: {
+    _id?: string;
+    learnDate?: string;
+    time?: string;
+    startDate?: Date | string;
+    endDate?: Date | string;
+    midTermTest?: {
+      week?: number;
+      time?: number;
+      output?: string;
+      percent?: number;
+      examDate?: Date | string;
+    };
+    finalExam: {
+      week?: number;
+      time?: number;
+      output?: string;
+      percent?: number;
+      examDate?: Date | string;
+    };
+    studentEssay: {
+      week?: number;
+      time?: number;
+      output?: string;
+      percent?: number;
+      examDate?: Date | string;
+    };
+  };
+}
