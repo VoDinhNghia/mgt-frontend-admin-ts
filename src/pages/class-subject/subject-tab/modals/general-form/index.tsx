@@ -4,7 +4,7 @@ import { IpropSubjectInfoForm } from "../../../../../interfaces/class-subject.in
 import TextFieldCommon from "../../../../commons/textfield-input";
 import { inputTypes } from "../../../../../constants/constant";
 import SelectReactCommon from "../../../../commons/select-react";
-import { Checkbox } from "@mui/material";
+import CheckBoxMuiCommon from "../../../../commons/checkbox-mui";
 
 const SubjectInfoForm = (props: IpropSubjectInfoForm) => {
   const {
@@ -25,8 +25,18 @@ const SubjectInfoForm = (props: IpropSubjectInfoForm) => {
       </Card.Header>
       <Card.Body className="bg-light">
         <span>
-          Elective: <Checkbox /> CalculateCumulative:{" "}
-          <Checkbox defaultChecked />
+          <CheckBoxMuiCommon
+            field="elective"
+            label="Elective"
+            control={control}
+            defaultValue={false}
+          />
+          <CheckBoxMuiCommon
+            field="calculateCumulative"
+            label="Cumulative"
+            control={control}
+            defaultValue={true}
+          />
         </span>
         <p>Name: </p>
         <TextFieldCommon field="name" register={register} errors={errors} />
