@@ -266,3 +266,10 @@ export interface Ioptions {
   label?: string;
   value?: string;
 }
+
+export interface IpropCheckBoxMui {
+  label: string | any;
+  field: string | any;
+  control: any;
+  defaultValue?: string | any;
+}
