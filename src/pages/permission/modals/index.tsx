@@ -60,39 +60,47 @@ const ModalPermissionMgtPage = (props: IpropModalPermission) => {
     }, 100);
   };
 
-  const addContent = (
-    <>
-      <Form.Label>Select module name</Form.Label>
-      <Select
-        options={moduleOptions}
-        onChange={(e: IeventOnchangeSelect) =>
-          setState({ ...state, moduleName: e.value })
-        }
-      />
-      {moduleName ? (
+  const content = (
+    <div>
+      {type === modalTypes.DELETE ? (
         <>
-          <Form.Label className="mt-2">Selete permission</Form.Label>
+          <Form.Label>Select module name</Form.Label>
           <Select
-            isMulti
-            options={permissionOptions}
-            onChange={(values: IeventOnchangeSelect) =>
-              setState({ ...state, permission: values })
+            options={permissions}
+            onChange={(e: IeventOnchangeSelect) =>
+              setState({ ...state, permissionId: e.value })
             }
           />
         </>
-      ) : null}
-    </>
-  );
-  const deleteContent = (
-    <>
-      <Form.Label>Select module name</Form.Label>
-      <Select
-        options={permissions}
-        onChange={(e: IeventOnchangeSelect) =>
-          setState({ ...state, permissionId: e.value })
-        }
-      />
-    </>
+      ) : (
+        ""
+      )}
+      {type === modalTypes.ADD ? (
+        <>
+          <Form.Label>Select module name</Form.Label>
+          <Select
+            options={moduleOptions}
+            onChange={(e: IeventOnchangeSelect) =>
+              setState({ ...state, moduleName: e.value })
+            }
+          />
+          {moduleName ? (
+            <>
+              <Form.Label className="mt-2">Selete permission</Form.Label>
+              <Select
+                isMulti
+                options={permissionOptions}
+                onChange={(values: IeventOnchangeSelect) =>
+                  setState({ ...state, permission: values })
+                }
+              />
+            </>
+          ) : null}
+        </>
+      ) : (
+        ""
+      )}
+    </div>
   );
 
   return (
@@ -103,7 +111,7 @@ const ModalPermissionMgtPage = (props: IpropModalPermission) => {
       nameTitle="permission"
       onAdd={() => onAdd()}
       onDelete={() => onDelete()}
-      body={type === modalTypes.ADD ? addContent : deleteContent}
+      body={content}
     />
   );
 };

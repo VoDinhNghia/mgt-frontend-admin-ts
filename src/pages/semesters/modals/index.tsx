@@ -89,45 +89,52 @@ const ModalSemesterPage = (props: IpropModalSemester) => {
     reset(semesterInfo);
   }, [isSubmitSuccessful, semesterInfo]);
 
-  const addUpdateContent = (
-    <form
-      onSubmit={
-        type === modalTypes.ADD
-          ? handleSubmit(onSubmitHandlerAdd)
-          : handleSubmit(onSubmitHandlerUpdate)
-      }
-    >
-      <p>Name: </p>
-      <TextFieldCommon
-        errors={errors}
-        register={register}
-        defaultValue={semesterInfo?.name || ""}
-        field="name"
-        type={inputTypes.TEXT}
-      />
-      <p className="mt-2">Year: </p>
-      <SelectReactCommon
-        errors={errors}
-        control={control}
-        field="year"
-        options={yearSemesterOptions}
-        defaultValue={
-          yearSemesterOptions?.find(
-            (year) => year.value === semesterInfo?.year
-          ) || ""
-        }
-      />
-      <Button type="submit" variant="contained" className="mt-4 w-100">
-        Save
-      </Button>
-    </form>
-  );
-
-  const deleteContent = (
-    <p>
-      Are you want to delete this semester{" "}
-      <b>{`${semesterInfo?.name} (${semesterInfo?.year})`}</b>
-    </p>
+  const content = (
+    <div>
+      {type === modalTypes.ADD || type === modalTypes.UPDATE ? (
+        <form
+          onSubmit={
+            type === modalTypes.ADD
+              ? handleSubmit(onSubmitHandlerAdd)
+              : handleSubmit(onSubmitHandlerUpdate)
+          }
+        >
+          <p>Name: </p>
+          <TextFieldCommon
+            errors={errors}
+            register={register}
+            defaultValue={semesterInfo?.name || ""}
+            field="name"
+            type={inputTypes.TEXT}
+          />
+          <p className="mt-2">Year: </p>
+          <SelectReactCommon
+            errors={errors}
+            control={control}
+            field="year"
+            options={yearSemesterOptions}
+            defaultValue={
+              yearSemesterOptions?.find(
+                (year) => year.value === semesterInfo?.year
+              ) || ""
+            }
+          />
+          <Button type="submit" variant="contained" className="mt-4 w-100">
+            Save
+          </Button>
+        </form>
+      ) : (
+        ""
+      )}
+      {type === modalTypes.DELETE ? (
+        <p>
+          Are you want to delete this semester{" "}
+          <b>{`${semesterInfo?.name} (${semesterInfo?.year})`}</b>
+        </p>
+      ) : (
+        ""
+      )}
+    </div>
   );
 
   return (
@@ -136,7 +143,7 @@ const ModalSemesterPage = (props: IpropModalSemester) => {
       isShowModal={isShowModal}
       onCloseModal={() => onCloseModal()}
       nameTitle="semester"
-      content={type === modalTypes.DELETE ? deleteContent : addUpdateContent}
+      content={content}
       onDelete={() => onDelete()}
     />
   );

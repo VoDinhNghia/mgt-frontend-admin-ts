@@ -194,153 +194,163 @@ const ModalBranchPage = (props: IpropModalBranch) => {
     });
   }, [isSubmitSuccessful, branchInfo]);
 
-  const deleteContent = (
-    <p>
-      Are you want to delete this <b>{branchInfo?.name}</b>?
-    </p>
-  );
-  const addUpdateContent = (
-    <form
-      onSubmit={
-        type === modalTypes.ADD
-          ? handleSubmit(onSubmitHandlerAdd)
-          : handleSubmit(onSubmitHandlerUpdate)
-      }
-    >
-      <p>Name: </p>
-      <TextFieldCommon
-        field="name"
-        defaultValue={branchInfo?.name || ""}
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Title: </p>
-      <TextFieldCommon
-        field="title"
-        defaultValue={branchInfo?.title || ""}
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Website: </p>
-      <TextFieldCommon
-        field="website"
-        defaultValue={branchInfo?.website || ""}
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Country: </p>
-      <SelectReactCommon
-        field="country"
-        control={control}
-        defaultValue={
-          countryOptions?.find(
-            (c) => c?.value === branchInfo?.location?.country?._id
-          ) || ""
-        }
-        errors={errors}
-        options={countryOptions}
-      />
-      <p className="mt-2">Province: </p>
-      <SelectReactCommon
-        field="province"
-        control={control}
-        defaultValue={
-          provinceOptions?.find(
-            (c) => c?.value === branchInfo?.location?.province?._id
-          ) || ""
-        }
-        errors={errors}
-        options={provinceOptions}
-      />
-      <p className="mt-2">District: </p>
-      <SelectReactCommon
-        field="district"
-        control={control}
-        defaultValue={
-          districtOptions?.find(
-            (c) => c?.value === branchInfo?.location?.district?._id
-          ) || ""
-        }
-        errors={errors}
-        options={districtOptions}
-      />
-      <p className="mt-2">Ward: </p>
-      <SelectReactCommon
-        field="ward"
-        control={control}
-        defaultValue={
-          wardOptions?.find(
-            (c) => c?.value === branchInfo?.location?.ward?._id
-          ) || ""
-        }
-        errors={errors}
-        options={wardOptions}
-      />
-      <p className="mt-2">Street: </p>
-      <TextFieldCommon
-        field="address"
-        defaultValue={branchInfo?.address || ""}
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Email: </p>
-      <TextFieldCommon
-        field="email"
-        defaultValue={
-          branchInfo?.contactInfo?.length > 0
-            ? branchInfo?.contactInfo[0]?.email
-            : ""
-        }
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Fax: </p>
-      <TextFieldCommon
-        field="fax"
-        defaultValue={
-          branchInfo?.contactInfo?.length > 0
-            ? branchInfo?.contactInfo[0]?.fax
-            : ""
-        }
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Mobile: </p>
-      <TextFieldCommon
-        field="mobile"
-        defaultValue={
-          branchInfo?.contactInfo?.length > 0
-            ? branchInfo?.contactInfo[0]?.mobile
-            : ""
-        }
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Description: </p>
-      <TextFieldCommon
-        field="description"
-        type={inputTypes.TEXT_AREA}
-        defaultValue={branchInfo?.description || ""}
-        errors={errors}
-        register={register}
-      />
-      <Button type="submit" variant="contained" className="mt-4 w-100">
-        SAVE
-      </Button>
-    </form>
-  );
-  const viewContent = (
+  const content = (
     <div>
-      {branchInfo?.contactInfo?.map(
-        (contact: { email: string; fax: string; mobile: string }) => {
-          return (
-            <div key={contact?.email}>
-              <p>Email: {contact?.email}</p>
-              <p>Fax: {contact?.fax}</p>
-              <p>Mobile: {contact?.mobile}</p>
-            </div>
-          );
-        }
+      {type == modalTypes.DELETE ? (
+        <p>
+          Are you want to delete this <b>{branchInfo?.name}</b>?
+        </p>
+      ) : (
+        ""
+      )}
+      {type === modalTypes.ADD || type === modalTypes.UPDATE ? (
+        <form
+          onSubmit={
+            type === modalTypes.ADD
+              ? handleSubmit(onSubmitHandlerAdd)
+              : handleSubmit(onSubmitHandlerUpdate)
+          }
+        >
+          <p>Name: </p>
+          <TextFieldCommon
+            field="name"
+            defaultValue={branchInfo?.name || ""}
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Title: </p>
+          <TextFieldCommon
+            field="title"
+            defaultValue={branchInfo?.title || ""}
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Website: </p>
+          <TextFieldCommon
+            field="website"
+            defaultValue={branchInfo?.website || ""}
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Country: </p>
+          <SelectReactCommon
+            field="country"
+            control={control}
+            defaultValue={
+              countryOptions?.find(
+                (c) => c?.value === branchInfo?.location?.country?._id
+              ) || ""
+            }
+            errors={errors}
+            options={countryOptions}
+          />
+          <p className="mt-2">Province: </p>
+          <SelectReactCommon
+            field="province"
+            control={control}
+            defaultValue={
+              provinceOptions?.find(
+                (c) => c?.value === branchInfo?.location?.province?._id
+              ) || ""
+            }
+            errors={errors}
+            options={provinceOptions}
+          />
+          <p className="mt-2">District: </p>
+          <SelectReactCommon
+            field="district"
+            control={control}
+            defaultValue={
+              districtOptions?.find(
+                (c) => c?.value === branchInfo?.location?.district?._id
+              ) || ""
+            }
+            errors={errors}
+            options={districtOptions}
+          />
+          <p className="mt-2">Ward: </p>
+          <SelectReactCommon
+            field="ward"
+            control={control}
+            defaultValue={
+              wardOptions?.find(
+                (c) => c?.value === branchInfo?.location?.ward?._id
+              ) || ""
+            }
+            errors={errors}
+            options={wardOptions}
+          />
+          <p className="mt-2">Street: </p>
+          <TextFieldCommon
+            field="address"
+            defaultValue={branchInfo?.address || ""}
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Email: </p>
+          <TextFieldCommon
+            field="email"
+            defaultValue={
+              branchInfo?.contactInfo?.length > 0
+                ? branchInfo?.contactInfo[0]?.email
+                : ""
+            }
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Fax: </p>
+          <TextFieldCommon
+            field="fax"
+            defaultValue={
+              branchInfo?.contactInfo?.length > 0
+                ? branchInfo?.contactInfo[0]?.fax
+                : ""
+            }
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Mobile: </p>
+          <TextFieldCommon
+            field="mobile"
+            defaultValue={
+              branchInfo?.contactInfo?.length > 0
+                ? branchInfo?.contactInfo[0]?.mobile
+                : ""
+            }
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Description: </p>
+          <TextFieldCommon
+            field="description"
+            type={inputTypes.TEXT_AREA}
+            defaultValue={branchInfo?.description || ""}
+            errors={errors}
+            register={register}
+          />
+          <Button type="submit" variant="contained" className="mt-4 w-100">
+            SAVE
+          </Button>
+        </form>
+      ) : (
+        ""
+      )}
+      {type === modalTypes.VIEW ? (
+        <div>
+          {branchInfo?.contactInfo?.map(
+            (contact: { email: string; fax: string; mobile: string }) => {
+              return (
+                <div key={contact?.email}>
+                  <p>Email: {contact?.email}</p>
+                  <p>Fax: {contact?.fax}</p>
+                  <p>Mobile: {contact?.mobile}</p>
+                </div>
+              );
+            }
+          )}
+        </div>
+      ) : (
+        ""
       )}
     </div>
   );
@@ -351,13 +361,7 @@ const ModalBranchPage = (props: IpropModalBranch) => {
       isShowModal={isShowModal}
       onCloseModal={() => onCloseModal()}
       onDelete={() => onDelete()}
-      content={
-        type === modalTypes.DELETE
-          ? deleteContent
-          : type === modalTypes.VIEW
-          ? viewContent
-          : addUpdateContent
-      }
+      content={content}
       nameTitle="branch"
     />
   );

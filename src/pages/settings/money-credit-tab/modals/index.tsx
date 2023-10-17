@@ -103,46 +103,54 @@ const ModalMoneyCreditPage = (props: IpropModalMoneyCredit) => {
     fetchSemester();
   }, [isSubmitSuccessful, moneyCreditInfo]);
 
-  const deleteContent = (
-    <p>
-      Are you want to delete this <b>{moneyCreditInfo?.name}</b>?
-    </p>
-  );
-  const addUpdateContent = (
-    <form
-      onSubmit={
-        type === modalTypes.ADD
-          ? handleSubmit(onSubmitHandlerAdd)
-          : handleSubmit(onSubmitHandlerUpdate)
-      }
-    >
-      <p>Name: </p>
-      <TextFieldCommon
-        field="name"
-        defaultValue={moneyCreditInfo?.name || ""}
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Type: </p>
-      <SelectMuiCommon
-        field="semester"
-        options={semesterOptions}
-        defaultValue={moneyCreditInfo?.semester?._id || ""}
-        control={control}
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Money Per Credit: </p>
-      <TextFieldCommon
-        field="moneyPerCredit"
-        defaultValue={moneyCreditInfo?.moneyPerCredit || ""}
-        errors={errors}
-        register={register}
-      />
-      <Button variant="contained" className="w-100 mt-4" type="submit">
-        SAVE
-      </Button>
-    </form>
+  const content = (
+    <div>
+      {type === modalTypes.ADD || type === modalTypes.UPDATE ? (
+        <form
+          onSubmit={
+            type === modalTypes.ADD
+              ? handleSubmit(onSubmitHandlerAdd)
+              : handleSubmit(onSubmitHandlerUpdate)
+          }
+        >
+          <p>Name: </p>
+          <TextFieldCommon
+            field="name"
+            defaultValue={moneyCreditInfo?.name || ""}
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Type: </p>
+          <SelectMuiCommon
+            field="semester"
+            options={semesterOptions}
+            defaultValue={moneyCreditInfo?.semester?._id || ""}
+            control={control}
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Money Per Credit: </p>
+          <TextFieldCommon
+            field="moneyPerCredit"
+            defaultValue={moneyCreditInfo?.moneyPerCredit || ""}
+            errors={errors}
+            register={register}
+          />
+          <Button variant="contained" className="w-100 mt-4" type="submit">
+            SAVE
+          </Button>
+        </form>
+      ) : (
+        ""
+      )}
+      {type === modalTypes.DELETE ? (
+        <p>
+          Are you want to delete this <b>{moneyCreditInfo?.name}</b>?
+        </p>
+      ) : (
+        ""
+      )}
+    </div>
   );
 
   return (
@@ -151,7 +159,7 @@ const ModalMoneyCreditPage = (props: IpropModalMoneyCredit) => {
       isShowModal={isShowModal}
       onCloseModal={() => onCloseModal()}
       onDelete={() => onDelete()}
-      content={type === modalTypes.DELETE ? deleteContent : addUpdateContent}
+      content={content}
       nameTitle="money credit"
     />
   );
