@@ -6,7 +6,11 @@ import {
   IrowSubjectTable,
 } from "../../../interfaces/class-subject.interface";
 import { validateAction } from "../../../utils/permission.util";
-import { moduleNames, permissonTypes } from "../../../constants/constant";
+import {
+  modalTypes,
+  moduleNames,
+  permissonTypes,
+} from "../../../constants/constant";
 import { classSubjectActions } from "../../../store/actions";
 import { Box, Table, TableBody, TableRow, TableCell } from "@mui/material";
 import HeaderTableCommon from "../../commons/header-table";
@@ -15,14 +19,26 @@ import ActionTableCommon from "../../commons/actions-table";
 import AddAndSearchTable from "../../commons/add-search-table";
 import { headerTableSubject } from "../../../utils/class-subject.util";
 import { Button } from "react-bootstrap";
+import ModalSubjectPage from "./modals";
 
 const SubjectTabMgtPage = (props: IpropsSubjectTab) => {
-  const { dispatch, listSubjects = [], totalSubject = 0 } = props;
+  const {
+    dispatch,
+    listSubjects = [],
+    totalSubject = 0,
+    degreeLevelOptions = [],
+    majorOptions = [],
+    userOptions = [],
+    courseOptions = [],
+  } = props;
   const [state, setState] = useState({
     page: 0,
     limit: 5,
     rowData: {},
     isShowModalAdd: false,
+    isShowModalUpdate: false,
+    isShowModalDelete: false,
+    isShowModalView: false,
   });
   const isPermissionAdd = validateAction(
     permissonTypes.ADD,
@@ -36,7 +52,15 @@ const SubjectTabMgtPage = (props: IpropsSubjectTab) => {
     permissonTypes.DELETE,
     moduleNames.CLASS_SUBJECT_MANAGEMENT
   );
-  const { page, limit } = state;
+  const {
+    page,
+    limit,
+    isShowModalDelete,
+    isShowModalAdd,
+    isShowModalUpdate,
+    isShowModalView,
+    rowData,
+  } = state;
 
   const fetchSubjects = (page: number, limit: number) => {
     dispatch({
@@ -90,7 +114,17 @@ const SubjectTabMgtPage = (props: IpropsSubjectTab) => {
                     <TableCell>{subject?.course?.name}</TableCell>
                     <TableCell>{`${subject?.lecturer?.lastName} ${subject?.lecturer?.middleName} ${subject?.lecturer?.firstName}`}</TableCell>
                     <TableCell>
-                      <Button variant="outline-primary" size="sm">
+                      <Button
+                        variant="outline-primary"
+                        size="sm"
+                        onClick={() =>
+                          setState({
+                            ...state,
+                            isShowModalView: true,
+                            rowData: subject,
+                          })
+                        }
+                      >
                         View
                       </Button>
                     </TableCell>
@@ -117,6 +151,47 @@ const SubjectTabMgtPage = (props: IpropsSubjectTab) => {
         setState={setState}
         state={state}
         fetchList={(page: number, limit: number) => fetchSubjects(page, limit)}
+      />
+      <ModalSubjectPage
+        size="md"
+        type={modalTypes.ADD}
+        isShowModal={isShowModalAdd}
+        subjectInfo={{}}
+        degreeLevelOptions={degreeLevelOptions}
+        courseOptions={courseOptions}
+        majorOptions={majorOptions}
+        userOptions={userOptions}
+        onCloseModal={() => setState({ ...state, isShowModalAdd: false })}
+        fetchSubjects={() => fetchSubjects(page + 1, limit)}
+      />
+      <ModalSubjectPage
+        size="md"
+        type={modalTypes.UPDATE}
+        isShowModal={isShowModalUpdate}
+        subjectInfo={rowData}
+        degreeLevelOptions={degreeLevelOptions}
+        courseOptions={courseOptions}
+        majorOptions={majorOptions}
+        userOptions={userOptions}
+        onCloseModal={() => setState({ ...state, isShowModalUpdate: false })}
+        fetchSubjects={() => fetchSubjects(page + 1, limit)}
+      />
+      <ModalSubjectPage
+        type={modalTypes.DELETE}
+        isShowModal={isShowModalDelete}
+        subjectInfo={rowData}
+        degreeLevelOptions={degreeLevelOptions}
+        courseOptions={courseOptions}
+        majorOptions={majorOptions}
+        userOptions={userOptions}
+        onCloseModal={() => setState({ ...state, isShowModalDelete: false })}
+        fetchSubjects={() => fetchSubjects(page + 1, limit)}
+      />
+      <ModalSubjectPage
+        type={modalTypes.VIEW}
+        isShowModal={isShowModalView}
+        subjectInfo={rowData}
+        onCloseModal={() => setState({ ...state, isShowModalView: false })}
       />
     </div>
   );

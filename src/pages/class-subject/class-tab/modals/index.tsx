@@ -101,90 +101,99 @@ const ModalClassPage = (props: IpropsModalClassPage) => {
     });
   }, [isSubmitSuccessful, classInfo]);
 
-  const deleteContent = (
-    <p>
-      Are you want to delete this <b>{classInfo?.name}</b>?
-    </p>
-  );
-  const addUpdateContent = (
-    <form
-      onSubmit={
-        type === modalTypes.ADD
-          ? handleSubmit(handleAdd)
-          : handleSubmit(handleUpdate)
-      }
-    >
-      <p>Name: </p>
-      <TextFieldCommon
-        field="name"
-        defaultValue={classInfo?.name || ""}
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Course: </p>
-      <SelectReactCommon
-        options={courseOptions}
-        field="course"
-        errors={errors}
-        control={control}
-        defaultValue={
-          courseOptions?.find(
-            (course) => course?.value === classInfo?.course?._id
-          ) || ""
-        }
-      />
-      <p className="mt-2">Major: </p>
-      <SelectReactCommon
-        options={majorOptions}
-        field="major"
-        errors={errors}
-        control={control}
-        defaultValue={
-          majorOptions?.find((item) => item?.value === classInfo?.major?._id) ||
-          ""
-        }
-      />
-      <p className="mt-2">DegreeLevel: </p>
-      <SelectReactCommon
-        options={degreeLevelOptions}
-        field="degreeLevel"
-        errors={errors}
-        control={control}
-        defaultValue={
-          degreeLevelOptions?.find(
-            (item) => item?.value === classInfo?.degreeLevel?._id
-          ) || ""
-        }
-      />
-      <p className="mt-2">Home room teacher: </p>
-      <SelectReactCommon
-        options={userOptions}
-        field="homeroomteacher"
-        errors={errors}
-        control={control}
-        defaultValue={
-          userOptions?.find(
-            (item) => item?.value === classInfo?.homeroomteacher?._id
-          ) || ""
-        }
-      />
-      <p className="mt-2">Class size:</p>
-      <TextFieldCommon
-        field="classSize"
-        type={inputTypes.NUMBER}
-        defaultValue={classInfo?.classSize || ""}
-        errors={errors}
-        register={register}
-      />
-      <Button
-        variant="contained"
-        size="small"
-        className="w-100 mt-3"
-        type="submit"
-      >
-        Save
-      </Button>
-    </form>
+  const content = (
+    <div>
+      {type === modalTypes.DELETE ? (
+        <p>
+          Are you want to delete this <b>{classInfo?.name}</b>?
+        </p>
+      ) : (
+        ""
+      )}
+      {type === modalTypes.ADD || type === modalTypes.UPDATE ? (
+        <form
+          onSubmit={
+            type === modalTypes.ADD
+              ? handleSubmit(handleAdd)
+              : handleSubmit(handleUpdate)
+          }
+        >
+          <p>Name: </p>
+          <TextFieldCommon
+            field="name"
+            defaultValue={classInfo?.name || ""}
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Course: </p>
+          <SelectReactCommon
+            options={courseOptions}
+            field="course"
+            errors={errors}
+            control={control}
+            defaultValue={
+              courseOptions?.find(
+                (course) => course?.value === classInfo?.course?._id
+              ) || ""
+            }
+          />
+          <p className="mt-2">Major: </p>
+          <SelectReactCommon
+            options={majorOptions}
+            field="major"
+            errors={errors}
+            control={control}
+            defaultValue={
+              majorOptions?.find(
+                (item) => item?.value === classInfo?.major?._id
+              ) || ""
+            }
+          />
+          <p className="mt-2">DegreeLevel: </p>
+          <SelectReactCommon
+            options={degreeLevelOptions}
+            field="degreeLevel"
+            errors={errors}
+            control={control}
+            defaultValue={
+              degreeLevelOptions?.find(
+                (item) => item?.value === classInfo?.degreeLevel?._id
+              ) || ""
+            }
+          />
+          <p className="mt-2">Home room teacher: </p>
+          <SelectReactCommon
+            options={userOptions}
+            field="homeroomteacher"
+            errors={errors}
+            control={control}
+            defaultValue={
+              userOptions?.find(
+                (item) => item?.value === classInfo?.homeroomteacher?._id
+              ) || ""
+            }
+          />
+          <p className="mt-2">Class size:</p>
+          <TextFieldCommon
+            field="classSize"
+            type={inputTypes.NUMBER}
+            defaultValue={classInfo?.classSize || ""}
+            errors={errors}
+            register={register}
+          />
+          <Button
+            variant="contained"
+            size="small"
+            className="w-100 mt-3"
+            type="submit"
+          >
+            Save
+          </Button>
+        </form>
+      ) : (
+        ""
+      )}
+    </div>
   );
 
   return (
@@ -194,7 +203,7 @@ const ModalClassPage = (props: IpropsModalClassPage) => {
       onCloseModal={() => onCloseModal()}
       onDelete={() => onDelete()}
       nameTitle="class"
-      content={type === modalTypes.DELETE ? deleteContent : addUpdateContent}
+      content={content}
     />
   );
 };

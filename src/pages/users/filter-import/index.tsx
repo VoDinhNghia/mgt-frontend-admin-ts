@@ -52,38 +52,48 @@ const FilterAndImportModal = (props: IpropImportFilterUser) => {
     }, 70);
   };
 
-  const filterContent = (
-    <>
-      <p>Role:</p>
-      <SelectMuiCommon
-        type={selectMuiTypes.NORMAL}
-        options={userRoleOptions}
-        onChangeSelect={(value: string) => setState({ ...state, role: value })}
-      />
-      <p className="mt-2">Status:</p>
-      <SelectMuiCommon
-        type={selectMuiTypes.NORMAL}
-        options={userStatusOptions}
-        onChangeSelect={(value: string) =>
-          setState({ ...state, status: value })
-        }
-      />
-    </>
-  );
-  const importContent = (
-    <form onSubmit={() => onImport()}>
-      <Form.Label>Select file csv:</Form.Label>
-      <Form.Control
-        type="file"
-        required={true}
-        onChange={(e: IeventOnchangeFile) =>
-          setState({ ...state, file: e.target.files[0] })
-        }
-      />
-      <Button variant="contained" className="mt-4 w-100" type="submit">
-        Import
-      </Button>
-    </form>
+  const content = (
+    <div>
+      {type === modalTypes.IMPORT ? (
+        <form onSubmit={() => onImport()}>
+          <Form.Label>Select file csv:</Form.Label>
+          <Form.Control
+            type="file"
+            required={true}
+            onChange={(e: IeventOnchangeFile) =>
+              setState({ ...state, file: e.target.files[0] })
+            }
+          />
+          <Button variant="contained" className="mt-4 w-100" type="submit">
+            Import
+          </Button>
+        </form>
+      ) : (
+        ""
+      )}
+      {type === modalTypes.FILTER ? (
+        <>
+          <p>Role:</p>
+          <SelectMuiCommon
+            type={selectMuiTypes.NORMAL}
+            options={userRoleOptions}
+            onChangeSelect={(value: string) =>
+              setState({ ...state, role: value })
+            }
+          />
+          <p className="mt-2">Status:</p>
+          <SelectMuiCommon
+            type={selectMuiTypes.NORMAL}
+            options={userStatusOptions}
+            onChangeSelect={(value: string) =>
+              setState({ ...state, status: value })
+            }
+          />
+        </>
+      ) : (
+        ""
+      )}
+    </div>
   );
 
   return (
@@ -93,7 +103,7 @@ const FilterAndImportModal = (props: IpropImportFilterUser) => {
       onCloseModal={() => onCloseModal()}
       onFilter={() => onFilter()}
       isShowButtonUpdate={true}
-      content={type === modalTypes.IMPORT ? importContent : filterContent}
+      content={content}
       nameTitle="user"
     />
   );

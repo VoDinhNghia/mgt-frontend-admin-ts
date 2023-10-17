@@ -22,13 +22,14 @@ const DialogModalCommonPage = (props: ImodalCommon) => {
     onFilter,
     isShowButtonUpdate = false,
     onUpdate,
+    size = "xs"
   } = props;
 
   return (
     <Dialog
       open={isShowModal}
       fullWidth={true}
-      maxWidth="xs"
+      maxWidth={size}
       onClose={() => onCloseModal()}
     >
       <DialogTitle>

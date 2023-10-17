@@ -93,53 +93,61 @@ const LearningRateModalPage = (props: IpropModalLearningRate) => {
     });
   }, [isSubmitSuccessful, learningRateInfo]);
 
-  const deleteContent = (
-    <p>
-      Are you want to delete this <b>{learningRateInfo?.name}</b>?
-    </p>
-  );
-  const addUpdateContent = (
-    <form
-      onSubmit={
-        type === modalTypes.ADD
-          ? handleSubmit(onSubmitHandlerAdd)
-          : handleSubmit(onSubmitHandlerUpdate)
-      }
-    >
-      <p>Name: </p>
-      <TextFieldCommon
-        field="name"
-        defaultValue={learningRateInfo?.name || ""}
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Type: </p>
-      <SelectMuiCommon
-        field="type"
-        defaultValue={learningRateInfo?.type || ""}
-        errors={errors}
-        register={register}
-        options={learningRateOption}
-        control={control}
-      />
-      <p className="mt-2">Minimum: </p>
-      <TextFieldCommon
-        field="minimum"
-        defaultValue={learningRateInfo?.minimum || ""}
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Maximum: </p>
-      <TextFieldCommon
-        field="maximum"
-        defaultValue={learningRateInfo?.minimum || ""}
-        errors={errors}
-        register={register}
-      />
-      <Button variant="contained" className="w-100 mt-4" type="submit">
-        SAVE
-      </Button>
-    </form>
+  const content = (
+    <div>
+      {type === modalTypes.ADD || type === modalTypes.UPDATE ? (
+        <form
+          onSubmit={
+            type === modalTypes.ADD
+              ? handleSubmit(onSubmitHandlerAdd)
+              : handleSubmit(onSubmitHandlerUpdate)
+          }
+        >
+          <p>Name: </p>
+          <TextFieldCommon
+            field="name"
+            defaultValue={learningRateInfo?.name || ""}
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Type: </p>
+          <SelectMuiCommon
+            field="type"
+            defaultValue={learningRateInfo?.type || ""}
+            errors={errors}
+            register={register}
+            options={learningRateOption}
+            control={control}
+          />
+          <p className="mt-2">Minimum: </p>
+          <TextFieldCommon
+            field="minimum"
+            defaultValue={learningRateInfo?.minimum || ""}
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Maximum: </p>
+          <TextFieldCommon
+            field="maximum"
+            defaultValue={learningRateInfo?.minimum || ""}
+            errors={errors}
+            register={register}
+          />
+          <Button variant="contained" className="w-100 mt-4" type="submit">
+            SAVE
+          </Button>
+        </form>
+      ) : (
+        ""
+      )}
+      {type === modalTypes.DELETE ? (
+        <p>
+          Are you want to delete this <b>{learningRateInfo?.name}</b>?
+        </p>
+      ) : (
+        ""
+      )}
+    </div>
   );
 
   return (
@@ -148,7 +156,7 @@ const LearningRateModalPage = (props: IpropModalLearningRate) => {
       isShowModal={isShowModal}
       onCloseModal={() => onCloseModal()}
       onDelete={() => onDelete()}
-      content={type === modalTypes.DELETE ? deleteContent : addUpdateContent}
+      content={content}
       nameTitle="learning rate"
     />
   );

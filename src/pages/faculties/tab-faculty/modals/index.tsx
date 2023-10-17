@@ -120,69 +120,76 @@ const ModalFacultyPage = (props: IpropModalFaculty) => {
     });
   }, [isSubmitSuccessful, facultyInfo]);
 
-  const deleteContent = (
-    <p>
-      Are you want to delete this faculty <b>{facultyInfo?.name}</b>?
-    </p>
-  );
-
-  const addUpdateContent = (
-    <form
-      onSubmit={
-        type === modalTypes.ADD
-          ? handleSubmit(onSubmitHandlerAdd)
-          : handleSubmit(onSubmitHandlerUpdate)
-      }
-    >
-      <p>Name: </p>
-      <TextFieldCommon
-        field="name"
-        defaultValue={facultyInfo?.name || ""}
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Found year:</p>
-      <TextFieldCommon
-        field="foundYear"
-        type={inputTypes.DATE}
-        defaultValue={
-          type === modalTypes.UPDATE
-            ? moment(facultyInfo?.foundYear).format(formatDate)
-            : ""
-        }
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">HeadOfSection: </p>
-      <SelectMuiCommon
-        field="headOfSection"
-        options={userOptions}
-        errors={errors}
-        register={register}
-        defaultValue={facultyInfo?.headOfSection?._id || ""}
-        control={control}
-      />
-      <p className="mt-2">eputeHead: </p>
-      <SelectMuiCommon
-        field="eputeHead"
-        options={userOptions}
-        errors={errors}
-        register={register}
-        defaultValue={facultyInfo?.eputeHead?._id || ""}
-        control={control}
-      />
-      <p className="mt-2">Introduction: </p>
-      <TextFieldCommon
-        field="introduction"
-        type={inputTypes.TEXT_AREA}
-        defaultValue={facultyInfo?.introduction || ""}
-        errors={errors}
-        register={register}
-      />
-      <Button variant="contained" className="mt-4 w-100" type="submit">
-        Save
-      </Button>
-    </form>
+  const content = (
+    <div>
+      {type === modalTypes.DELETE ? (
+        <p>
+          Are you want to delete this faculty <b>{facultyInfo?.name}</b>?
+        </p>
+      ) : (
+        ""
+      )}
+      {type === modalTypes.ADD || type === modalTypes.UPDATE ? (
+        <form
+          onSubmit={
+            type === modalTypes.ADD
+              ? handleSubmit(onSubmitHandlerAdd)
+              : handleSubmit(onSubmitHandlerUpdate)
+          }
+        >
+          <p>Name: </p>
+          <TextFieldCommon
+            field="name"
+            defaultValue={facultyInfo?.name || ""}
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Found year:</p>
+          <TextFieldCommon
+            field="foundYear"
+            type={inputTypes.DATE}
+            defaultValue={
+              type === modalTypes.UPDATE
+                ? moment(facultyInfo?.foundYear).format(formatDate)
+                : ""
+            }
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">HeadOfSection: </p>
+          <SelectMuiCommon
+            field="headOfSection"
+            options={userOptions}
+            errors={errors}
+            register={register}
+            defaultValue={facultyInfo?.headOfSection?._id || ""}
+            control={control}
+          />
+          <p className="mt-2">eputeHead: </p>
+          <SelectMuiCommon
+            field="eputeHead"
+            options={userOptions}
+            errors={errors}
+            register={register}
+            defaultValue={facultyInfo?.eputeHead?._id || ""}
+            control={control}
+          />
+          <p className="mt-2">Introduction: </p>
+          <TextFieldCommon
+            field="introduction"
+            type={inputTypes.TEXT_AREA}
+            defaultValue={facultyInfo?.introduction || ""}
+            errors={errors}
+            register={register}
+          />
+          <Button variant="contained" className="mt-4 w-100" type="submit">
+            Save
+          </Button>
+        </form>
+      ) : (
+        ""
+      )}
+    </div>
   );
 
   return (
@@ -191,7 +198,7 @@ const ModalFacultyPage = (props: IpropModalFaculty) => {
       isShowModal={isShowModal}
       onCloseModal={() => onCloseModal()}
       nameTitle="faculty"
-      content={type === modalTypes.DELETE ? deleteContent : addUpdateContent}
+      content={content}
       onDelete={() => onDelete()}
     />
   );

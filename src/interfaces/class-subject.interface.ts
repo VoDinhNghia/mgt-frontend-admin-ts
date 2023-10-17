@@ -141,3 +141,14 @@ export interface IpropsClassMgtPage {
   listCourses?: any;
   listUsers?: any;
 }
+
+export interface IpropsModalSubjectPage extends IpropModalCommon {
+  fetchSubjects?: any;
+  listSemesters?: any;
+  subjectInfo?: any;
+  size?: string | any;
+  userOptions?: Ioptions[];
+  courseOptions?: Ioptions[];
+  majorOptions?: Ioptions[];
+  degreeLevelOptions?: Ioptions[];
+}

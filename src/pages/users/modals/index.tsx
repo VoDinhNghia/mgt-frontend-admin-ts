@@ -106,87 +106,113 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
     }, 100);
   };
 
-  const deleteContent = (
-    <p>
-      Are you want to delete user{" "}
-      <b>
-        {userInfo?.name}-{userInfo?.code}
-      </b>
-      ?
-    </p>
-  );
-  const addContent = (
-    <form onSubmit={handleSubmit(onSubmitHandlerAdd)}>
-      <p>Email</p>
-      <TextFieldCommon
-        field="email"
-        type={inputTypes.EMAIL}
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Password</p>
-      <TextFieldCommon
-        field="passWord"
-        type={inputTypes.PASSWORD}
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Role</p>
-      <SelectMuiCommon
-        field="role"
-        options={userRoleOptions}
-        errors={errors}
-        register={register}
-        control={control}
-      />
-      <p className="mt-2">FirstName</p>
-      <TextFieldCommon field="firstName" errors={errors} register={register} />
-      <p className="mt-2">LastName</p>
-      <TextFieldCommon field="lastName" errors={errors} register={register} />
-      <p className="mt-2">MiddleName</p>
-      <TextFieldCommon field="middleName" errors={errors} register={register} />
-      <p className="mt-2">Mobile</p>
-      <TextFieldCommon field="mobile" errors={errors} register={register} />
-      <p className="mt-2">Gender</p>
-      <SelectMuiCommon
-        field="gender"
-        options={userGenderOptions}
-        errors={errors}
-        register={register}
-        control={control}
-      />
-      <Button type="submit" variant="contained" className="mt-4 w-100">
-        Save
-      </Button>
-    </form>
-  );
-  const updateContent = (
-    <>
-      <p>Email: </p>
-      <TextField
-        variant="outlined"
-        size="small"
-        fullWidth={true}
-        defaultValue={userInfo?.email}
-        onChange={(e: IeventOnchangeInput) =>
-          setState({ ...state, email: e.target.value })
-        }
-      />
-      <p className="mt-2">Role: </p>
-      <SelectMuiCommon
-        type={selectMuiTypes.NORMAL}
-        options={userRoleOptions}
-        defaultValue={userInfo?.role}
-        onChangeSelect={(value: string) => setState({ ...state, role: value })}
-      />
-      <p className="mt-2">Status: </p>
-      <SelectMuiCommon
-        type={selectMuiTypes.NORMAL}
-        options={userStatusOptions}
-        defaultValue={userInfo?.status}
-        onChangeSelect={(value: string) => setState({ ...state, role: value })}
-      />
-    </>
+  const content = (
+    <div>
+      {type === modalTypes.DELETE ? (
+        <p>
+          Are you want to delete user{" "}
+          <b>
+            {userInfo?.name}-{userInfo?.code}
+          </b>
+          ?
+        </p>
+      ) : (
+        ""
+      )}
+      {type === modalTypes.ADD ? (
+        <form onSubmit={handleSubmit(onSubmitHandlerAdd)}>
+          <p>Email</p>
+          <TextFieldCommon
+            field="email"
+            type={inputTypes.EMAIL}
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Password</p>
+          <TextFieldCommon
+            field="passWord"
+            type={inputTypes.PASSWORD}
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Role</p>
+          <SelectMuiCommon
+            field="role"
+            options={userRoleOptions}
+            errors={errors}
+            register={register}
+            control={control}
+          />
+          <p className="mt-2">FirstName</p>
+          <TextFieldCommon
+            field="firstName"
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">LastName</p>
+          <TextFieldCommon
+            field="lastName"
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">MiddleName</p>
+          <TextFieldCommon
+            field="middleName"
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Mobile</p>
+          <TextFieldCommon field="mobile" errors={errors} register={register} />
+          <p className="mt-2">Gender</p>
+          <SelectMuiCommon
+            field="gender"
+            options={userGenderOptions}
+            errors={errors}
+            register={register}
+            control={control}
+          />
+          <Button type="submit" variant="contained" className="mt-4 w-100">
+            Save
+          </Button>
+        </form>
+      ) : (
+        ""
+      )}
+      {type === modalTypes.UPDATE ? (
+        <>
+          <p>Email: </p>
+          <TextField
+            variant="outlined"
+            size="small"
+            fullWidth={true}
+            defaultValue={userInfo?.email}
+            onChange={(e: IeventOnchangeInput) =>
+              setState({ ...state, email: e.target.value })
+            }
+          />
+          <p className="mt-2">Role: </p>
+          <SelectMuiCommon
+            type={selectMuiTypes.NORMAL}
+            options={userRoleOptions}
+            defaultValue={userInfo?.role}
+            onChangeSelect={(value: string) =>
+              setState({ ...state, role: value })
+            }
+          />
+          <p className="mt-2">Status: </p>
+          <SelectMuiCommon
+            type={selectMuiTypes.NORMAL}
+            options={userStatusOptions}
+            defaultValue={userInfo?.status}
+            onChangeSelect={(value: string) =>
+              setState({ ...state, role: value })
+            }
+          />
+        </>
+      ) : (
+        ""
+      )}
+    </div>
   );
 
   return (
@@ -197,13 +223,7 @@ const ModalUserMgtPage = (props: IpropUserMgtModal) => {
       onDelete={() => onDelete()}
       onUpdate={() => onUpdate()}
       isShowButtonUpdate={true}
-      content={
-        type === modalTypes.DELETE
-          ? deleteContent
-          : type === modalTypes.ADD
-          ? addContent
-          : updateContent
-      }
+      content={content}
       nameTitle="user"
     />
   );

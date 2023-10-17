@@ -219,6 +219,7 @@ export interface ImodalCommon extends IpropModalCommon {
   onFilter?: any;
   isShowButtonUpdate?: boolean | any;
   onUpdate?: any;
+  size?: string | any;
 }
 
 export interface IpropTextFieldForm {

@@ -122,84 +122,93 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
     });
   }, [isSubmitSuccessful, roomInfo]);
 
-  const deleteContent = (
-    <span>
-      Are you want to delete this <b>{roomInfo?.name}</b>?
-    </span>
-  );
-  const addUpdateContent = (
-    <form
-      onSubmit={
-        type === modalTypes.ADD
-          ? handleSubmit(onSubmitHandlerAdd)
-          : handleSubmit(onSubmitHandlerUpdate)
-      }
-    >
-      <p>Name: </p>
-      <TextFieldCommon
-        field="name"
-        defaultValue={roomInfo?.name || ""}
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Type: </p>
-      <SelectMuiCommon
-        field="roomType"
-        register={register}
-        options={roomOptions}
-        errors={errors}
-        control={control}
-        defaultValue={roomInfo?.type || ""}
-      />
-      <p className="mt-2">Capacity: </p>
-      <TextFieldCommon
-        field="capacity"
-        type={inputTypes.NUMBER}
-        defaultValue={roomInfo?.capacity || ""}
-        register={register}
-        errors={errors}
-      />
-      <p className="mt-2">Description: </p>
-      <TextFieldCommon
-        field="description"
-        type={inputTypes.TEXT_AREA}
-        defaultValue={roomInfo?.description || ""}
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Air Conditioner: </p>
-      <TextFieldCommon
-        field="airConditioner"
-        defaultValue={roomInfo?.divice?.airConditioner || ""}
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Projector: </p>
-      <TextFieldCommon
-        field="projector"
-        defaultValue={roomInfo?.divice?.projector || ""}
-        errors={errors}
-        register={register}
-      />
-      <p className="mt-2">Status: </p>
-      <TextFieldCommon
-        field="status"
-        defaultValue={roomInfo?.divice?.status || ""}
-        errors={errors}
-        register={register}
-      />
-      <Button type="submit" variant="contained" className="mt-4 w-100">
-        SAVE
-      </Button>
-    </form>
-  );
-
-  const viewContent = (
-    <p>
-      <p>Air Conditioner: {roomInfo?.divice?.airConditioner}</p>
-      <p>Projector: {roomInfo?.divice?.projector}</p>
-      <p>Status: {roomInfo?.divice?.status}</p>
-    </p>
+  const content = (
+    <div>
+      {type === modalTypes.DELETE ? (
+        <span>
+          Are you want to delete this <b>{roomInfo?.name}</b>?
+        </span>
+      ) : (
+        ""
+      )}
+      {type === modalTypes.ADD || type === modalTypes.UPDATE ? (
+        <form
+          onSubmit={
+            type === modalTypes.ADD
+              ? handleSubmit(onSubmitHandlerAdd)
+              : handleSubmit(onSubmitHandlerUpdate)
+          }
+        >
+          <p>Name: </p>
+          <TextFieldCommon
+            field="name"
+            defaultValue={roomInfo?.name || ""}
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Type: </p>
+          <SelectMuiCommon
+            field="roomType"
+            register={register}
+            options={roomOptions}
+            errors={errors}
+            control={control}
+            defaultValue={roomInfo?.type || ""}
+          />
+          <p className="mt-2">Capacity: </p>
+          <TextFieldCommon
+            field="capacity"
+            type={inputTypes.NUMBER}
+            defaultValue={roomInfo?.capacity || ""}
+            register={register}
+            errors={errors}
+          />
+          <p className="mt-2">Description: </p>
+          <TextFieldCommon
+            field="description"
+            type={inputTypes.TEXT_AREA}
+            defaultValue={roomInfo?.description || ""}
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Air Conditioner: </p>
+          <TextFieldCommon
+            field="airConditioner"
+            defaultValue={roomInfo?.divice?.airConditioner || ""}
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Projector: </p>
+          <TextFieldCommon
+            field="projector"
+            defaultValue={roomInfo?.divice?.projector || ""}
+            errors={errors}
+            register={register}
+          />
+          <p className="mt-2">Status: </p>
+          <TextFieldCommon
+            field="status"
+            defaultValue={roomInfo?.divice?.status || ""}
+            errors={errors}
+            register={register}
+          />
+          <Button type="submit" variant="contained" className="mt-4 w-100">
+            SAVE
+          </Button>
+        </form>
+      ) : (
+        ""
+      )}
+      {type === modalTypes.VIEW ? (
+        <p>
+          <p>Air Conditioner: {roomInfo?.divice?.airConditioner}</p>
+          <p>Projector: {roomInfo?.divice?.projector}</p>
+          <p>Status: {roomInfo?.divice?.status}</p>
+        </p>
+      ) : (
+        ""
+      )}
+    </div>
   );
 
   return (
@@ -208,13 +217,7 @@ const ModalRoomMgtPage = (props: IpropModalRoom) => {
       isShowModal={isShowModal}
       onCloseModal={() => onCloseModal()}
       nameTitle="room"
-      content={
-        type === modalTypes.DELETE
-          ? deleteContent
-          : type === modalTypes.VIEW
-          ? viewContent
-          : addUpdateContent
-      }
+      content={content}
       onDelete={() => onDelete()}
     />
   );
