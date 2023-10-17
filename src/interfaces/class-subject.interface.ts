@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Ioptions, IparamsFetchList, IpropModalCommon } from "./common.interface";
+import {
+  Ioptions,
+  IparamsFetchList,
+  IpropModalCommon,
+} from "./common.interface";
 
 export interface IcreateClass {
   course?: string | any;
@@ -151,4 +155,24 @@ export interface IpropsModalSubjectPage extends IpropModalCommon {
   courseOptions?: Ioptions[];
   majorOptions?: Ioptions[];
   degreeLevelOptions?: Ioptions[];
+}
+
+export interface IpropProcessSubject {
+  title?: string;
+  fields?: {
+    week?: string | any;
+    time?: string | any;
+    output?: string | any;
+    percent?: string | any;
+    examDate?: string | any;
+  };
+  register?: any;
+  errors?: any;
+}
+
+export interface IpropSubjectInfoForm extends IoptionsClass {
+  register?: any;
+  errors?: any;
+  control?: any;
+  semesterOptions?: Ioptions[];
 }

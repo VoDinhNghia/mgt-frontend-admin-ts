@@ -7,6 +7,15 @@ import { modalTypes } from "../../../../constants/constant";
 import { semesterActions } from "../../../../store/actions";
 import { IstateRedux } from "../../../../interfaces/common.interface";
 import { handleSemesterOptions } from "../../../../utils/setting.util";
+import { Row, Col } from "react-bootstrap";
+import { useForm } from "react-hook-form";
+import ProcessSubjectForm from "./process-form";
+import {
+  fieldsFinalExam,
+  fieldsMidTermTest,
+  fieldsStudentEssay,
+} from "../../../../utils/class-subject.util";
+import SubjectInfoForm from "./general-form";
 
 const ModalSubjectPage = (props: IpropsModalSubjectPage) => {
   const {
@@ -22,12 +31,12 @@ const ModalSubjectPage = (props: IpropsModalSubjectPage) => {
     dispatch,
     listSemesters = [],
   } = props;
+  const {
+    register,
+    formState: { errors },
+    control,
+  } = useForm();
   const semesterOptions = handleSemesterOptions(listSemesters);
-  console.log("semesterOptions", semesterOptions);
-  console.log("majorOptions", majorOptions);
-  console.log("degreeLevelOptions", degreeLevelOptions);
-  console.log("courseOptions", courseOptions);
-  console.log("userOptions", userOptions);
 
   const onDelete = () => {
     alert("on delete");
@@ -46,14 +55,45 @@ const ModalSubjectPage = (props: IpropsModalSubjectPage) => {
     <div>
       {type === modalTypes.ADD || type === modalTypes.UPDATE ? (
         <form>
-          <Button
-            variant="contained"
-            size="small"
-            className="w-100 mt-3"
-            type="submit"
-          >
-            Save
-          </Button>
+          <Row>
+            <Col xl={5}>
+              <SubjectInfoForm 
+                register={register}
+                errors={errors}
+                control={control}
+                userOptions={userOptions}
+                courseOptions={courseOptions}
+                semesterOptions={semesterOptions}
+                degreeLevelOptions={degreeLevelOptions}
+                majorOptions={majorOptions}
+              />
+            </Col>
+            <Col xl={7}>
+              <ProcessSubjectForm
+                title="Mid Term Test"
+                fields={fieldsMidTermTest}
+                register={register}
+                errors={errors}
+              />
+              <ProcessSubjectForm
+                title="Student Essay"
+                fields={fieldsStudentEssay}
+                register={register}
+                errors={errors}
+              />
+              <ProcessSubjectForm
+                title="Final Exam"
+                fields={fieldsFinalExam}
+                register={register}
+                errors={errors}
+              />
+            </Col>
+          </Row>
+          <p className="text-center">
+            <Button variant="contained" className="w-50 mt-3" type="submit">
+              Save
+            </Button>
+          </p>
         </form>
       ) : (
         ""
