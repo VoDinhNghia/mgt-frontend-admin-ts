@@ -14,8 +14,8 @@ const TextFieldCommon = (props: IpropTextFieldForm) => {
       rows={type === inputTypes.TEXT_AREA ? rows : null}
       multiline={type === inputTypes.TEXT_AREA ? true : false}
       defaultValue={defaultValue}
-      error={!!errors[field]}
-      helperText={errors[field] ? errors[field].message : ""}
+      error={errors ? !!errors[field] : null}
+      helperText={errors && errors[field] ? errors[field].message : ""}
       {...register(field)}
     />
   );

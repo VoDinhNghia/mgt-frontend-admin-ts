@@ -129,3 +129,27 @@ export const registerSchemaClassForm = object({
 });
 
 export type IregisterInputClassForm = TypeOf<typeof registerSchemaClassForm>;
+
+export const fieldsMidTermTest = {
+  week: "weekMidTermTest",
+  time: "timeMidTermTest",
+  percent: "percentMidTermTest",
+  examDate: "examDateMidTermTest",
+  output: "outputMidTermTest",
+};
+
+export const fieldsStudentEssay = {
+  week: "weekStudentEssay",
+  time: "timeStudentEssay",
+  percent: "percentStudentEssay",
+  examDate: "examDateStudentEssay",
+  output: "outputStudentEssay",
+};
+
+export const fieldsFinalExam = {
+  week: "weekFinalExam",
+  time: "timeFinalExam",
+  percent: "percentFinalExam",
+  examDate: "examDateFinalExam",
+  output: "outputFinalExam",
+};
