@@ -7,7 +7,10 @@ import {
   modalTypes,
   processSubjectTypes,
 } from "../../../../constants/constant";
-import { semesterActions } from "../../../../store/actions";
+import {
+  classSubjectActions,
+  semesterActions,
+} from "../../../../store/actions";
 import { IstateRedux } from "../../../../interfaces/common.interface";
 import { handleSemesterOptions } from "../../../../utils/util";
 import { Row, Col } from "react-bootstrap";
@@ -36,6 +39,7 @@ const ModalSubjectPage = (props: IpropsModalSubjectPage) => {
     courseOptions = [],
     dispatch,
     listSemesters = [],
+    fetchSubjects,
   } = props;
   const {
     handleSubmit,
@@ -49,19 +53,117 @@ const ModalSubjectPage = (props: IpropsModalSubjectPage) => {
   const semesterOptions = handleSemesterOptions(listSemesters);
 
   const handleAdd: SubmitHandler<IregisterInputSubjectForm> = (values) => {
-    console.log("values", values);
+    const payload = {
+      course: values?.course,
+      name: values?.name,
+      degreeLevel: values?.degreeLevel,
+      major: values?.major,
+      lecturer: values?.lecturer,
+      semester: values?.semester,
+      openTime: values?.openTime,
+      closeTime: values?.closeTime,
+      size: values?.size,
+      numberCredits: values?.numberCredits,
+      learnDate: values?.learnDate,
+      time: values?.time,
+      startDate: values?.startDate,
+      endDate: values?.endDate,
+      elective: values?.elective,
+      calculateCumulativePoint: values?.calculateCumulativePoint,
+      midTermTest: {
+        week: values?.weekMidTermTest,
+        time: values?.timeMidTermTest,
+        output: values?.outputMidTermTest,
+        percent: values?.percentMidTermTest,
+        examDate: values?.examDateMidTermTest,
+      },
+      studentEssay: {
+        week: values?.weekStudentEssay,
+        time: values?.timeStudentEssay,
+        output: values?.outputStudentEssay,
+        percent: values?.percentStudentEssay,
+        examDate: values?.examDateStudentEssay,
+      },
+      finalExam: {
+        week: values?.weekFinalExam,
+        time: values?.timeFinalExam,
+        output: values?.outputFinalExam,
+        percent: values?.percentFinalExam,
+        examDate: values?.examDateFinalExam,
+      },
+    };
+    dispatch({
+      type: classSubjectActions.ADD_SUBJECT,
+      payload,
+    });
+    fetchAndCloseModal();
   };
   const handleUpdate: SubmitHandler<IregisterInputSubjectForm> = (values) => {
-    console.log("values", values);
+    const payload = {
+      course: values?.course,
+      name: values?.name,
+      degreeLevel: values?.degreeLevel,
+      major: values?.major,
+      lecturer: values?.lecturer,
+      semester: values?.semester,
+      openTime: values?.openTime,
+      closeTime: values?.closeTime,
+      size: values?.size,
+      numberCredits: values?.numberCredits,
+      learnDate: values?.learnDate,
+      time: values?.time,
+      startDate: values?.startDate,
+      endDate: values?.endDate,
+      elective: values?.elective,
+      calculateCumulativePoint: values?.calculateCumulativePoint,
+      midTermTest: {
+        week: values?.weekMidTermTest,
+        time: values?.timeMidTermTest,
+        output: values?.outputMidTermTest,
+        percent: values?.percentMidTermTest,
+        examDate: values?.examDateMidTermTest,
+      },
+      studentEssay: {
+        week: values?.weekStudentEssay,
+        time: values?.timeStudentEssay,
+        output: values?.outputStudentEssay,
+        percent: values?.percentStudentEssay,
+        examDate: values?.examDateStudentEssay,
+      },
+      finalExam: {
+        week: values?.weekFinalExam,
+        time: values?.timeFinalExam,
+        output: values?.outputFinalExam,
+        percent: values?.percentFinalExam,
+        examDate: values?.examDateFinalExam,
+      },
+    };
+    dispatch({
+      type: classSubjectActions.UPDATE_SUBJECT,
+      id: subjectInfo?._id,
+      payload,
+    });
+    fetchAndCloseModal();
   };
   const onDelete = () => {
-    alert("on delete");
+    dispatch({
+      type: classSubjectActions.DELETE_SUBJECT,
+      id: subjectInfo?._id,
+    });
+    fetchAndCloseModal();
   };
 
   const fetchSemesters = () => {
     dispatch({
       type: semesterActions.GET_LIST_SEMESTER,
     });
+  };
+
+  const fetchAndCloseModal = () => {
+    setTimeout(() => {
+      fetchSubjects();
+      onCloseModal();
+    }, 100);
   };
 
   useEffect(() => {
