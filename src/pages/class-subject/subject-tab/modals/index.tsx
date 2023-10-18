@@ -3,7 +3,7 @@ import DialogModalCommonPage from "../../../commons/dialog-mui";
 import { connect } from "react-redux";
 import { IpropsModalSubjectPage } from "../../../../interfaces/class-subject.interface";
 import { Button } from "@mui/material";
-import { modalTypes } from "../../../../constants/constant";
+import { modalTypes, processSubjectTypes } from "../../../../constants/constant";
 import { semesterActions } from "../../../../store/actions";
 import { IstateRedux } from "../../../../interfaces/common.interface";
 import { handleSemesterOptions } from "../../../../utils/setting.util";
@@ -66,6 +66,7 @@ const ModalSubjectPage = (props: IpropsModalSubjectPage) => {
                 semesterOptions={semesterOptions}
                 degreeLevelOptions={degreeLevelOptions}
                 majorOptions={majorOptions}
+                subjectInfo={subjectInfo}
               />
             </Col>
             <Col xl={7}>
@@ -74,18 +75,24 @@ const ModalSubjectPage = (props: IpropsModalSubjectPage) => {
                 fields={fieldsMidTermTest}
                 register={register}
                 errors={errors}
+                subjectInfo={subjectInfo}
+                type={processSubjectTypes.MID_TERM_TEST}
               />
               <ProcessSubjectForm
                 title="Student Essay"
                 fields={fieldsStudentEssay}
                 register={register}
                 errors={errors}
+                subjectInfo={subjectInfo}
+                type={processSubjectTypes.STUDENT_ESSAY}
               />
               <ProcessSubjectForm
                 title="Final Exam"
                 fields={fieldsFinalExam}
                 register={register}
                 errors={errors}
+                subjectInfo={subjectInfo}
+                type={processSubjectTypes.FINAL_EXAM}
               />
             </Col>
           </Row>
