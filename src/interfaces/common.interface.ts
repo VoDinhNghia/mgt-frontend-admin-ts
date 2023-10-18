@@ -272,4 +272,5 @@ export interface IpropCheckBoxMui {
   field: string | any;
   control: any;
   defaultValue?: string | any;
+  errors?: any;
 }
