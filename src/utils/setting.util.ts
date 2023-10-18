@@ -1,6 +1,4 @@
 import { TypeOf, number, object, string } from "zod";
-import { processSubjectTypes } from "../constants/constant";
-import { IrowSubjectTable } from "../interfaces/class-subject.interface";
 
 export const headerTableLearningRate = [
   {
@@ -144,24 +142,4 @@ export const handleSemesterOptions = (listSemesters = []) => {
     }
   );
   return options;
-};
-
-export const getDefaultValue = (
-  type: string,
-  subjectInfo: IrowSubjectTable,
-  field: string
-) => {
-  switch (type) {
-    case processSubjectTypes.MID_TERM_TEST:
-      return subjectInfo?.process?.midTermTest[field];
-    
-    case processSubjectTypes.STUDENT_ESSAY:
-      return subjectInfo?.process?.studentEssay[field];
-    
-    case processSubjectTypes.FINAL_EXAM:
-      return subjectInfo?.process?.finalExam[field];
-    
-    default:
-      return "";
-  }
 };

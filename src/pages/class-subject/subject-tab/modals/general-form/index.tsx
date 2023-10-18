@@ -31,12 +31,14 @@ const SubjectInfoForm = (props: IpropSubjectInfoForm) => {
             field="elective"
             label="Elective"
             control={control}
+            errors={errors}
             defaultValue={subjectInfo?.elective || false}
           />
           <CheckBoxMuiCommon
-            field="calculateCumulative"
+            field="calculateCumulativePoint"
             label="Cumulative"
             control={control}
+            errors={errors}
             defaultValue={subjectInfo?.calculateCumulative || true}
           />
         </span>
@@ -126,7 +128,7 @@ const SubjectInfoForm = (props: IpropSubjectInfoForm) => {
           errors={errors}
           register={register}
           defaultValue={
-            subjectInfo?.openTime
+            subjectInfo?.closeTime
               ? moment(subjectInfo?.closeTime).format(formatDate)
               : ""
           }

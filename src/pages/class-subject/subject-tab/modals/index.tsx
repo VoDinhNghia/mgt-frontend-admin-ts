@@ -3,19 +3,25 @@ import DialogModalCommonPage from "../../../commons/dialog-mui";
 import { connect } from "react-redux";
 import { IpropsModalSubjectPage } from "../../../../interfaces/class-subject.interface";
 import { Button } from "@mui/material";
-import { modalTypes, processSubjectTypes } from "../../../../constants/constant";
+import {
+  modalTypes,
+  processSubjectTypes,
+} from "../../../../constants/constant";
 import { semesterActions } from "../../../../store/actions";
 import { IstateRedux } from "../../../../interfaces/common.interface";
 import { handleSemesterOptions } from "../../../../utils/setting.util";
 import { Row, Col } from "react-bootstrap";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import ProcessSubjectForm from "./process-form";
 import {
+  IregisterInputSubjectForm,
   fieldsFinalExam,
   fieldsMidTermTest,
   fieldsStudentEssay,
+  registerSchemaSubjectForm,
 } from "../../../../utils/class-subject.util";
 import SubjectInfoForm from "./general-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const ModalSubjectPage = (props: IpropsModalSubjectPage) => {
   const {
@@ -32,15 +38,26 @@ const ModalSubjectPage = (props: IpropsModalSubjectPage) => {
     listSemesters = [],
   } = props;
   const {
+    handleSubmit,
     register,
-    formState: { errors },
+    reset,
+    formState: { errors, isSubmitSuccessful },
     control,
-  } = useForm();
+  } = useForm<IregisterInputSubjectForm>({
+    resolver: zodResolver(registerSchemaSubjectForm),
+  });
   const semesterOptions = handleSemesterOptions(listSemesters);
 
+  const handleAdd: SubmitHandler<IregisterInputSubjectForm> = (values) => {
+    console.log("values", values);
+  };
+  const handleUpdate: SubmitHandler<IregisterInputSubjectForm> = (values) => {
+    console.log("values", values);
+  };
   const onDelete = () => {
     alert("on delete");
   };
+
   const fetchSemesters = () => {
     dispatch({
       type: semesterActions.GET_LIST_SEMESTER,
@@ -48,16 +65,35 @@ const ModalSubjectPage = (props: IpropsModalSubjectPage) => {
   };
 
   useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
     fetchSemesters();
-  }, []);
+    reset({
+      ...subjectInfo,
+      major: subjectInfo?.major?._id,
+      course: subjectInfo?.course?._id,
+      degreeLevel: subjectInfo?.degreeLevel?._id,
+      lecturer: subjectInfo?.lecturer?._id,
+      size: subjectInfo?.size?.toString(),
+      semester: subjectInfo?.semester?._id,
+      numberCredits: subjectInfo?.numberCredits?.toString(),
+    });
+  }, [isSubmitSuccessful, subjectInfo]);
 
   const content = (
     <div>
       {type === modalTypes.ADD || type === modalTypes.UPDATE ? (
-        <form>
+        <form
+          onSubmit={
+            type === modalTypes.ADD
+              ? handleSubmit(handleAdd)
+              : handleSubmit(handleUpdate)
+          }
+        >
           <Row>
             <Col xl={5}>
-              <SubjectInfoForm 
+              <SubjectInfoForm
                 register={register}
                 errors={errors}
                 control={control}

@@ -3,7 +3,7 @@ import { Card, Row, Col } from "react-bootstrap";
 import { IpropProcessSubject } from "../../../../../interfaces/class-subject.interface";
 import TextFieldCommon from "../../../../commons/textfield-input";
 import { formatDate, inputTypes } from "../../../../../constants/constant";
-import { getDefaultValue } from "../../../../../utils/setting.util";
+import { getDefaultValue } from "../../../../../utils/class-subject.util";
 import moment from "moment";
 
 const ProcessSubjectForm = (props: IpropProcessSubject) => {
