@@ -436,3 +436,9 @@ export const yearSemesterOptions = [
     label: "2029-2030",
   },
 ];
+
+export const processSubjectTypes = {
+  MID_TERM_TEST: "MID_TERM_TEST",
+  STUDENT_ESSAY: "STUDENT_ESSAY",
+  FINAL_EXAM: "FINAL_EXAM",
+};

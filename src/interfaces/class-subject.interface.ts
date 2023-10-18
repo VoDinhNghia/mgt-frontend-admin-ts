@@ -123,9 +123,9 @@ export interface IrowSubjectTable {
     time?: string;
     startDate?: Date | string;
     endDate?: Date | string;
-    midTermTest?: Iexam;
-    finalExam: Iexam;
-    studentEssay: Iexam;
+    midTermTest?: Iexam | any;
+    finalExam: Iexam | any;
+    studentEssay: Iexam | any;
   };
 }
 
@@ -168,6 +168,8 @@ export interface IpropProcessSubject {
   };
   register?: any;
   errors?: any;
+  subjectInfo?: any;
+  type?: string;
 }
 
 export interface IpropSubjectInfoForm extends IoptionsClass {
@@ -175,4 +177,5 @@ export interface IpropSubjectInfoForm extends IoptionsClass {
   errors?: any;
   control?: any;
   semesterOptions?: Ioptions[];
+  subjectInfo?: any;
 }
