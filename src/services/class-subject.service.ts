@@ -43,7 +43,7 @@ export const updateClass = async (id: string, payload: IcreateClass) => {
 
 export const updateSubject = async (id: string, payload: IcreateSubject) => {
   const res = await axios.put(
-    `${STUDENT_SERVER_URL}/api/class-subject/${id}`,
+    `${STUDENT_SERVER_URL}/api/class-subject/subject/${id}`,
     payload,
     {
       headers: setHeaderAxios(),
