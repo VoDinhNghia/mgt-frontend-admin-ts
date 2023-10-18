@@ -7,7 +7,6 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   IregisterInputMoneyCreditForm,
-  handleSemesterOptions,
   registerSchemaMoneyCreditForm,
 } from "../../../../utils/setting.util";
 import { IstateRedux } from "../../../../interfaces/common.interface";
@@ -15,6 +14,7 @@ import { semesterActions, settingActions } from "../../../../store/actions";
 import DialogModalCommonPage from "../../../commons/dialog-mui";
 import TextFieldCommon from "../../../commons/textfield-input";
 import SelectMuiCommon from "../../../commons/select-mui";
+import { handleSemesterOptions } from "../../../../utils/util";
 
 const ModalMoneyCreditPage = (props: IpropModalMoneyCredit) => {
   const {
