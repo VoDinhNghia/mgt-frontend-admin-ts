@@ -24,7 +24,7 @@ import {
   handleCourseOptions,
   handleDegreelevelOptions,
   handleMajorOptions,
-} from "../../utils/class-subject.util";
+} from "../../utils/util";
 
 const ClassSubjectMgtPage = (props: IpropsClassMgtPage) => {
   const classTab = "Class Tab";

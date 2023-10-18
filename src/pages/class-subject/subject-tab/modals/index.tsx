@@ -9,7 +9,7 @@ import {
 } from "../../../../constants/constant";
 import { semesterActions } from "../../../../store/actions";
 import { IstateRedux } from "../../../../interfaces/common.interface";
-import { handleSemesterOptions } from "../../../../utils/setting.util";
+import { handleSemesterOptions } from "../../../../utils/util";
 import { Row, Col } from "react-bootstrap";
 import { useForm, SubmitHandler } from "react-hook-form";
 import ProcessSubjectForm from "./process-form";

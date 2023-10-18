@@ -8,16 +8,18 @@ import { branchActions, countriesActions } from "../../../store/actions";
 import { IpropModalBranch } from "../../../interfaces/branch.interface";
 import {
   IregisterInputBranchForm,
-  handleCountryOptions,
-  handleDistrictOptions,
-  handleProvinceOptions,
-  handleWardOptions,
   registerSchemaBranchForm,
 } from "../../../utils/branch.util";
 import { IstateRedux } from "../../../interfaces/common.interface";
 import DialogModalCommonPage from "../../commons/dialog-mui";
 import TextFieldCommon from "../../commons/textfield-input";
 import SelectReactCommon from "../../commons/select-react";
+import {
+  handleCountryOptions,
+  handleDistrictOptions,
+  handleProvinceOptions,
+  handleWardOptions,
+} from "../../../utils/util";
 
 const ModalBranchPage = (props: IpropModalBranch) => {
   const {
