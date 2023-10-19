@@ -189,6 +189,7 @@ const SubjectTabMgtPage = (props: IpropsSubjectTab) => {
       />
       <ModalSubjectPage
         type={modalTypes.VIEW}
+        size="md"
         isShowModal={isShowModalView}
         subjectInfo={rowData}
         onCloseModal={() => setState({ ...state, isShowModalView: false })}
