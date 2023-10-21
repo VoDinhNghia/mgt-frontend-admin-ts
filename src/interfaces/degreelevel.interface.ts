@@ -1,3 +1,5 @@
+import { IpropModalCommon } from "./common.interface";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IcreateDegreeLevel {
   name?: string;
@@ -21,4 +23,10 @@ export interface IpropsDegreelevelPage {
   } | any;
   listDegreelevels?: Idegreelevel[];
   totalDegreelevel?: number;
+}
+
+export interface IpropsModalDegreelevel extends IpropModalCommon {
+  fetchDegreelevels?: any;
+  degreelevelInfo?: Idegreelevel;
+  dispatch?: any;
 }
