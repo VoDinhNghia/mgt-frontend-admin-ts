@@ -15,9 +15,41 @@ export interface IparamsFetchWard extends IparamsFetchList {
 }
 
 export interface Icountries {
+  _id?: string;
   name?: string;
   flag?: string;
   countryId?: string;
   capital?: string;
   status?: string;
+}
+
+export interface Iprovince {
+  _id?: string;
+  name?: string;
+  code?: string;
+  countryId?: Icountries;
+  phoneCode?: string;
+  codeName?: string;
+  capital?: string;
+}
+
+export interface Idistrict {
+  _id?: string;
+  name?: string;
+  countryId?: Icountries;
+  provinceId?: Iprovince;
+  phoneCode?: string;
+  codeName?: string;
+  code?: string;
+}
+
+export interface Iward {
+  _id?: string;
+  name?: string;
+  countryId?: Icountries;
+  provinceId?: Iprovince;
+  districtId?: Idistrict;
+  phoneCode?: string;
+  codeName?: string;
+  code?: string;
 }

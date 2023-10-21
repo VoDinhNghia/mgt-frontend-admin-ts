@@ -1,42 +1,62 @@
-import { IpropModalCommon } from "./common.interface";
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export interface IcreateBranch {
+import { IpropModalCommon } from "./common.interface";
+import { Icountries, Idistrict, Iprovince, Iward } from "./countries.interface";
+
+export interface IbranchCommonInfo {
   title?: string;
   name?: string;
   description?: string;
   website?: string;
+}
+
+export interface IcontactInfo {
+  email?: string;
+  fax?: string;
+  mobile?: string;
+}
+export interface IcreateBranch extends IbranchCommonInfo {
   location?: {
-    province?: string | any;
-    district?: string | any;
-    ward?: string | any;
-    country?: string | any;
-    address?: string | any;
+    province?: string;
+    district?: string;
+    ward?: string;
+    country?: string;
+    address?: string;
   };
-  contactInfo?: {
-    email?: string | any;
-    fax?: string | any;
-    mobile?: string | any;
-  }[];
+  contactInfo?: IcontactInfo[];
 }
 
 export interface IpropBranchPage {
-  dispatch?: any;
-  listBranchs?: any;
+  dispatch?: {
+    type?: string;
+    id?: string;
+    payload?: {
+      limit?: number;
+      page?: number;
+      searchKey?: string;
+    };
+  } | any;
+  listBranchs?: IbranchCardItem[];
   totalBranch?: number;
 }
-
-export interface IbranchCardItem extends IcreateBranch {
+export interface IbranchCardItem extends IbranchCommonInfo {
   _id?: string;
+  location?: {
+    country?: Icountries;
+    province?: Iprovince;
+    district?: Idistrict;
+    ward?: Iward;
+    address?: string;
+  };
+  contactInfo?: IcontactInfo[];
 }
 
 export interface IpropModalBranch extends IpropModalCommon {
-  branchInfo?: any;
+  branchInfo?: IbranchCardItem;
   fetchBranchs?: any;
-  listCountries?: any;
-  listProvinces?: any;
-  listDistricts?: any;
-  listWards?: any;
+  listCountries?: Icountries[] | any;
+  listProvinces?: Iprovince[] | any;
+  listDistricts?: Idistrict[] | any;
+  listWards?: Iward[] | any;
 }
 
 export type IbranchReadMore = any;

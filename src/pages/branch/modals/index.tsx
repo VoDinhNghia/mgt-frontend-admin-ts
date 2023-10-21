@@ -5,7 +5,10 @@ import { connect } from "react-redux";
 import { Button } from "@mui/material";
 import { inputTypes, modalTypes } from "../../../constants/constant";
 import { branchActions, countriesActions } from "../../../store/actions";
-import { IpropModalBranch } from "../../../interfaces/branch.interface";
+import {
+  IcontactInfo,
+  IpropModalBranch,
+} from "../../../interfaces/branch.interface";
 import {
   IregisterInputBranchForm,
   registerSchemaBranchForm,
@@ -190,9 +193,9 @@ const ModalBranchPage = (props: IpropModalBranch) => {
       ward: branchInfo?.location?.ward?._id,
       country: branchInfo?.location?.country?._id,
       address: branchInfo?.location?.address,
-      email: branchInfo?.contactInfo?.email,
-      fax: branchInfo?.contactInfo?.fax,
-      mobile: branchInfo?.contactInfo?.mobile,
+      email: branchInfo?.contactInfo ? branchInfo?.contactInfo[0]?.email : "",
+      fax: branchInfo?.contactInfo ? branchInfo?.contactInfo[0]?.fax : "",
+      mobile: branchInfo?.contactInfo ? branchInfo?.contactInfo[0]?.mobile : "",
     });
   }, [isSubmitSuccessful, branchInfo]);
 
@@ -285,7 +288,7 @@ const ModalBranchPage = (props: IpropModalBranch) => {
           <p className="mt-2">Street: </p>
           <TextFieldCommon
             field="address"
-            defaultValue={branchInfo?.address || ""}
+            defaultValue={branchInfo?.location?.address || ""}
             errors={errors}
             register={register}
           />
@@ -293,9 +296,7 @@ const ModalBranchPage = (props: IpropModalBranch) => {
           <TextFieldCommon
             field="email"
             defaultValue={
-              branchInfo?.contactInfo?.length > 0
-                ? branchInfo?.contactInfo[0]?.email
-                : ""
+              branchInfo?.contactInfo ? branchInfo?.contactInfo[0]?.email : ""
             }
             errors={errors}
             register={register}
@@ -304,9 +305,7 @@ const ModalBranchPage = (props: IpropModalBranch) => {
           <TextFieldCommon
             field="fax"
             defaultValue={
-              branchInfo?.contactInfo?.length > 0
-                ? branchInfo?.contactInfo[0]?.fax
-                : ""
+              branchInfo?.contactInfo ? branchInfo?.contactInfo[0]?.fax : ""
             }
             errors={errors}
             register={register}
@@ -315,9 +314,7 @@ const ModalBranchPage = (props: IpropModalBranch) => {
           <TextFieldCommon
             field="mobile"
             defaultValue={
-              branchInfo?.contactInfo?.length > 0
-                ? branchInfo?.contactInfo[0]?.mobile
-                : ""
+              branchInfo?.contactInfo ? branchInfo?.contactInfo[0]?.mobile : ""
             }
             errors={errors}
             register={register}
@@ -339,17 +336,15 @@ const ModalBranchPage = (props: IpropModalBranch) => {
       )}
       {type === modalTypes.VIEW ? (
         <div>
-          {branchInfo?.contactInfo?.map(
-            (contact: { email: string; fax: string; mobile: string }) => {
-              return (
-                <div key={contact?.email}>
-                  <p>Email: {contact?.email}</p>
-                  <p>Fax: {contact?.fax}</p>
-                  <p>Mobile: {contact?.mobile}</p>
-                </div>
-              );
-            }
-          )}
+          {branchInfo?.contactInfo?.map((contact: IcontactInfo) => {
+            return (
+              <div key={contact?.email}>
+                <p>Email: {contact?.email}</p>
+                <p>Fax: {contact?.fax}</p>
+                <p>Mobile: {contact?.mobile}</p>
+              </div>
+            );
+          })}
         </div>
       ) : (
         ""
