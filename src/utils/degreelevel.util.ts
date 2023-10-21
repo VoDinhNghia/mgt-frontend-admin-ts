@@ -25,7 +25,7 @@ export const headerTableDegreelevel = [
 
 export const registerSchemaDegreelevelForm = object({
   name: string().nonempty("name is required"),
-  description: string().nullable(),
+  description: string().nonempty("description is required"),
 });
 
 export type IregisterInputDegreelevelForm = TypeOf<

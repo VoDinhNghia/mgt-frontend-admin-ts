@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { IparamsFetchList } from "./common.interface";
 
 export interface IcreateAward {
   name?: string;
-  time?: Date | string | any;
+  time?: Date | string;
   attachment?: string[];
   location?: string;
   type?: string;
