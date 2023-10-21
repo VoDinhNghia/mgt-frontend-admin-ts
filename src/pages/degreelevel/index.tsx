@@ -3,7 +3,11 @@ import {
   validateAccessModule,
   validateAction,
 } from "../../utils/permission.util";
-import { moduleNames, permissonTypes } from "../../constants/constant";
+import {
+  modalTypes,
+  moduleNames,
+  permissonTypes,
+} from "../../constants/constant";
 import MenuPage from "../commons/menu";
 import FooterPage from "../commons/footer";
 import ForbidenPage from "../commons/forbiden";
@@ -28,6 +32,7 @@ import HeaderTableCommon from "../commons/header-table";
 import PaginationTableCommon from "../commons/pagination-table";
 import { headerTableDegreelevel } from "../../utils/degreelevel.util";
 import ActionTableCommon from "../commons/actions-table";
+import ModalDegreelevelPage from "./modals";
 
 const DegreelevelMgtPage = (props: IpropsDegreelevelPage) => {
   const { dispatch, listDegreelevels = [], totalDegreelevel = 0 } = props;
@@ -53,7 +58,14 @@ const DegreelevelMgtPage = (props: IpropsDegreelevelPage) => {
     permissonTypes.DELETE,
     moduleNames.DEGREELEVELS_MANAGEMENT
   );
-  const { limit, page } = state;
+  const {
+    limit,
+    page,
+    isShowModalAdd,
+    isShowModalDelete,
+    isShowModalUpdate,
+    rowData,
+  } = state;
 
   const fetchDegreelevels = (page: number, limit: number) => {
     dispatch({
@@ -133,6 +145,33 @@ const DegreelevelMgtPage = (props: IpropsDegreelevelPage) => {
                 setState={setState}
                 total={totalDegreelevel}
                 fetchList={() => fetchDegreelevels(page, limit)}
+              />
+              <ModalDegreelevelPage
+                type={modalTypes.ADD}
+                isShowModal={isShowModalAdd}
+                degreelevelInfo={{}}
+                onCloseModal={() =>
+                  setState({ ...state, isShowModalAdd: false })
+                }
+                fetchDegreelevels={() => fetchDegreelevels(page + 1, limit)}
+              />
+              <ModalDegreelevelPage
+                type={modalTypes.UPDATE}
+                isShowModal={isShowModalUpdate}
+                degreelevelInfo={rowData}
+                onCloseModal={() =>
+                  setState({ ...state, isShowModalUpdate: false })
+                }
+                fetchDegreelevels={() => fetchDegreelevels(page + 1, limit)}
+              />
+              <ModalDegreelevelPage
+                type={modalTypes.DELETE}
+                isShowModal={isShowModalDelete}
+                degreelevelInfo={rowData}
+                onCloseModal={() =>
+                  setState({ ...state, isShowModalDelete: false })
+                }
+                fetchDegreelevels={() => fetchDegreelevels(page + 1, limit)}
               />
             </Container>
           </Container>

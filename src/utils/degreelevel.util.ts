@@ -1,3 +1,5 @@
+import { TypeOf, object, string } from "zod";
+
 export const headerTableDegreelevel = [
   {
     id: "index",
@@ -20,3 +22,12 @@ export const headerTableDegreelevel = [
     minWidth: 120,
   },
 ];
+
+export const registerSchemaDegreelevelForm = object({
+  name: string().nonempty("name is required"),
+  description: string().nullable(),
+});
+
+export type IregisterInputDegreelevelForm = TypeOf<
+  typeof registerSchemaDegreelevelForm
+>;
